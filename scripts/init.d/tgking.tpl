@@ -81,8 +81,8 @@ tgking_start_task()
 
 tgking_start()
 {
-    mw_start_task
-	mw_start_panel
+    tgking_start_task
+	tgking_start_panel
 }
 
 tgking_stop_task()
