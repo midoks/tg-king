@@ -36,7 +36,7 @@ TVbNgrpeGBGZVm5gTLa21ADP7RpnPFhjya
 
 ### Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/midoks/mdserver-web.svg)](https://starchart.cc/midoks/tg-king)
+[![Stargazers over time](https://starchart.cc/midoks/tg-king.svg)](https://starchart.cc/midoks/tg-king)
 
 ### 授权许可
 
