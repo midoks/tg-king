@@ -120,8 +120,8 @@ tgking_stop_panel()
 
 tgking_stop()
 {
-    mw_stop_task
-    mw_stop_panel
+    tgking_stop_task
+    tgking_stop_panel
 }
 
 tgking_status()
