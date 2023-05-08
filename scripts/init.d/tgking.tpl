@@ -24,12 +24,12 @@ if [ -f $TGKING_PATH/bin/activate ];then
     source $TGKING_PATH/bin/activate
 fi
 
-mw_start_panel()
+tgking_start_panel()
 {
-    isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
+    isStart=`ps -ef|grep 'gunicorn -c setting.py apptg:app' |grep -v grep|awk '{print $2}'`
     if [ "$isStart" == '' ];then
         echo -e "starting TGKING-Panel... \c"
-        cd $TGKING_PATH &&  gunicorn -c setting.py app:app
+        cd $TGKING_PATH &&  gunicorn -c setting.py apptg:app
         port=$(cat ${TGKING_PATH}/data/port.pl)
         isStart=""
         while [[ "$isStart" == "" ]];
@@ -52,49 +52,48 @@ mw_start_panel()
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting TGKING-Panel... mw(pid $(echo $isStart)) already running"
+        echo "starting TGKING-Panel... TGKING(pid $(echo $isStart)) already running"
     fi
 }
 
 
-mw_start_task()
+tgking_start_task()
 {
-    isStart=$(ps aux |grep 'task.py'|grep -v grep|awk '{print $2}')
+    isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" == '' ];then
-        echo -e "starting mw-tasks... \c"
-        cd $TGKING_PATH && python3 task.py >> ${TGKING_PATH}/logs/task.log 2>&1 &
+        echo -e "starting tgking-task... \c"
+        cd $TGKING_PATH && python3 tgking-task.py >> ${TGKING_PATH}/logs/task.log 2>&1 &
         sleep 0.3
-        isStart=$(ps aux |grep 'task.py'|grep -v grep|awk '{print $2}')
+        isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
             echo '------------------------------------------------------'
             tail -n 20 $TGKING_PATH/logs/task.log
             echo '------------------------------------------------------'
-            echo -e "\033[31mError: mw-tasks service startup failed.\033[0m"
+            echo -e "\033[31mError: TGKING-Panel service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting mw-tasks... mw-tasks (pid $(echo $isStart)) already running"
+        echo "starting TGKING-Panel... TASK (pid $(echo $isStart)) already running"
     fi
 }
 
-mw_start()
+tgking_start()
 {
     mw_start_task
 	mw_start_panel
 }
 
-# /www/server/mdserver-web/tmp/panelTask.pl && service mw restart_task
-mw_stop_task()
+tgking_stop_task()
 {
     if [ -f $TGKING_PATH/tmp/panelTask.pl ];then
         echo -e "\033[32mthe task is running and cannot be stopped\033[0m"
         exit 0
     fi
 
-    echo -e "stopping mw-tasks... \c";
-    pids=$(ps aux | grep 'task.py'|grep -v grep|awk '{print $2}')
+    echo -e "Stopping TGKING-Panel... \c";
+    pids=$(ps aux | grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     arr=($pids)
     for p in ${arr[@]}
     do
@@ -103,161 +102,117 @@ mw_stop_task()
     echo -e "\033[32mdone\033[0m"
 }
 
-mw_stop_panel()
+tgking_stop_panel()
 {
-    echo -e "stopping mw-panel... \c";
-    arr=`ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}'`
+    echo -e "Stopping TGKING-Panel... \c";
+    arr=`ps aux|grep 'gunicorn -c setting.py apptg:app'|grep -v grep|awk '{print $2}'`
     for p in ${arr[@]}
     do
         kill -9 $p > /dev/null 2>&1
     done
     
-    pidfile=${mw_path}/logs/mw.pid
+    pidfile=${mw_path}/logs/tgking.pid
     if [ -f $pidfile ];then
         rm -f $pidfile
     fi
     echo -e "\033[32mdone\033[0m"
 }
 
-mw_stop()
+tgking_stop()
 {
     mw_stop_task
     mw_stop_panel
 }
 
-mw_status()
+tgking_status()
 {
     isStart=$(ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}')
     if [ "$isStart" != '' ];then
-        echo -e "\033[32mmw (pid $(echo $isStart)) already running\033[0m"
+        echo -e "\033[32mTGKING-Panel (pid $(echo $isStart)) already running\033[0m"
     else
-        echo -e "\033[31mmw not running\033[0m"
+        echo -e "\033[31mTGKING-Panel not running\033[0m"
     fi
     
-    isStart=$(ps aux |grep 'task.py'|grep -v grep|awk '{print $2}')
+    isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" != '' ];then
-        echo -e "\033[32mmw-task (pid $isStart) already running\033[0m"
+        echo -e "\033[32mTGKING-TASK (pid $isStart) already running\033[0m"
     else
-        echo -e "\033[31mmw-task not running\033[0m"
+        echo -e "\033[31mTGKING-TASK not running\033[0m"
     fi
 }
 
 
-mw_reload()
+tgking_reload()
 {
-	isStart=$(ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}')
+	isStart=$(ps aux|grep 'gunicorn -c setting.py apptg:app'|grep -v grep|awk '{print $2}')
     
     if [ "$isStart" != '' ];then
-    	echo -e "reload mw... \c";
-	    arr=`ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}'`
+    	echo -e "reload TGKING-Panel... \c";
+	    arr=`ps aux|grep 'gunicorn -c setting.py apptg:app'|grep -v grep|awk '{print $2}'`
 		for p in ${arr[@]}
         do
                 kill -9 $p
         done
-        cd $mw_path && gunicorn -c setting.py app:app
-        isStart=`ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}'`
+        cd $TGKING_PATH && gunicorn -c setting.py apptg:app
+        isStart=`ps aux|grep 'gunicorn -c setting.py apptg:app'|grep -v grep|awk '{print $2}'`
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
             echo '------------------------------------------------------'
-            tail -n 20 $mw_path/logs/error.log
+            tail -n 20 $TGKING_PATH/logs/error.log
             echo '------------------------------------------------------'
-            echo -e "\033[31mError: mw service startup failed.\033[0m"
+            echo -e "\033[31mError: TGKING-Panel service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo -e "\033[31mmw not running\033[0m"
+        echo -e "\033[31mTGKING-Panel not running\033[0m"
         mw_start
     fi
 }
 
-mw_close(){
-    echo 'True' > $mw_path/data/close.pl
+tgking_close(){
+    echo 'True' > $TGKING_PATH/data/close.pl
 }
 
-mw_open()
+tgking_open()
 {
-    if [ -f $mw_path/data/close.pl ];then
-        rm -rf $mw_path/data/close.pl
-    fi
-}
-
-mw_unbind_domain()
-{
-    if [ -f $mw_path/data/bind_domain.pl ];then
-        rm -rf $mw_path/data/bind_domain.pl
+    if [ -f $TGKING_PATH/data/close.pl ];then
+        rm -rf $TGKING_PATH/data/close.pl
     fi
 }
 
 error_logs()
 {
-	tail -n 100 $mw_path/logs/error.log
+	tail -n 100 $TGKING_PATH/logs/error.log
 }
 
-mw_update()
+tgking_update()
 {
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        curl --insecure -fsSL https://raw.githubusercontent.com/midoks/mdserver-web/master/scripts/update.sh | bash
-    else
-        curl --insecure -fsSL  https://code.midoks.me/midoks/mdserver-web/raw/branch/dev/scripts/update.sh | bash
-    fi
+    curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/main/scripts/update.sh | bash
 }
 
-mw_update_dev()
+tgking_update_dev()
 {
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        curl --insecure -fsSL https://raw.githubusercontent.com/midoks/mdserver-web/dev/scripts/update_dev.sh | bash
-    else
-        curl --insecure -fsSL https://code.midoks.me/midoks/mdserver-web/raw/branch/dev/scripts/update_dev.sh | bash
-    fi
-    cd /www/server/mdserver-web
+    curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scripts/update_dev.sh | bash
+    cd /opt/tg-king
 }
 
-mw_mirror()
+
+tgking_close_admin_path(){
+    if [ -f $TGKING_PATH/data/admin_path.pl ]; then
+        rm -rf $TGKING_PATH/data/admin_path.pl
+    fi
+}
+
+tgking_force_kill()
 {
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        bash <(curl --insecure -sSL https://raw.githubusercontent.com/midoks/change-linux-mirrors/main/change-mirrors.sh)
-    else
-        bash <(curl --insecure -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-    fi
-    cd /www/server/mdserver-web
-}
-
-mw_install_app()
-{
-    bash $mw_path/scripts/quick/app.sh
-}
-
-mw_close_admin_path(){
-    if [ -f $mw_path/data/admin_path.pl ]; then
-        rm -rf $mw_path/data/admin_path.pl
-    fi
-}
-
-mw_force_kill()
-{
-    PLIST=`ps -ef|grep app:app |grep -v grep|awk '{print $2}'`
+    PLIST=`ps -ef|grep apptg:app |grep -v grep|awk '{print $2}'`
     for i in $PLIST
     do
         kill -9 $i
     done
 
-    pids=`ps -ef|grep task.py | grep -v grep |awk '{print $2}'`
+    pids=`ps -ef|grep tgking-task.py | grep -v grep |awk '{print $2}'`
     arr=($pids)
     for p in ${arr[@]}
     do
@@ -265,95 +220,92 @@ mw_force_kill()
     done
 }
 
-mw_debug(){
-    mw_stop
-    mw_force_kill
+tgking_debug(){
+    tgking_stop
+    tgking_force_kill
 
-    port=7200    
-    if [ -f $mw_path/data/port.pl ];then
-        port=$(cat $mw_path/data/port.pl)
+    port=1314    
+    if [ -f $TGKING_PATH/data/port.pl ];then
+        port=$(cat $TGKING_PATH/data/port.pl)
     fi
 
-    if [ -d /www/server/mdserver-web ];then
-        cd /www/server/mdserver-web
+    if [ -d /opt/tg-king ];then
+        cd /opt/tg-king
     fi
     gunicorn -b :$port -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1  app:app
 }
 
 case "$1" in
-    'start') mw_start;;
-    'stop') mw_stop;;
-    'reload') mw_reload;;
+    'start') tgking_start;;
+    'stop') tgking_stop;;
+    'reload') tgking_reload;;
     'restart') 
-        mw_stop
-        mw_start;;
+        tgking_stop
+        tgking_start;;
     'restart_panel')
-        mw_stop_panel
-        mw_start_panel;;
+        tgking_stop_panel
+        tgking_start_panel;;
     'restart_task')
-        mw_stop_task
-        mw_start_task;;
-    'status') mw_status;;
+        tgking_stop_task
+        tgking_start_task;;
+    'status') tgking_status;;
     'logs') error_logs;;
-    'close') mw_close;;
-    'open') mw_open;;
+    'close') tgking_close;;
+    'open') tgking_open;;
     'update') mw_update;;
     'update_dev') mw_update_dev;;
-    'install_app') mw_install_app;;
-    'close_admin_path') mw_close_admin_path;;
-    'unbind_domain') mw_unbind_domain;;
-    'debug') mw_debug;;
-    'mirror') mw_mirror;;
+    'close_admin_path') tgking_close_admin_path;;
+    'debug') tgking_debug;;
     'default')
-        cd $mw_path
-        port=7200
+        cd $TGKING_PATH
+        port=1314
         
-        if [ -f $mw_path/data/port.pl ];then
-            port=$(cat $mw_path/data/port.pl)
+        if [ -f $TGKING_PATH/data/port.pl ];then
+            port=$(cat $TGKING_PATH/data/port.pl)
         fi
 
-        if [ ! -f $mw_path/data/default.pl ];then
+        if [ ! -f $TGKING_PATH/data/default.pl ];then
             echo -e "\033[33mInstall Failed\033[0m"
             exit 1
         fi
 
-        password=$(cat $mw_path/data/default.pl)
-        if [ -f $mw_path/data/domain.conf ];then
-            address=$(cat $mw_path/data/domain.conf)
+        password=$(cat $TGKING_PATH/data/default.pl)
+        if [ -f $TGKING_PATH/data/domain.conf ];then
+            address=$(cat $TGKING_PATH/data/domain.conf)
         fi
-        if [ -f $mw_path/data/admin_path.pl ];then
-            auth_path=$(cat $mw_path/data/admin_path.pl)
+        if [ -f $TGKING_PATH/data/admin_path.pl ];then
+            auth_path=$(cat $TGKING_PATH/data/admin_path.pl)
         fi
 	    
         if [ "$address" == "" ];then
-            v4=$(python3 $mw_path/tools.py getServerIp 4)
-            v6=$(python3 $mw_path/tools.py getServerIp 6)
+            v4=$(python3 $TGKING_PATH/tools.py getServerIp 4)
+            v6=$(python3 $TGKING_PATH/tools.py getServerIp 6)
 
             if [ "$v4" != "" ] && [ "$v6" != "" ]; then
 
-                if [ ! -f $mw_path/data/ipv6.pl ];then
-                    echo 'True' > $mw_path/data/ipv6.pl
+                if [ ! -f $TGKING_PATH/data/ipv6.pl ];then
+                    echo 'True' > $TGKING_PATH/data/ipv6.pl
                     mw_stop
                     mw_start
                 fi
 
-                address="MW-Panel-Url-Ipv4: http://$v4:$port$auth_path \nMW-Panel-Url-Ipv6: http://[$v6]:$port$auth_path"
+                address="TGKING-Panel-Url-Ipv4: http://$v4:$port$auth_path \nMW-Panel-Url-Ipv6: http://[$v6]:$port$auth_path"
             elif [ "$v4" != "" ]; then
-                address="MW-Panel-Url: http://$v4:$port$auth_path"
+                address="TGKING-Panel-Url: http://$v4:$port$auth_path"
             elif [ "$v6" != "" ]; then
 
-                if [ ! -f $mw_path/data/ipv6.pl ];then
+                if [ ! -f $TGKING_PATH/data/ipv6.pl ];then
                     #  Need to restart ipv6 to take effect
-                    echo 'True' > $mw_path/data/ipv6.pl
+                    echo 'True' > $TGKING_PATH/data/ipv6.pl
                     mw_stop
                     mw_start
                 fi
-                address="MW-Panel-Url: http://[$v6]:$port$auth_path"
+                address="TGKING-Panel-Url: http://[$v6]:$port$auth_path"
             else
-                address="MW-Panel-Url: http://you-network-ip:$port$auth_path"
+                address="TGKING-Panel-Url: http://you-network-ip:$port$auth_path"
             fi
         else
-            address="MW-Panel-Url: http://$address:$port$auth_path"
+            address="TGKING-Panel-Url: http://$address:$port$auth_path"
         fi
 
         show_panel_ip="$port|"
@@ -361,12 +313,12 @@ case "$1" in
         echo -e "\033[32mTGKING-Panel Default Info!\033[0m"
         echo -e "=================================================================="
         echo -e "$address"
-        echo -e `python3 $mw_path/tools.py username`
-        echo -e `python3 $mw_path/tools.py password`
+        echo -e `python3 $TGKING_PATH/tools.py username`
+        echo -e `python3 $TGKING_PATH/tools.py password`
         # echo -e "password: $password"
         echo -e "\033[33mWarning:\033[0m"
         echo -e "\033[33mIf you cannot access the panel. \033[0m"
-        echo -e "\033[33mrelease the following port (${show_panel_ip}888|80|443|22) in the security group.\033[0m"
+        echo -e "\033[33mrelease the following port (${show_panel_ip}|80) in the security group.\033[0m"
         echo -e "=================================================================="
         ;;
     *)

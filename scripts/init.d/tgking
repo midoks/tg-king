@@ -24,12 +24,12 @@ if [ -f $TGKING_PATH/bin/activate ];then
     source $TGKING_PATH/bin/activate
 fi
 
-mw_start_panel()
+tgking_start_panel()
 {
-    isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
+    isStart=`ps -ef|grep 'gunicorn -c setting.py apptg:app' |grep -v grep|awk '{print $2}'`
     if [ "$isStart" == '' ];then
         echo -e "starting TGKING-Panel... \c"
-        cd $TGKING_PATH &&  gunicorn -c setting.py app:app
+        cd $TGKING_PATH &&  gunicorn -c setting.py apptg:app
         port=$(cat ${TGKING_PATH}/data/port.pl)
         isStart=""
         while [[ "$isStart" == "" ]];
@@ -52,12 +52,12 @@ mw_start_panel()
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting TGKING-Panel... mw(pid $(echo $isStart)) already running"
+        echo "starting TGKING-Panel... TGKING(pid $(echo $isStart)) already running"
     fi
 }
 
 
-mw_start_task()
+tgking_start_task()
 {
     isStart=$(ps aux |grep 'task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" == '' ];then
@@ -79,14 +79,13 @@ mw_start_task()
     fi
 }
 
-mw_start()
+tgking_start()
 {
     mw_start_task
 	mw_start_panel
 }
 
-# /www/server/mdserver-web/tmp/panelTask.pl && service mw restart_task
-mw_stop_task()
+tgking_stop_task()
 {
     if [ -f $TGKING_PATH/tmp/panelTask.pl ];then
         echo -e "\033[32mthe task is running and cannot be stopped\033[0m"
@@ -103,7 +102,7 @@ mw_stop_task()
     echo -e "\033[32mdone\033[0m"
 }
 
-mw_stop_panel()
+tgking_stop_panel()
 {
     echo -e "stopping mw-panel... \c";
     arr=`ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}'`
@@ -119,13 +118,13 @@ mw_stop_panel()
     echo -e "\033[32mdone\033[0m"
 }
 
-mw_stop()
+tgking_stop()
 {
     mw_stop_task
     mw_stop_panel
 }
 
-mw_status()
+tgking_status()
 {
     isStart=$(ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}')
     if [ "$isStart" != '' ];then
@@ -143,7 +142,7 @@ mw_status()
 }
 
 
-mw_reload()
+tgking_reload()
 {
 	isStart=$(ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}')
     
@@ -154,12 +153,12 @@ mw_reload()
         do
                 kill -9 $p
         done
-        cd $mw_path && gunicorn -c setting.py app:app
+        cd $TGKING_PATH && gunicorn -c setting.py app:app
         isStart=`ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}'`
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
             echo '------------------------------------------------------'
-            tail -n 20 $mw_path/logs/error.log
+            tail -n 20 $TGKING_PATH/logs/error.log
             echo '------------------------------------------------------'
             echo -e "\033[31mError: mw service startup failed.\033[0m"
             return;
@@ -171,85 +170,41 @@ mw_reload()
     fi
 }
 
-mw_close(){
-    echo 'True' > $mw_path/data/close.pl
+tgking_close(){
+    echo 'True' > $TGKING_PATH/data/close.pl
 }
 
-mw_open()
+tgking_open()
 {
-    if [ -f $mw_path/data/close.pl ];then
-        rm -rf $mw_path/data/close.pl
-    fi
-}
-
-mw_unbind_domain()
-{
-    if [ -f $mw_path/data/bind_domain.pl ];then
-        rm -rf $mw_path/data/bind_domain.pl
+    if [ -f $TGKING_PATH/data/close.pl ];then
+        rm -rf $TGKING_PATH/data/close.pl
     fi
 }
 
 error_logs()
 {
-	tail -n 100 $mw_path/logs/error.log
+	tail -n 100 $TGKING_PATH/logs/error.log
 }
 
-mw_update()
+tgking_update()
 {
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        curl --insecure -fsSL https://raw.githubusercontent.com/midoks/mdserver-web/master/scripts/update.sh | bash
-    else
-        curl --insecure -fsSL  https://code.midoks.me/midoks/mdserver-web/raw/branch/dev/scripts/update.sh | bash
-    fi
+    curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/main/scripts/update.sh | bash
 }
 
-mw_update_dev()
+tgking_update_dev()
 {
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        curl --insecure -fsSL https://raw.githubusercontent.com/midoks/mdserver-web/dev/scripts/update_dev.sh | bash
-    else
-        curl --insecure -fsSL https://code.midoks.me/midoks/mdserver-web/raw/branch/dev/scripts/update_dev.sh | bash
-    fi
-    cd /www/server/mdserver-web
+    curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scripts/update_dev.sh | bash
+    cd /opt/tg-king
 }
 
-mw_mirror()
-{
-    LOCAL_ADDR=common
-    ping  -c 1 github.com > /dev/null 2>&1
-    if [ "$?" != "0" ];then
-        LOCAL_ADDR=cn
-    fi
-    if [ "$LOCAL_ADDR" == "common" ];then
-        bash <(curl --insecure -sSL https://raw.githubusercontent.com/midoks/change-linux-mirrors/main/change-mirrors.sh)
-    else
-        bash <(curl --insecure -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
-    fi
-    cd /www/server/mdserver-web
-}
 
-mw_install_app()
-{
-    bash $mw_path/scripts/quick/app.sh
-}
-
-mw_close_admin_path(){
-    if [ -f $mw_path/data/admin_path.pl ]; then
-        rm -rf $mw_path/data/admin_path.pl
+tgking_close_admin_path(){
+    if [ -f $TGKING_PATH/data/admin_path.pl ]; then
+        rm -rf $TGKING_PATH/data/admin_path.pl
     fi
 }
 
-mw_force_kill()
+tgking_force_kill()
 {
     PLIST=`ps -ef|grep app:app |grep -v grep|awk '{print $2}'`
     for i in $PLIST
@@ -265,7 +220,7 @@ mw_force_kill()
     done
 }
 
-mw_debug(){
+tgking_debug(){
     mw_stop
     mw_force_kill
 
@@ -274,36 +229,35 @@ mw_debug(){
         port=$(cat $mw_path/data/port.pl)
     fi
 
-    if [ -d /www/server/mdserver-web ];then
-        cd /www/server/mdserver-web
+    if [ -d /opt/tg-king ];then
+        cd /opt/tg-king
     fi
     gunicorn -b :$port -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1  app:app
 }
 
 case "$1" in
-    'start') mw_start;;
-    'stop') mw_stop;;
-    'reload') mw_reload;;
+    'start') tgking_start;;
+    'stop') tgking_stop;;
+    'reload') tgking_reload;;
     'restart') 
-        mw_stop
-        mw_start;;
+        tgking_stop
+        tgking_start;;
     'restart_panel')
-        mw_stop_panel
-        mw_start_panel;;
+        tgking_stop_panel
+        tgking_start_panel;;
     'restart_task')
-        mw_stop_task
-        mw_start_task;;
-    'status') mw_status;;
+        tgking_stop_task
+        tgking_start_task;;
+    'status') tgking_status;;
     'logs') error_logs;;
-    'close') mw_close;;
-    'open') mw_open;;
+    'close') tgking_close;;
+    'open') tgking_open;;
     'update') mw_update;;
     'update_dev') mw_update_dev;;
-    'install_app') mw_install_app;;
-    'close_admin_path') mw_close_admin_path;;
+    'close_admin_path') tgking_close_admin_path;;
     'unbind_domain') mw_unbind_domain;;
-    'debug') mw_debug;;
-    'mirror') mw_mirror;;
+    'debug') tgking_debug;;
+    'mirror') tgking_mirror;;
     'default')
         cd $mw_path
         port=7200
