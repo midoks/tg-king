@@ -297,8 +297,8 @@ case "$1" in
                 if [ ! -f $TGKING_PATH/data/ipv6.pl ];then
                     #  Need to restart ipv6 to take effect
                     echo 'True' > $TGKING_PATH/data/ipv6.pl
-                    mw_stop
-                    mw_start
+                    tgking_stop
+                    tgking_start
                 fi
                 address="TGKING-Panel-Url: http://[$v6]:$port$auth_path"
             else
