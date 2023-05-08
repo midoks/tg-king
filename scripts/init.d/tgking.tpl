@@ -75,7 +75,7 @@ tgking_start_task()
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting TGKING-Panel... TASK (pid $(echo $isStart)) already running"
+        echo "starting TGKING-Panel... TASK(pid $(echo $isStart)) already running"
     fi
 }
 
