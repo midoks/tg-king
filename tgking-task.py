@@ -40,6 +40,10 @@ def systemTask():
         systemTask()
 
 
+def runTask():
+    pass
+
+
 def startTask():
     # 任务队列
     try:
