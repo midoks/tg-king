@@ -70,12 +70,12 @@ tgking_start_task()
             echo '------------------------------------------------------'
             tail -n 20 $TGKING_PATH/logs/task.log
             echo '------------------------------------------------------'
-            echo -e "\033[31mError: TGKING-Panel service startup failed.\033[0m"
+            echo -e "\033[31mError: TGKING-Task service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting TGKING-Panel... TASK(pid $(echo $isStart)) already running"
+        echo "starting TGKING-Task... TASK(pid $(echo $isStart)) already running"
     fi
 }
 
@@ -92,7 +92,7 @@ tgking_stop_task()
         exit 0
     fi
 
-    echo -e "Stopping TGKING-Panel... \c";
+    echo -e "Stopping TGKING-Task... \c";
     pids=$(ps aux | grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     arr=($pids)
     for p in ${arr[@]}
