@@ -18,9 +18,25 @@ import sys
 import random
 import os
 
+pwd = os.getcwd()
+sys.path.append(pwd + '/class/core')
+
+import tgking
+
 log_dir = os.getcwd() + '/logs'
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
+
+# default port
+tgking_port = "1314"
+if os.path.exists("data/port.pl"):
+    tgking_port = tgking.readFile('data/port.pl')
+    tgking_port.strip()
+else:
+    import common
+    common.initDB()
+    tgking_port = str(random.randint(10000, 65530))
+    tgking.writeFile('data/port.pl', tgking_port)
 
 threads = 1
 backlog = 512
