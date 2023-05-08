@@ -93,7 +93,7 @@ def readFile(filename):
         fp.close()
         return fBody
     except Exception as e:
-        # print(e)
+        print(e)
         return False
 
 
@@ -137,3 +137,51 @@ def getLocalIp():
 def setHostAddr(addr):
     file = getRunDir() + '/data/iplist.txt'
     return writeFile(file, addr)
+
+
+def getRandomString(length):
+    # 取随机字符串
+    str = ''
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
+    chrlen = len(chars) - 1
+    random = Random()
+    for i in range(length):
+        str += chars[random.randint(0, chrlen)]
+    return str
+
+
+def getUniqueId():
+    """
+    根据时间生成唯一ID
+    :return:
+    """
+    current_time = datetime.datetime.now()
+    str_time = current_time.strftime('%Y%m%d%H%M%S%f')[:-3]
+    unique_id = "{0}".format(str_time)
+    return unique_id
+
+
+def isDebugMode():
+    if isAppleSystem():
+        return True
+
+    debugPath = getRunDir() + "/data/debug.pl"
+    if os.path.exists(debugPath):
+        return True
+
+    return False
+
+
+def getJson(data):
+    import json
+    return json.dumps(data)
+
+
+def returnData(status, msg, data=None):
+    return {'status': status, 'msg': msg, 'data': data}
+
+
+def returnJson(status, msg, data=None):
+    if data == None:
+        return getJson({'status': status, 'msg': msg})
+    return getJson({'status': status, 'msg': msg, 'data': data})

@@ -41,7 +41,7 @@ tgking_start(){
 
 
 tgking_start_debug(){
-	python3 task.py >> $DIR/logs/task.log 2>&1 &
+	#python3 task.py >> $DIR/logs/task.log 2>&1 &
 	port=1314    
     if [ -f /opt/tg-king/data/port.pl ];then
         port=$(cat /opt/tg-king/data/port.pl)

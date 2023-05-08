@@ -33,6 +33,7 @@ from whitenoise import WhiteNoise
 sys.path.append(os.getcwd() + "/class/core")
 
 import config
+import tgking
 
 app = Flask(__name__, template_folder='templates/default')
 app.config.version = config.config().getVersion()
@@ -157,21 +158,20 @@ def isLogined():
     return False
 
 
-# def publicObject(toObject, func, action=None, get=None):
-#     name = funConvert(func) + 'Api'
-#     try:
-#         if hasattr(toObject, name):
-#             efunc = 'toObject.' + name + '()'
-#             data = eval(efunc)
-#             return data
-#         data = {'msg': '404,not find api[' + name + ']', "status": False}
-#         return mw.getJson(data)
-#     except Exception as e:
-#         # API发生错误记录
-#         if mw.isDebugMode():
-#             print(traceback.print_exc())
-#         data = {'msg': '访问异常:' + str(e) + '!', "status": False}
-#         return mw.getJson(data)
+def publicObject(toObject, func, action=None, get=None):
+    name = funConvert(func) + 'Api'
+    try:
+        if hasattr(toObject, name):
+            efunc = 'toObject.' + name + '()'
+            data = eval(efunc)
+            return data
+        data = {'msg': '404,not find api[' + name + ']', "status": False}
+        return tgking.getJson(data)
+    except Exception as e:
+        if tgking.isDebugMode():
+            print(traceback.print_exc())
+        data = {'msg': '访问异常:' + str(e) + '!', "status": False}
+        return tgking.getJson(data)
 
 
 # @app.route('/close')
@@ -363,8 +363,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
     #     return 'error request!'
 
     # API请求
-    classFile = ('config_api', 'crontab_api', 'files_api', 'firewall_api',
-                 'plugins_api', 'system_api', 'site_api', 'task_api', 'vip_api')
+    classFile = ('config_api', 'crontab_api')
     className = reqClass + '_api'
     if not className in classFile:
         return "api error request"

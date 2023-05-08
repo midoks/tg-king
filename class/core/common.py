@@ -35,6 +35,12 @@ def initDB():
         print(str(ex))
 
 
+def doContentReplace(src, dst):
+    content = tgking.readFile(src)
+    content = content.replace("{$SERVER_PATH}", tgking.getRunDir())
+    tgking.writeFile(dst, content)
+
+
 def initInitD():
     script = tgking.getRunDir() + '/scripts/init.d/tgking.tpl'
     script_bin = tgking.getRunDir() + '/scripts/init.d/tgking'
@@ -81,9 +87,3 @@ def local():
 def checkClose():
     if os.path.exists('data/close.pl'):
         return redirect('/close')
-
-
-def doContentReplace(src, dst):
-    content = tgking.readFile(src)
-    content = content.replace("{$SERVER_PATH}", tgking.getRunDir())
-    tgking.writeFile(dst, content)
