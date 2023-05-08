@@ -85,13 +85,13 @@ echo "use system version: ${OSNAME}"
 bash /etc/rc.d/init.d/tgking restart
 bash /etc/rc.d/init.d/tgking default
 
-if [ -f /usr/bin/mw ];then
-	rm -rf /usr/bin/mw
+if [ -f /usr/bin/tgking ];then
+	rm -rf /usr/bin/tgking
 fi
 
-if [ ! -e /usr/bin/mw ]; then
-	if [ ! -f /usr/bin/mw ];then
-		ln -s /etc/rc.d/init.d/mw /usr/bin/mw
+if [ ! -e /usr/bin/tgking ]; then
+	if [ ! -f /usr/bin/tgking ];then
+		ln -s /etc/rc.d/init.d/tgking /usr/bin/tgking
 	fi
 fi
 

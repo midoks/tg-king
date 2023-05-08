@@ -15,9 +15,12 @@
 import os
 import db
 
+import tgking
+
 
 def init():
     initDB()
+    initInitD()
 
 
 def initDB():
@@ -32,16 +35,40 @@ def initDB():
         print(str(ex))
 
 
-def readFile(filename):
-    # 读文件内容
-    try:
-        fp = open(filename, 'r')
-        fBody = fp.read()
-        fp.close()
-        return fBody
-    except Exception as e:
-        # print(e)
-        return False
+def initInitD():
+    script = tgking.getRunDir() + '/scripts/init.d/tgking.tpl'
+    script_bin = tgking.getRunDir() + '/scripts/init.d/tgking'
+    doContentReplace(script, script_bin)
+    tgking.execShell('chmod +x ' + script_bin)
+
+    # 在linux系统中,确保/etc/init.d存在
+    if not tgking.isAppleSystem() and not os.path.exists("/etc/rc.d/init.d"):
+        tgking.execShell('mkdir -p /etc/rc.d/init.d')
+
+    if not tgking.isAppleSystem() and not os.path.exists("/etc/init.d"):
+        tgking.execShell('mkdir -p /etc/init.d')
+
+    # initd
+    if os.path.exists('/etc/rc.d/init.d'):
+        initd_bin = '/etc/rc.d/init.d/tgking'
+        if not os.path.exists(initd_bin):
+            import shutil
+            shutil.copyfile(script_bin, initd_bin)
+            tgking.execShell('chmod +x ' + initd_bin)
+        # 加入自启动
+        tgking.execShell('which chkconfig && chkconfig --add tgking')
+
+    if os.path.exists('/etc/init.d'):
+        initd_bin = '/etc/init.d/tgking'
+        if not os.path.exists(initd_bin):
+            import shutil
+            shutil.copyfile(script_bin, initd_bin)
+            tgking.execShell('chmod +x ' + initd_bin)
+        # 加入自启动
+        tgking.execShell('which update-rc.d && update-rc.d -f tgking defaults')
+
+    # 获取系统IPV4
+    tgking.setHostAddr(tgking.getLocalIp())
 
 
 def local():
@@ -54,3 +81,9 @@ def local():
 def checkClose():
     if os.path.exists('data/close.pl'):
         return redirect('/close')
+
+
+def doContentReplace(src, dst):
+    content = tgking.readFile(src)
+    content = content.replace("{$SERVER_PATH}", tgking.getRunDir())
+    tgking.writeFile(dst, content)
