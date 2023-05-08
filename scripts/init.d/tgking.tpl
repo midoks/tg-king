@@ -111,7 +111,7 @@ tgking_stop_panel()
         kill -9 $p > /dev/null 2>&1
     done
     
-    pidfile=${mw_path}/logs/tgking.pid
+    pidfile=${TGKING_PATH}/logs/tgking.pid
     if [ -f $pidfile ];then
         rm -f $pidfile
     fi
