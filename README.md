@@ -18,6 +18,8 @@ Talk is cheap, show me the code.  -- linus
 
 ```
 curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scripts/install_dev.sh | bash
+
+curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scripts/update_dev.sh | bash
 ```
 
 
