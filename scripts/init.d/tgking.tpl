@@ -87,7 +87,7 @@ tgking_start()
 
 tgking_stop_task()
 {
-    if [ -f $TGKING_PATH/tmp/panelTask.pl ];then
+    if [ -f $TGKING_PATH/tmp/tgking-task.pl ];then
         echo -e "\033[32mthe task is running and cannot be stopped\033[0m"
         exit 0
     fi
