@@ -328,8 +328,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        pageFile = ('config', 'control', 'crontab', 'files', 'firewall',
-                    'index', 'plugins', 'login', 'system', 'site', 'cert', 'ssl', 'task', 'soft')
+        pageFile = ('index', 'user', 'login', 'module')
 
         # 设置了安全路径
         ainfo = get_admin_safe()

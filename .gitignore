@@ -163,3 +163,5 @@ pyvenv.cfg
 include
 *.db
 data/iplist.txt
+data/default.pl
+scripts/init.d/tgking
