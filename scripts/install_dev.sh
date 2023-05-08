@@ -65,7 +65,7 @@ if [ ! -d /opt/tg-king ];then
 fi
 
 cd /opt/tg-king && bash cli.sh start
-isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
+isStart=`ps -ef|grep 'gunicorn -c setting.py apptg:app' |grep -v grep|awk '{print $2}'`
 n=0
 while [ ! -f /etc/rc.d/init.d/tgking ];
 do
