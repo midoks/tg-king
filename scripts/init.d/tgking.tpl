@@ -126,7 +126,7 @@ tgking_stop()
 
 tgking_status()
 {
-    isStart=$(ps aux|grep 'gunicorn -c setting.py app:app'|grep -v grep|awk '{print $2}')
+    isStart=$(ps aux|grep 'gunicorn -c setting.py apptg:app'|grep -v grep|awk '{print $2}')
     if [ "$isStart" != '' ];then
         echo -e "\033[32mTGKING-Panel (pid $(echo $isStart)) already running\033[0m"
     else
