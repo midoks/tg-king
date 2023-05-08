@@ -10,9 +10,9 @@ TG全能王,建立一套管理TG的后台框架。
 Talk is cheap, show me the code.  -- linus
 ```
 
-### 版本更新 x.x.x
+### 版本更新 0.0.1
 
-* xxx
+* 开发中..
 
 ### DEV使用
 
