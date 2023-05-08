@@ -252,8 +252,8 @@ case "$1" in
     'logs') error_logs;;
     'close') tgking_close;;
     'open') tgking_open;;
-    'update') mw_update;;
-    'update_dev') mw_update_dev;;
+    'update') tgking_update;;
+    'update_dev') tgking_update_dev;;
     'close_admin_path') tgking_close_admin_path;;
     'debug') tgking_debug;;
     'default')
