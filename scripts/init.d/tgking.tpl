@@ -285,8 +285,8 @@ case "$1" in
 
                 if [ ! -f $TGKING_PATH/data/ipv6.pl ];then
                     echo 'True' > $TGKING_PATH/data/ipv6.pl
-                    mw_stop
-                    mw_start
+                    tgking_stop
+                    tgking_start
                 fi
 
                 address="TGKING-Panel-Url-Ipv4: http://$v4:$port$auth_path \nMW-Panel-Url-Ipv6: http://[$v6]:$port$auth_path"
