@@ -322,6 +322,6 @@ case "$1" in
         echo -e "=================================================================="
         ;;
     *)
-        cd $mw_path && python3 $mw_path/tools.py cli $1
+        cd $TGKING_PATH && python3 $TGKING_PATH/tools.py cli $1
         ;;
 esac
