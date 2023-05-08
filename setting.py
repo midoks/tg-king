@@ -38,6 +38,12 @@ else:
     tgking_port = str(random.randint(10000, 65530))
     tgking.writeFile('data/port.pl', tgking_port)
 
+bind = []
+if os.path.exists('data/ipv6.pl'):
+    bind.append('[0:0:0:0:0:0:0:0]:%s' % tgking_port)
+else:
+    bind.append('0.0.0.0:%s' % tgking_port)
+
 threads = 1
 backlog = 512
 reload = False
