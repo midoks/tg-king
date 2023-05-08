@@ -178,6 +178,32 @@ def M(table):
     return sql.table(table)
 
 
+def md5(content):
+    # 生成MD5
+    try:
+        m = hashlib.md5()
+        m.update(content.encode("utf-8"))
+        return m.hexdigest()
+    except Exception as ex:
+        return False
+
+
+def getFileMd5(filename):
+    # 文件的MD5值
+    if not os.path.isfile(filename):
+        return False
+
+    myhash = hashlib.md5()
+    f = file(filename, 'rb')
+    while True:
+        b = f.read(8096)
+        if not b:
+            break
+        myhash.update(b)
+    f.close()
+    return myhash.hexdigest()
+
+
 def getJson(data):
     import json
     return json.dumps(data)
