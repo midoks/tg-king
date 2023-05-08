@@ -15,21 +15,21 @@ tgking_start_task()
 {
     isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" == '' ];then
-        echo -e "Starting mw-tasks... \c"
+        echo -e "Starting TGKING-Panel... \c"
         cd $DIR && python3 task.py >> ${DIR}/logs/task.log 2>&1 &
         sleep 0.3
-        isStart=$(ps aux |grep 'task.py'|grep -v grep|awk '{print $2}')
+        isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
             echo '------------------------------------------------------'
             tail -n 20 $DIR/logs/task.log
             echo '------------------------------------------------------'
-            echo -e "\033[31mError: mw-tasks service startup failed.\033[0m"
+            echo -e "\033[31mError: TGKING-Task service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "Starting mw-tasks... mw-tasks (pid $(echo $isStart)) already running"
+        echo "Starting TGKING-Task... TASK(pid $(echo $isStart)) already running"
     fi
 }
 
@@ -41,7 +41,6 @@ tgking_start(){
 
 
 tgking_start_debug(){
-	#python3 task.py >> $DIR/logs/task.log 2>&1 &
 	port=1314    
     if [ -f /opt/tg-king/data/port.pl ];then
         port=$(cat /opt/tg-king/data/port.pl)
