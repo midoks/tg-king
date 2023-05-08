@@ -73,8 +73,8 @@ def isAppleSystem():
 
 def getTracebackInfo():
     import traceback
-    errorMsg = traceback.format_exc()
-    return errorMsg
+    err = traceback.format_exc()
+    return err
 
 
 def getRunDir():
@@ -93,7 +93,7 @@ def readFile(filename):
         fp.close()
         return fBody
     except Exception as e:
-        print(e)
+        print(getTracebackInfo())
         return False
 
 
@@ -105,6 +105,7 @@ def writeFile(filename, content, mode='w+'):
         fp.close()
         return True
     except Exception as e:
+        print(getTracebackInfo())
         return False
 
 

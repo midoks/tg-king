@@ -26,7 +26,7 @@ def init():
 def initDB():
     try:
         sql = db.Sql().dbfile('default')
-        csql = readFile('data/sql/default.sql')
+        csql = tgking.readFile('data/sql/default.sql')
         csql_list = csql.split(';')
         for index in range(len(csql_list)):
             sql.execute(csql_list[index], ())
