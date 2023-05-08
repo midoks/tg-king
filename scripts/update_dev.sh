@@ -80,7 +80,7 @@ rm -rf /tmp/tg-king-dev
 
 #pip uninstall public
 echo "use system version: ${OSNAME}"
-cd /opt/tg-king && bash scripts/update/${OSNAME}.sh
+
 
 bash /etc/rc.d/init.d/tgking restart
 bash /etc/rc.d/init.d/tgking default
