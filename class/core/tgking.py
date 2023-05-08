@@ -173,6 +173,11 @@ def isDebugMode():
     return False
 
 
+def M(table):
+    sql = db.Sql()
+    return sql.table(table)
+
+
 def getJson(data):
     import json
     return json.dumps(data)

@@ -259,7 +259,6 @@ case "$1" in
     'default')
         cd $TGKING_PATH
         port=1314
-        
         if [ -f $TGKING_PATH/data/port.pl ];then
             port=$(cat $TGKING_PATH/data/port.pl)
         fi

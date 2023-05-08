@@ -21,6 +21,7 @@ import tgking
 def init():
     initDB()
     initInitD()
+    initUserInfo()
 
 
 def initDB():
@@ -75,6 +76,17 @@ def initInitD():
 
     # 获取系统IPV4
     tgking.setHostAddr(tgking.getLocalIp())
+
+
+def initUserInfo():
+
+    data = tgking.M('users').where('id=?', (1,)).getField('password')
+    if data == '21232f297a57a5a743894a0e4a801fc3':
+        pwd = tgking.getRandomString(8).lower()
+        file_pw = tgking.getRunDir() + '/data/default.pl'
+        tgking.writeFile(file_pw, pwd)
+        tgking.M('users').where('id=?', (1,)).setField(
+            'password', tgking.md5(pwd))
 
 
 def local():
