@@ -61,7 +61,7 @@ tgking_start_task()
 {
     isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" == '' ];then
-        echo -e "starting tgking-task... \c"
+        echo -e "Starting TGKING-Task... \c"
         cd $TGKING_PATH && python3 tgking-task.py >> ${TGKING_PATH}/logs/task.log 2>&1 &
         sleep 0.3
         isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
