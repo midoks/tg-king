@@ -40,6 +40,17 @@ def systemTask():
         systemTask()
 
 
+def startTask():
+    # 任务队列
+    try:
+        while True:
+            runTask()
+            time.sleep(2)
+    except Exception as e:
+        time.sleep(60)
+        startTask()
+
+
 def setDaemon(t):
     if sys.version_info.major == 3 and sys.version_info.minor >= 10:
         t.daemon = True
