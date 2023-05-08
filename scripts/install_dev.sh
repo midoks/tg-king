@@ -56,6 +56,14 @@ fi
 
 echo "use system version: ${OSNAME}"
 
+if [ ! -d /opt/tg-king ];then
+	curl --insecure -sSLo /tmp/dev.zip https://github.com/midoks/tg-king/archive/refs/heads/dev.zip
+	cd /tmp && unzip /tmp/dev.zip
+	mv -f /tmp/tg-king-dev /opt/tg-king
+	rm -rf /tmp/dev.zip
+	rm -rf /tmp/tg-king-dev	
+fi
+
 cd /opt/tg-king && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py app:app' |grep -v grep|awk '{print $2}'`
 n=0
