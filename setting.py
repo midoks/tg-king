@@ -46,8 +46,8 @@ else:
 
 # safe admin path
 if not os.path.exists('data/admin_path.pl'):
-    admin_path = mw.getRandomString(8)
-    mw.writeFile('data/admin_path.pl', '/' + admin_path.lower())
+    admin_path = tgking.getRandomString(8)
+    tgking.writeFile('data/admin_path.pl', '/' + admin_path.lower())
 
 
 threads = 1
