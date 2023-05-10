@@ -328,7 +328,8 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        pageFile = ('index', 'user_bot', 'user_client', 'login', 'module')
+        pageFile = ('index', 'user', 'user_bot',
+                    'user_client', 'login', 'module')
 
         # 设置了安全路径
         ainfo = get_admin_safe()
@@ -362,7 +363,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
     #     return 'error request!'
 
     # API请求
-    classFile = ('config_api', 'crontab_api')
+    classFile = ('user_api')
     className = reqClass + '_api'
     if not className in classFile:
         return "api error request"
