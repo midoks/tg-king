@@ -328,7 +328,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        pageFile = ('index', 'user', 'login', 'module')
+        pageFile = ('index', 'user_bot', 'user_client', 'login', 'module')
 
         # 设置了安全路径
         ainfo = get_admin_safe()
