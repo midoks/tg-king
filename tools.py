@@ -78,9 +78,6 @@ def tgking_cli(tgking_input=0):
         in_port = tgking_input_cmd("请输入新的面板端口：")
         in_port_int = int(in_port.strip())
         if in_port_int < 65536 and in_port_int > 0:
-            import firewall_api
-            firewall_api.firewall_api().addAcceptPortArgs(
-                in_port, 'WEB面板[TOOLS修改]', 'port')
             tgking.writeFile('data/port.pl', in_port)
             os.system(INIT_CMD + " restart_panel")
             os.system(INIT_CMD + " default")
