@@ -232,7 +232,7 @@ tgking_debug(){
     if [ -d /opt/tg-king ];then
         cd /opt/tg-king
     fi
-    gunicorn -b :$port -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1  app:app
+    gunicorn -b :$port -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1  apptg:app
 }
 
 case "$1" in
