@@ -16,7 +16,7 @@ tgking_start_task()
     isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
     if [ "$isStart" == '' ];then
         echo -e "Starting TGKING-Panel... \c"
-        cd $DIR && python3 task.py >> ${DIR}/logs/task.log 2>&1 &
+        cd $DIR && python3 tgking-task.py >> ${DIR}/logs/task.log 2>&1 &
         sleep 0.3
         isStart=$(ps aux |grep 'tgking-task.py'|grep -v grep|awk '{print $2}')
         if [ "$isStart" == '' ];then
