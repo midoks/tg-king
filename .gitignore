@@ -164,4 +164,9 @@ include
 *.db
 data/iplist.txt
 data/default.pl
+data/admin_path.pl
+data/ipv6.pl
+data/port.pl
+
 scripts/init.d/tgking
+logs/tgking.pid

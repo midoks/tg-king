@@ -226,3 +226,12 @@ def returnJson(status, msg, data=None):
     if data == None:
         return getJson({'status': status, 'msg': msg})
     return getJson({'status': status, 'msg': msg, 'data': data})
+
+
+def getSafePath():
+    path = 'data/admin_path.pl'
+    if os.path.exists(path):
+        cont = readFile(path)
+        cont = cont.strip().strip('/')
+        return (True, cont)
+    return (False, '')

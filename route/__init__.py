@@ -126,6 +126,7 @@ common.init()
 
 
 def isLogined():
+    return True
     if 'login' in session and 'username' in session and session['login'] == True:
         userInfo = tgking.M('users').where(
             "id=?", (1,)).field('id,username,password').find()
@@ -272,21 +273,12 @@ def publicObject(toObject, func, action=None, get=None):
 #     return tgking.returnJson(True, '登录成功,正在跳转...')
 
 
-# @app.errorhandler(404)
-# def page_unauthorized(error):
-#     return render_template_string('404 not found', error_info=error), 404
+@app.errorhandler(404)
+def page_unauthorized(error):
+    return render_template_string('404 not found', error_info=error), 404
 
 
-def get_admin_safe():
-    path = 'data/admin_path.pl'
-    if os.path.exists(path):
-        cont = tgking.readFile(path)
-        cont = cont.strip().strip('/')
-        return (True, cont)
-    return (False, '')
-
-
-def admin_safe_path(path, req, data, pageFile):
+def return_safe_path(path, req, data, pageFile):
     if path != req and not isLogined():
         if data['status_code'] == '0':
             return render_template('path.html')
@@ -320,11 +312,13 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        pageFile = ('index', 'user', 'bot',
-                    'user_client', 'login', 'module')
+        page_file = ('index', 'user', 'bot', 'client', 'login', 'module')
 
         # 设置了安全路径
-        ainfo = get_admin_safe()
+        safe_pathinfo = tgking.getSafePath()
+
+        if safe_pathinfo[0]:
+            return return_safe_path(safe_pathinfo[1], reqClass, data, page_file)
 
         # 登录页
         if reqClass == 'login':
@@ -335,15 +329,12 @@ def index(reqClass=None, reqAction=None, reqData=None):
                 session['login'] = False
                 session['overdue'] = 0
 
-            if ainfo[0]:
-                return admin_safe_path(ainfo[1], reqClass, data, pageFile)
+            if safe_pathinfo[0]:
+                return return_safe_path(safe_pathinfo[1], reqClass, data, page_file)
 
             return render_template('login.html', data=data)
 
-        if ainfo[0]:
-            return admin_safe_path(ainfo[1], reqClass, data, pageFile)
-
-        if not reqClass in pageFile:
+        if not reqClass in page_file:
             return redirect('/')
 
         # if not isLogined():

@@ -34,4 +34,6 @@ class config:
         return self.__version
 
     def get(self):
-        return {}
+        data = {}
+        data['status_code'] = 0
+        return data
