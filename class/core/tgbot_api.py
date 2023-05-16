@@ -57,7 +57,7 @@ class tgbot_api:
             return tgking.returnJson(False, 'Token不能为空!')
 
         if not tgking.isAppleSystem():
-            cmd = 'python3 tools.py verify_tgbot ' + token
+            cmd = 'source bin/activate &&  python3 tools.py verify_tgbot ' + token
             data = tgking.execShell(cmd)
             if data[0].strip() == 'ok':
                 tgking.M('tg_bot').add(
