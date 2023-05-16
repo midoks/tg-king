@@ -121,6 +121,17 @@ do
     fi
 done
 
+cd /opt/tg-king && bash /etc/rc.d/init.d/tgking stop
+cd /opt/tg-king && bash /etc/rc.d/init.d/tgking start
+cd /opt/tg-king && bash /etc/rc.d/init.d/tgking default
+
+sleep 2
+if [ ! -e /usr/bin/tgking ]; then
+	if [ -f /etc/rc.d/init.d/tgking ];then
+		ln -s /etc/rc.d/init.d/tgking /usr/bin/tgking
+	fi
+fi
+
 endTime=`date +%s`
 ((outTime=(${endTime}-${startTime})/60))
 echo -e "Time consumed:\033[32m $outTime \033[0mMinute!"
