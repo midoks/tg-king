@@ -167,9 +167,9 @@ def verifyTgbot(token):
         bot = telebot.TeleBot(token)
         user = bot.get_me()
         # print(user.first_name)
-        print('ok')
+        print('ok|' + user.first_name)
     except Exception as e:
-        print('fail')
+        print(str(e))
 
 if __name__ == "__main__":
     method = sys.argv[1]
