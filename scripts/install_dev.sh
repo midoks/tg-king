@@ -64,6 +64,49 @@ if [ ! -d /opt/tg-king ];then
 	rm -rf /tmp/tg-king-dev	
 fi
 
+
+HTTP_PREFIX="https://"
+LOCAL_ADDR=common
+ping -c 1 ipinfo.io > /dev/null 2>&1
+if [ "$?" == "0" ];then
+    CN=$(curl -fsSL -m 10 http://ipinfo.io/json | grep "\"country\": \"CN\"")
+    if [ ! -z "$CN" ];then
+        LOCAL_ADDR=cn
+        HTTP_PREFIX="https://ghproxy.com/"
+    fi
+fi
+
+PIPSRC="https://pypi.python.org/simple"
+if [ "$LOCAL_ADDR" != "common" ];then
+    PIPSRC="https://pypi.tuna.tsinghua.edu.cn/simple"
+fi
+
+echo "pypi source:$PIPSRC"
+#面板需要的库
+if [ ! -f /usr/local/bin/pip3 ] && [ ! -f /usr/bin/pip3 ];then
+    python3 -m pip install --upgrade pip setuptools wheel -i $PIPSRC
+fi
+
+which pip && pip install --upgrade pip -i $PIPSRC
+pip3 install --upgrade pip setuptools wheel -i $PIPSRC
+
+cd /opt/tg-king && pip3 install -r /opt/tg-king/requirements.txt -i $PIPSRC
+
+# pip3 install flask-caching==1.10.1
+# pip3 install mysqlclient
+
+if [ ! -f /opt/tg-king/bin/activate ];then
+    cd /opt/tg-king && python3 -m venv .
+    cd /opt/tg-king && source /opt/tg-king/bin/activate
+else
+    cd /opt/tg-king && source /opt/tg-king/bin/activate
+fi
+
+pip install --upgrade pip -i $PIPSRC
+pip3 install --upgrade setuptools -i $PIPSRC
+cd /opt/tg-king && pip3 install -r /opt/tg-king/requirements.txt -i $PIPSRC
+
+
 cd /opt/tg-king && bash cli.sh start
 isStart=`ps -ef|grep 'gunicorn -c setting.py apptg:app' |grep -v grep|awk '{print $2}'`
 n=0
