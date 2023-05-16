@@ -87,9 +87,9 @@ sockets = Sockets(app)
 # http_server.serve_forever()
 
 # debug macosx dev
-# if mw.isDebugMode():
-#     app.debug = True
-#     app.config.version = app.config.version + str(time.time())
+if tgking.isDebugMode():
+    app.debug = True
+    app.config.version = app.config.version + str(time.time())
 
 app.debug = True
 app.config.version = app.config.version + str(time.time())
@@ -100,7 +100,7 @@ common.init()
 
 # # ----------  error function start -----------------
 # def getErrorNum(key, limit=None):
-#     key = mw.md5(key)
+#     key = tgking.md5(key)
 #     num = cache.get(key)
 #     if not num:
 #         num = 0
@@ -112,7 +112,7 @@ common.init()
 
 
 # def setErrorNum(key, empty=False, expire=3600):
-#     key = mw.md5(key)
+#     key = tgking.md5(key)
 #     num = cache.get(key)
 #     if not num:
 #         num = 0
@@ -127,7 +127,7 @@ common.init()
 
 def isLogined():
     if 'login' in session and 'username' in session and session['login'] == True:
-        userInfo = mw.M('users').where(
+        userInfo = tgking.M('users').where(
             "id=?", (1,)).field('id,username,password').find()
         # print(userInfo)
         if userInfo['username'] != session['username']:
@@ -171,7 +171,7 @@ def publicObject(toObject, func, action=None, get=None):
 #     if not os.path.exists('data/close.pl'):
 #         return redirect('/')
 #     data = {}
-#     data['cmd'] = 'rm -rf ' + mw.getRunDir() + '/data/close.pl'
+#     data['cmd'] = 'rm -rf ' + tgking.getRunDir() + '/data/close.pl'
 #     return render_template('close.html', data=data)
 
 
@@ -190,7 +190,7 @@ def publicObject(toObject, func, action=None, get=None):
 
 #     # print(codeImage[1])
 
-#     session['code'] = mw.md5(''.join(codeImage[1]).lower())
+#     session['code'] = tgking.md5(''.join(codeImage[1]).lower())
 
 #     img = Response(out.getvalue(), headers={'Content-Type': 'image/png'})
 #     return make_response(img)
@@ -210,36 +210,36 @@ def publicObject(toObject, func, action=None, get=None):
 
 #     filename = 'data/close.pl'
 #     if os.path.exists(filename):
-#         return mw.returnJson(False, '面板已经关闭!')
+#         return tgking.returnJson(False, '面板已经关闭!')
 
 #     username = request.form.get('username', '').strip()
 #     password = request.form.get('password', '').strip()
 #     code = request.form.get('code', '').strip()
 #     # print(session)
 #     if 'code' in session:
-#         if session['code'] != mw.md5(code):
+#         if session['code'] != tgking.md5(code):
 #             if login_cache_limit == None:
 #                 login_cache_limit = 1
 #             else:
 #                 login_cache_limit = int(login_cache_limit) + 1
 
 #             if login_cache_limit >= login_cache_count:
-#                 mw.writeFile(filename, 'True')
-#                 return mw.returnJson(False, '面板已经关闭!')
+#                 tgking.writeFile(filename, 'True')
+#                 return tgking.returnJson(False, '面板已经关闭!')
 
 #             cache.set('login_cache_limit', login_cache_limit, timeout=10000)
 #             login_cache_limit = cache.get('login_cache_limit')
-#             code_msg = mw.getInfo("验证码错误,您还可以尝试[{1}]次!", (str(
+#             code_msg = tgking.getInfo("验证码错误,您还可以尝试[{1}]次!", (str(
 #                 login_cache_count - login_cache_limit)))
-#             mw.writeLog('用户登录', code_msg)
-#             return mw.returnJson(False, code_msg)
+#             tgking.writeLog('用户登录', code_msg)
+#             return tgking.returnJson(False, code_msg)
 
-#     userInfo = mw.M('users').where(
+#     userInfo = tgking.M('users').where(
 #         "id=?", (1,)).field('id,username,password').find()
 
 #     # print(userInfo)
 #     # print(password)
-#     password = mw.md5(password)
+#     password = tgking.md5(password)
 #     # print('md5-pass', password)
 
 #     if userInfo['username'] != username or userInfo['password'] != password:
@@ -252,13 +252,13 @@ def publicObject(toObject, func, action=None, get=None):
 #             login_cache_limit = int(login_cache_limit) + 1
 
 #         if login_cache_limit >= login_cache_count:
-#             mw.writeFile(filename, 'True')
-#             return mw.returnJson(False, '面板已经关闭!')
+#             tgking.writeFile(filename, 'True')
+#             return tgking.returnJson(False, '面板已经关闭!')
 
 #         cache.set('login_cache_limit', login_cache_limit, timeout=10000)
 #         login_cache_limit = cache.get('login_cache_limit')
-#         mw.writeLog('用户登录', mw.getInfo(msg))
-# return mw.returnJson(False, mw.getInfo("用户名或密码错误,您还可以尝试[{1}]次!",
+#         tgking.writeLog('用户登录', tgking.getInfo(msg))
+# return tgking.returnJson(False, tgking.getInfo("用户名或密码错误,您还可以尝试[{1}]次!",
 # (str(login_cache_count - login_cache_limit))))
 
 #     cache.delete('login_cache_limit')
@@ -268,8 +268,8 @@ def publicObject(toObject, func, action=None, get=None):
 #     # session['overdue'] = int(time.time()) + 7
 
 #     # fix 跳转时,数据消失，可能是跨域问题
-#     # mw.writeFile('data/api_login.txt', userInfo['username'])
-#     return mw.returnJson(True, '登录成功,正在跳转...')
+#     # tgking.writeFile('data/api_login.txt', userInfo['username'])
+#     return tgking.returnJson(True, '登录成功,正在跳转...')
 
 
 # @app.errorhandler(404)
@@ -280,7 +280,7 @@ def publicObject(toObject, func, action=None, get=None):
 def get_admin_safe():
     path = 'data/admin_path.pl'
     if os.path.exists(path):
-        cont = mw.readFile(path)
+        cont = tgking.readFile(path)
         cont = cont.strip().strip('/')
         return (True, cont)
     return (False, '')
