@@ -17,5 +17,4 @@ CREATE TABLE IF NOT EXISTS `tg_bot` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `alias` TEXT, 
   `token` TEXT,
-  `email` TEXT
 );

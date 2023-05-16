@@ -41,7 +41,7 @@ def tgking_input_cmd(msg):
 def tgking_cli(tgking_input=0):
     raw_tip = "======================================================"
     if not tgking_input:
-        print("===============mdserver-web cli tools=================")
+        print("=============== tgking cli tools =================")
         print("(1)      重启面板服务")
         print("(2)      停止面板服务")
         print("(3)      启动面板服务")
@@ -51,12 +51,6 @@ def tgking_cli(tgking_input=0):
         print("(11)     修改面板密码")
         print("(12)     修改面板用户名")
         print("(13)     显示面板错误日志")
-        print("(20)     关闭BasicAuth认证")
-        print("(21)     解除域名绑定")
-        print("(100)    开启PHP52显示")
-        print("(101)    关闭PHP52显示")
-        print("(200)    切换Linux系统软件源")
-        print("(201)    简单速度测试")
         print("(0)      取消")
         print(raw_tip)
         try:
@@ -170,6 +164,16 @@ def getServerIp():
     print(ip[0])
 
 
+def verifyTgbot(token):
+    try:
+        import telebot
+        bot = telebot.TeleBot(token)
+        user = bot.get_me()
+        # print(user.first_name)
+        print('ok')
+    except Exception as e:
+        print('fail')
+
 if __name__ == "__main__":
     method = sys.argv[1]
     if method == 'panel':
@@ -183,6 +187,8 @@ if __name__ == "__main__":
         show_panel_pwd()
     elif method == 'getServerIp':
         getServerIp()
+    elif method == 'verify_tgbot':
+        verifyTgbot(sys.argv[2])
     elif method == "cli":
         clinum = 0
         try:

@@ -1,142 +1,106 @@
 {% extends "layout.html" %} 
 {% block content %}
-
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-                <div class="page-pretitle">账户管理</div>
-                <h2 class="page-title">客户端管理</h2>
-            </div>
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#add_client">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M12 5l0 14"></path>
-                        <path d="M5 12l14 0"></path>
-                    </svg>添加客服端
-                  </a>
-                </div>
-            </div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">开启头部工具栏</div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+            
+            <script type="text/html" id="test-table-toolbar-toolbarDemo">
+              <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+                <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+              </div>
+            </script>
+             
+            <script type="text/html" id="test-table-toolbar-barDemo">
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+          </div>
         </div>
+      </div>
     </div>
 </div>
 
-<div class="page-body">
-    <div class="container-xl">
-        <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">客户端列表</h3>
-              </div>
-              <div class="card-body border-bottom py-3">
-                <div class="d-flex">
-                  <div class="text-muted">
-                    Show
-                    <div class="mx-2 d-inline-block">
-                      <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
-                    </div>
-                    entries
-                  </div>
-                  <div class="ms-auto text-muted">
-                    Search:
-                    <div class="ms-2 d-inline-block">
-                      <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="table-responsive">
-                <table class="table card-table table-vcenter text-nowrap datatable">
-                  <thead>
-                    <tr>
-                      <th class="w-1">
-                        <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices">
-                        </th>
-                      <th class="w-1">No</th>
-                      <th>Invoice Subject</th>
-                      <th>Client</th>
-                      <th>VAT No.</th>
-                      <th>Created</th>
-                      <th>Status</th>
-                      <th>Price</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
-                      <td><span class="text-muted">001401</span></td>
-                      <td><a href="invoice.html" class="text-reset" tabindex="-1">Design Works</a></td>
-                      <td><span class="flag flag-country-us"></span>Carlson Limited</td>
-                      <td>87956621</td>
-                      <td>15 Dec 2017</td>
-                      <td><span class="badge bg-success me-1"></span> Paid</td>
-                      <td>$887</td>
-                      <td class="text-end"><a href="#">删除</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="card-footer d-flex align-items-center">
-                <p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-                <ul class="pagination m-0 ms-auto">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M15 6l-6 6l6 6"></path>
-                        </svg>
-                      prev
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M9 6l6 6l-6 6"></path>
-                    </svg>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal modal-blur fade" id="add_client" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">添加客服端</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">APP_ID</label>
-                    <input type="text" class="form-control" name="token" placeholder="输入Token">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">APP_TOKEN</label>
-                    <input type="text" class="form-control" name="token" placeholder="输入Token">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">取消</a>
-                <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">添加</a>
-            </div>
-        </div>
-    </div>
-</div>
-
+<script src="/static/layui/layui.js"></script>
 <script>
-    
+layui.config({
+base: '/static/' //静态资源所在路径
+}).extend({
+index: 'lib/index' //主入口模块
+}).use(['index', 'table'], function(){
+var admin = layui.admin
+,table = layui.table;
 
+console.log(layui.setter.base + 'json/table/demo.js');
+table.render({
+  elem: '#test-table-toolbar'
+  ,url: layui.setter.base + 'json/table/demo.js'
+  ,toolbar: '#test-table-toolbar-toolbarDemo'
+  ,title: '用户数据表'
+  ,cols: [[
+    {type: 'checkbox', fixed: 'left'}
+    ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+    ,{field:'username', title:'用户名', width:120, edit: 'text'}
+    ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
+      return '<em>'+ res.email +'</em>'
+    }}
+    ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
+    ,{field:'city', title:'城市', width:100}
+    ,{field:'sign', title:'签名'}
+    ,{field:'experience', title:'积分', width:80, sort: true}
+    ,{field:'ip', title:'IP', width:120}
+    ,{field:'logins', title:'登入次数', width:100, sort: true}
+    ,{field:'joinTime', title:'加入时间', width:120}
+    ,{fixed: 'right', title:'操作', toolbar: '#test-table-toolbar-barDemo', width:150}
+  ]]
+  ,page: true
+});
+
+//头工具栏事件
+table.on('toolbar(test-table-toolbar)', function(obj){
+  var checkStatus = table.checkStatus(obj.config.id);
+  switch(obj.event){
+    case 'getCheckData':
+      var data = checkStatus.data;
+      layer.alert(JSON.stringify(data));
+    break;
+    case 'getCheckLength':
+      var data = checkStatus.data;
+      layer.msg('选中了：'+ data.length + ' 个');
+    break;
+    case 'isAll':
+      layer.msg(checkStatus.isAll ? '全选': '未全选');
+    break;
+  };
+});
+
+//监听行工具事件
+table.on('tool(test-table-toolbar)', function(obj){
+  var data = obj.data;
+  if(obj.event === 'del'){
+    layer.confirm('真的删除行么', function(index){
+      obj.del();
+      layer.close(index);
+    });
+  } else if(obj.event === 'edit'){
+    layer.prompt({
+      formType: 2
+      ,value: data.email
+    }, function(value, index){
+      obj.update({
+        email: value
+      });
+      layer.close(index);
+    });
+  }
+});
+
+});
 </script>
 
 {% endblock %}

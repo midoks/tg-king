@@ -125,15 +125,6 @@ common.init()
 # # ----------  error function end -----------------
 
 
-# def funConvert(fun):
-#     block = fun.split('_')
-#     func = block[0]
-#     for x in range(len(block) - 1):
-#         suf = block[x + 1].title()
-#         func += suf
-#     return func
-
-
 def isLogined():
     if 'login' in session and 'username' in session and session['login'] == True:
         userInfo = mw.M('users').where(
@@ -159,7 +150,8 @@ def isLogined():
 
 
 def publicObject(toObject, func, action=None, get=None):
-    name = funConvert(func) + 'Api'
+    name = tgking.toSmallHump(func) + 'Api'
+    # print(toObject,name)
     try:
         if hasattr(toObject, name):
             efunc = 'toObject.' + name + '()'
@@ -328,7 +320,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        pageFile = ('index', 'user', 'user_bot',
+        pageFile = ('index', 'user', 'bot',
                     'user_client', 'login', 'module')
 
         # 设置了安全路径
@@ -363,7 +355,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
     #     return 'error request!'
 
     # API请求
-    classFile = ('user_api')
+    classFile = ('tgbot_api')
     className = reqClass + '_api'
     if not className in classFile:
         return "api error request"

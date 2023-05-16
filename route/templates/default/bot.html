@@ -1,0 +1,135 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span class="layui-breadcrumb">
+                      <a href="/">首页</a>
+                      <a><cite>机器人管理</cite></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">列表管理</div>
+                <div class="layui-card-body">
+                <table class="layui-hide" id="list" lay-filter="list"></table>
+                <script type="text/html" id="list-btn">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                    </div>
+                </script>
+                <script type="text/html" id="list-right-btn">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                </script>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+layui.config({
+base: '/static/'
+}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+
+table.render({
+    elem: '#list'
+    ,url: '/static/json/table/demo.js'
+    ,toolbar: '#list-btn'
+    ,title: '用户数据表'
+    ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+        ,{field:'username', title:'用户名', width:120, edit: 'text'}
+        ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
+        ,{field:'city', title:'城市', width:100}
+        ,{field:'sign', title:'签名'}
+        ,{field:'logins', title:'登入次数', width:100, sort: true}
+        ,{field:'joinTime', title:'加入时间', width:120}
+        ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
+      ]]
+    ,page: true
+});
+
+
+
+function add(obj){
+
+    layer.open({
+        area: ['400px'],
+        title:'添加机器人',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">别名</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="title" required="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">TOKEN</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="token" required="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+        </div>',
+        btn: ['添加','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var token = $('input[name="token"]').val();
+            $.post('/tgbot/add', {token:token}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        // table.reload();
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){    
+    switch(obj.event){
+        case 'add':add(obj);break;
+    };
+});
+
+//监听行工具事件
+table.on('tool(list)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+        layer.confirm('真的删除行么', function(index){
+          obj.del();
+          layer.close(index);
+        });
+    } else if(obj.event === 'edit'){
+        layer.prompt({
+          formType: 2
+          ,value: data.email
+        }, function(value, index){
+          obj.update({
+            email: value
+          });
+          layer.close(index);
+        });
+    }
+});
+///
+});
+</script>
+{% endblock %}

@@ -1,240 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+<meta charset="utf-8">
 <title>TG全能王</title>
-<link href="/static/css/tabler.min.css?v={{config.version}}" rel="stylesheet"/>
-<link href="/static/css/tabler-flags.min.css?v={{config.version}}" rel="stylesheet"/>
-<link href="/static/css/tabler-payments.min.css?v={{config.version}}" rel="stylesheet"/>
-<link href="/static/css/tabler-vendors.min.css?v={{config.version}}" rel="stylesheet"/>
-<link href="/static/css/demo.min.css?v={{config.version}}" rel="stylesheet"/>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/static/style/admin.css" media="all">
+<link rel="stylesheet" href="/static/tgking.css" media="all">
+<script src="/static/layui/layui.js"></script>
+<script src="/static/tgking.js"></script>
 </head>
-
-<body>
-<script src="/static/js/jquery-1.10.2.min.js?v={{config.version}}"></script>
-<script src="/static/js/demo-theme.min.js?v={{config.version}}"></script>
-<script src="/static/js/tgking.js?v={{config.version}}"></script>
-
-<!-- start -->
-<div class="page">
-<!-- Navbar -->
-<header class="navbar navbar-expand-md navbar-light d-print-none">
-<div class="container-xl">
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-    <a href=".">
-      <img src="/static/img/logo.svg" width="110" height="32" alt="Logo" class="navbar-brand-image">
-    </a>
-  </h1>
-  <div class="navbar-nav flex-row order-md-last">
-    <div class="d-none d-md-flex">
-      <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-   data-bs-placement="bottom">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-        </svg>
-      </a>
-      <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-   data-bs-placement="bottom">
-        <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-        </svg>
-      </a>
-      <div class="nav-item dropdown d-none d-md-flex me-3">
-        <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-            </svg><span class="badge bg-red"></span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-            <div class="card">
-                <div class="card-header"><h3 class="card-title">最新消息</h3></div>
-                <div class="list-group list-group-flush list-group-hoverable">
-                    <div class="list-group-item">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="status-dot status-dot-animated bg-red d-block"></span>
-                            </div>
-                            <div class="col text-truncate">
-                                <a href="#" class="text-body d-block">测试</a>
-                                <div class="d-block text-muted text-truncate mt-n1">@</div>
-                            </div>
-                            <div class="col-auto">
-                                <a href="#" class="list-group-item-actions">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-    <div class="nav-item dropdown">
-        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-            <span class="avatar avatar-sm" style="background-image: url(/static/avatars/a.png)"></span>
-            <div class="d-none d-xl-block ps-2">
-                <div>管理人员</div>
-                <div class="mt-1 small text-muted">TG全能王</div>
-            </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a href="/" class="dropdown-item">控制台</a>
-            <div class="dropdown-divider"></div>
-            <a href="/logout" class="dropdown-item">退出</a>
-        </div>
-    </div>
-    </div>
-</div>
-</header>
-<header class="navbar-expand-md">
-<div class="collapse navbar-collapse" id="navbar-menu">
-  <div class="navbar navbar-light">
-    <div class="container-xl">
-      <ul class="navbar-nav">
-        <li class="nav-item index">
-          <a class="nav-link" href="./" >
-            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-                </svg>
-            </span>
-            <span class="nav-link-title">主页</span>
-          </a>
-        </li>
-
-        <li class="nav-item user layout dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M5 11a7 7 0 0 1 14 0v7a1.78 1.78 0 0 1 -3.1 1.4a1.65 1.65 0 0 0 -2.6 0a1.65 1.65 0 0 1 -2.6 0a1.65 1.65 0 0 0 -2.6 0a1.78 1.78 0 0 1 -3.1 -1.4v-7" />
-                        <path d="M10 10l.01 0" />
-                        <path d="M14 10l.01 0" />
-                        <path d="M10 14a3.5 3.5 0 0 0 4 0" />
-                    </svg>
-                </span>
-                <span class="nav-link-title">账号管理</span>
-            </a>
-            <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                    <div class="dropdown-menu-column">
-                        <a class="dropdown-item" href="/user_bot">机器人管理</a>
-                        <a class="dropdown-item" href="/user_client">客户端管理</a>
-                    </div>
-                </div>
-            </div>
-        </li>
-
-        <li class="nav-item module">
-            <a class="nav-link" href="/module" >
-                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
-                        <path d="M12 12l8 -4.5" />
-                        <path d="M12 12l0 9" />
-                        <path d="M12 12l-8 -4.5"/>
-                        <path d="M16 5.25l-8 4.5" />
-                    </svg>
-                </span>
-                <span class="nav-link-title">模块管理</span>
-            </a>
-        </li>
-
-        <li class="nav-item layout dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                    <path d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                    <path d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                    <path d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                    </svg>
-                </span>
-                <span class="nav-link-title">布局</span>
-            </a>
-            <div class="dropdown-menu">
-                <div class="dropdown-menu-columns">
-                    <div class="dropdown-menu-column"></div>
-                </div>
-            </div>
-        </li>
-        </ul>
-    </div>
-    </div>
-</div>
-</header>
-
-<div class="page-wrapper">
-    
-    {% block content %}{% endblock %}
-
-    <footer class="footer footer-transparent d-print-none">
-      <div class="container-xl">
-        <div class="row text-center align-items-center flex-row-reverse">
-          <div class="col-lg-auto ms-lg-auto">
-            <ul class="list-inline list-inline-dots mb-0">
-                <li class="list-inline-item"><a href="https://github.com/midoks/tg-king/blob/main/LICENSE" class="link-secondary">License</a></li>
-                <li class="list-inline-item"><a href="https://github.com/midoks/tg-king" target="_blank" class="link-secondary" rel="noopener">源码</a></li>
-                <li class="list-inline-item"><a href="https://github.com/midoks/tg-king/wiki" target="_blank" class="link-secondary" rel="noopener">Wiki</a></li>
-            </ul>
-          </div>
-          <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-            <ul class="list-inline list-inline-dots mb-0">
-                <li class="list-inline-item">
-                    Copyright &copy; 2023 - ∞ <a href="." class="link-secondary">midoks</a>. All rights reserved.
-                </li>
-                <li class="list-inline-item">
-                    <a href="#" class="link-secondary" rel="noopener">{{config.version}}</a>
-                </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-</div>
-<!-- end -->
-</div>
-<!-- Libs JS -->
-<!-- Tabler Core -->
-<script src="/static/js/tabler.min.js?v={{config.version}}" defer></script>
-<script src="/static/js/demo.min.js?v={{config.version}}" defer></script>
-<script type="text/javascript">
+<body class="layui-layout-body">
   
-function getUrlPath(){
-    var thisUrl = window.location.href;
-    var pathArr = thisUrl.split('/');
-    return pathArr[pathArr.length - 1];
-}
-var thisPath = getUrlPath();
-console.log('thisPath',thisPath);
-if(thisPath != ''){
-    console.log(thisPath.indexOf('_'));
-    if (thisPath.indexOf('_')>-1){
-        $('#navbar-menu .nav-item.'+thisPath.split('_')[0]).addClass('active');
-    } else{
-        $('#navbar-menu .nav-item.'+thisPath).addClass('active');
-    }
+<div id="tg-king">
+    <div class="layui-layout layui-layout-admin">
+  
+        <!-- 侧边菜单 -->
+        <div class="layui-side layui-side-menu">
+            <div class="layui-side-scroll">
+                <div class="layui-logo"><span style="font-size:20px;font-weight:bold;">TG全能王</span></div>
+              
+                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="/" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>首页</cite>
+                        </a>
+                    </li>
+                    <li data-name="bot" class="layui-nav-item">
+                        <a href="/bot" lay-tips="用户" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>机器人</cite>
+                        </a>
+                    </li>
+
+                    <li data-name="user" class="layui-nav-item">
+                        <a href="/user_client" lay-tips="用户" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>客户端</cite>
+                        </a>
+                    </li>
+                    <li data-name="get" class="layui-nav-item">
+                      <a href="javascript:;" lay-href="//www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
+                        <i class="layui-icon layui-icon-app"></i>
+                        <cite>模块</cite>
+                      </a>
+                    </li>
+                    <li data-name="get" class="layui-nav-item">
+                      <a href="javascript:;" lay-href="//www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
+                        <i class="layui-icon layui-icon-set"></i>
+                        <cite>设置</cite>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 主体内容 -->
+        <div class="layui-body" style="top: 0px;">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
 
 
-    
-} else {
-    $('#navbar-menu .nav-item.index').addClass('active');
-}
+<script>
+layui.config({
+    base: '/static/'
+}).extend({
+    index: 'lib/index'
+}).use('index');
 </script>
 </body>
 </html>

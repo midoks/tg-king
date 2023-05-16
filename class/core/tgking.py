@@ -178,6 +178,15 @@ def M(table):
     return sql.table(table)
 
 
+def toSmallHump(name):
+    block = name.split('_')
+    func = block[0]
+    for x in range(len(block) - 1):
+        suf = block[x + 1].title()
+        name += suf
+    return name
+
+
 def md5(content):
     # 生成MD5
     try:
