@@ -67,7 +67,7 @@ class tgbot_api:
 
                 return tgking.returnJson(True, '添加成功!')
             except Exception as e:
-                return tgking.returnJson(False, '验证失败(' + str(e) + ')!')
+                return tgking.returnJson(False, "验证失败!\n" + str(e))
 
         tgking.M('tg_bot').add('alias,token', ('默认', token,))
 
