@@ -57,10 +57,10 @@ class tgbot_api:
             return tgking.returnJson(False, 'Token不能为空!')
 
         if not tgking.isAppleSystem():
-        	cmd = 'python3 tools.py verify_tgbot ' + token
-        	data = tgking.execShell(cmd)
-        	if data[0].strip() == 'ok':
-        		tgking.M('tg_bot').add(
+            cmd = 'python3 tools.py verify_tgbot ' + token
+            data = tgking.execShell(cmd)
+            if data[0].strip() == 'ok':
+                tgking.M('tg_bot').add(
                     'alias,token', (user.first_name, token,))
                 return tgking.returnJson(True, '添加成功!')
             return tgking.returnJson(False, "验证失败!\n" + str(data[0]))
