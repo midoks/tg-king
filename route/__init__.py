@@ -81,9 +81,6 @@ if tgking.isDebugMode():
     app.debug = True
     app.config.version = app.config.version + str(time.time())
 
-app.debug = True
-app.config.version = app.config.version + str(time.time())
-
 import common
 common.init()
 
