@@ -228,6 +228,12 @@ def returnJson(status, msg, data=None):
     return getJson({'status': status, 'msg': msg, 'data': data})
 
 
+def returnCode(code, msg, data=None):
+    if data == None:
+        return getJson({'code': code, 'msg': msg})
+    return getJson({'code': code, 'msg': msg, 'data': data})
+
+
 def getSafePath():
     path = 'data/admin_path.pl'
     if os.path.exists(path):

@@ -90,39 +90,12 @@ import common
 common.init()
 
 
-# # ----------  error function start -----------------
-# def getErrorNum(key, limit=None):
-#     key = tgking.md5(key)
-#     num = cache.get(key)
-#     if not num:
-#         num = 0
-#     if not limit:
-#         return num
-#     if limit > num:
-#         return True
-#     return False
-
-
-# def setErrorNum(key, empty=False, expire=3600):
-#     key = tgking.md5(key)
-#     num = cache.get(key)
-#     if not num:
-#         num = 0
-#     else:
-#         if empty:
-#             cache.delete(key)
-#             return True
-#     cache.set(key, num + 1, expire)
-#     return True
-# # ----------  error function end -----------------
-
-
 def isLogined():
-    return True
+    # return True
+    # print('isLogined', session)
     if 'login' in session and 'username' in session and session['login'] == True:
         userInfo = tgking.M('users').where(
             "id=?", (1,)).field('id,username,password').find()
-        # print(userInfo)
         if userInfo['username'] != session['username']:
             return False
 
@@ -132,13 +105,7 @@ def isLogined():
             # 自动续期
             session['overdue'] = int(time.time()) + 7 * 24 * 60 * 60
             return False
-
-        if 'tmp_login_expire' in session and now_time > int(session['tmp_login_expire']):
-            session.clear()
-            return False
-
         return True
-
     return False
 
 
@@ -159,110 +126,23 @@ def publicObject(toObject, func, action=None, get=None):
         return tgking.getJson(data)
 
 
-# @app.route('/close')
-# def close():
-#     if not os.path.exists('data/close.pl'):
-#         return redirect('/')
-#     data = {}
-#     data['cmd'] = 'rm -rf ' + tgking.getRunDir() + '/data/close.pl'
-#     return render_template('close.html', data=data)
+@app.route("/do_login", methods=['POST'])
+def doLogin():
+    username = request.form.get('username', '').strip()
+    password = request.form.get('password', '').strip()
+    password = tgking.md5(password)
 
+    userInfo = tgking.M('users').where(
+        "id=?", (1,)).field('id,username,password').find()
 
-# @app.route("/code")
-# def code():
-#     import vilidate
-#     vie = vilidate.vieCode()
-#     codeImage = vie.GetCodeImage(80, 4)
-#     # try:
-#     #     from cStringIO import StringIO
-#     # except:
-#     #     from StringIO import StringIO
+    if userInfo['username'] != username or userInfo['password'] != password:
+        msg = "<a style='color: red'>密码错误</a>,登录IP:" + request.remote_addr
+        return tgking.returnCode(-1, msg)
 
-#     out = io.BytesIO()
-#     codeImage[0].save(out, "png")
-
-#     # print(codeImage[1])
-
-#     session['code'] = tgking.md5(''.join(codeImage[1]).lower())
-
-#     img = Response(out.getvalue(), headers={'Content-Type': 'image/png'})
-#     return make_response(img)
-
-
-# @app.route("/check_login", methods=['POST'])
-# def checkLogin():
-#     if isLogined():
-#         return "true"
-#     return "false"
-
-
-# @app.route("/do_login", methods=['POST'])
-# def doLogin():
-#     login_cache_count = 5
-#     login_cache_limit = cache.get('login_cache_limit')
-
-#     filename = 'data/close.pl'
-#     if os.path.exists(filename):
-#         return tgking.returnJson(False, '面板已经关闭!')
-
-#     username = request.form.get('username', '').strip()
-#     password = request.form.get('password', '').strip()
-#     code = request.form.get('code', '').strip()
-#     # print(session)
-#     if 'code' in session:
-#         if session['code'] != tgking.md5(code):
-#             if login_cache_limit == None:
-#                 login_cache_limit = 1
-#             else:
-#                 login_cache_limit = int(login_cache_limit) + 1
-
-#             if login_cache_limit >= login_cache_count:
-#                 tgking.writeFile(filename, 'True')
-#                 return tgking.returnJson(False, '面板已经关闭!')
-
-#             cache.set('login_cache_limit', login_cache_limit, timeout=10000)
-#             login_cache_limit = cache.get('login_cache_limit')
-#             code_msg = tgking.getInfo("验证码错误,您还可以尝试[{1}]次!", (str(
-#                 login_cache_count - login_cache_limit)))
-#             tgking.writeLog('用户登录', code_msg)
-#             return tgking.returnJson(False, code_msg)
-
-#     userInfo = tgking.M('users').where(
-#         "id=?", (1,)).field('id,username,password').find()
-
-#     # print(userInfo)
-#     # print(password)
-#     password = tgking.md5(password)
-#     # print('md5-pass', password)
-
-#     if userInfo['username'] != username or userInfo['password'] != password:
-#         msg = "<a style='color: red'>密码错误</a>,帐号:{1},密码:{2},登录IP:{3}", ((
-#             '****', '******', request.remote_addr))
-
-#         if login_cache_limit == None:
-#             login_cache_limit = 1
-#         else:
-#             login_cache_limit = int(login_cache_limit) + 1
-
-#         if login_cache_limit >= login_cache_count:
-#             tgking.writeFile(filename, 'True')
-#             return tgking.returnJson(False, '面板已经关闭!')
-
-#         cache.set('login_cache_limit', login_cache_limit, timeout=10000)
-#         login_cache_limit = cache.get('login_cache_limit')
-#         tgking.writeLog('用户登录', tgking.getInfo(msg))
-# return tgking.returnJson(False, tgking.getInfo("用户名或密码错误,您还可以尝试[{1}]次!",
-# (str(login_cache_count - login_cache_limit))))
-
-#     cache.delete('login_cache_limit')
-#     session['login'] = True
-#     session['username'] = userInfo['username']
-#     session['overdue'] = int(time.time()) + 7 * 24 * 60 * 60
-#     # session['overdue'] = int(time.time()) + 7
-
-#     # fix 跳转时,数据消失，可能是跨域问题
-#     # tgking.writeFile('data/api_login.txt', userInfo['username'])
-#     return tgking.returnJson(True, '登录成功,正在跳转...')
+    session['login'] = True
+    session['username'] = userInfo['username']
+    session['overdue'] = int(time.time()) + 7 * 24 * 60 * 60
+    return tgking.returnCode(0, '登录成功,正在跳转...')
 
 
 @app.errorhandler(404)
@@ -271,9 +151,10 @@ def page_unauthorized(error):
 
 
 def return_safe_path(path, req, data, pageFile):
+    # print(path, req, data, pageFile, isLogined())
     if path != req and not isLogined():
-        if data['status_code'] == '0':
-            return render_template('path.html')
+        if str(data['status_code']) == '0':
+            return render_template('path.html', data=data)
         else:
             return Response(status=int(data['status_code']))
 
@@ -291,7 +172,6 @@ def return_safe_path(path, req, data, pageFile):
 @app.route('/<reqClass>', methods=['POST', 'GET'])
 @app.route('/', methods=['POST', 'GET'])
 def index(reqClass=None, reqAction=None, reqData=None):
-
     comReturn = common.local()
     if comReturn:
         return comReturn
@@ -309,12 +189,8 @@ def index(reqClass=None, reqAction=None, reqData=None):
         # 设置了安全路径
         safe_pathinfo = tgking.getSafePath()
 
-        if safe_pathinfo[0]:
-            return return_safe_path(safe_pathinfo[1], reqClass, data, page_file)
-
         # 登录页
         if reqClass == 'login':
-
             signout = request.args.get('signout', '')
             if signout == 'True':
                 session.clear()
@@ -323,25 +199,27 @@ def index(reqClass=None, reqAction=None, reqData=None):
 
             if safe_pathinfo[0]:
                 return return_safe_path(safe_pathinfo[1], reqClass, data, page_file)
-
             return render_template('login.html', data=data)
+
+        if safe_pathinfo[0]:
+            return return_safe_path(safe_pathinfo[1], reqClass, data, page_file)
 
         if not reqClass in page_file:
             return redirect('/')
 
-        # if not isLogined():
-        #     return redirect('/login')
+        if not isLogined():
+            return redirect('/login')
 
         return render_template(reqClass + '.html', data=data)
 
-    # if not isLogined():
-    #     return 'error request!'
+    if not isLogined():
+        return tgking.returnCode(-1, 'error request!')
 
     # API请求
     classFile = ('tgbot_api', 'tgclient_api')
     className = reqClass + '_api'
     if not className in classFile:
-        return "api error request"
+        return tgking.returnCode(-1, 'api error request!')
 
     eval_str = "__import__('" + className + "')." + className + '()'
     newInstance = eval(eval_str)

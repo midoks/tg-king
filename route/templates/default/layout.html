@@ -41,14 +41,19 @@
                     </a>
                 </li>
                 <li data-name="module" class="layui-nav-item">
-                  <a href="/module" lay-tips="模块" lay-direction="2">
-                    <i class="layui-icon layui-icon-app"></i><cite>模块</cite>
-                  </a>
+                    <a href="/module" lay-tips="模块" lay-direction="2">
+                        <i class="layui-icon layui-icon-app"></i><cite>模块</cite>
+                    </a>
                 </li>
                 <li data-name="config" class="layui-nav-item">
-                  <a href="/config" lay-tips="面板设置" lay-direction="2">
-                    <i class="layui-icon layui-icon-set"></i><cite>面板设置</cite>
-                  </a>
+                    <a href="/config" lay-tips="面板设置" lay-direction="2">
+                        <i class="layui-icon layui-icon-set"></i><cite>面板设置</cite>
+                    </a>
+                </li>
+                <li data-name="exit" class="layui-nav-item">
+                    <a href="#" id="signout" lay-tips="退出" lay-direction="2">
+                        <i class="layui-icon layui-icon-set"></i><cite>退出</cite>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -67,7 +72,17 @@ layui.config({
     base: '/static/'
 }).extend({
     index: 'lib/index'
-}).use('index');
+}).use('index',function(){
+    var admin = layui.admin
+    ,$ = layui.$
+    ,table = layui.table;
+    $("#signout").click(function() {
+        layer.confirm('您真的要退出面板吗?', {icon:3,closeBtn: 1}, function() {
+            window.location.href = "/login?signout=True"
+        });
+        return false
+    });
+});
 </script>
 </body>
 </html>
