@@ -346,7 +346,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
     #     return 'error request!'
 
     # API请求
-    classFile = ('tgbot_api')
+    classFile = ('tgbot_api', 'tgclient_api')
     className = reqClass + '_api'
     if not className in classFile:
         return "api error request"

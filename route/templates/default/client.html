@@ -1,0 +1,146 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span class="layui-breadcrumb">
+                      <a href="/">首页</a>
+                      <a><cite>机器人管理</cite></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">列表管理</div>
+                <div class="layui-card-body">
+                <table class="layui-hide" id="list" lay-filter="list"></table>
+                <script type="text/html" id="list-btn">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                    </div>
+                </script>
+                <script type="text/html" id="list-right-btn">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                </script>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+layui.config({
+base: '/static/'
+}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+
+table.render({
+    elem: '#list'
+    ,url: '/tgbot/list'
+    ,toolbar: '#list-btn'
+    ,title: '用户数据表'
+    ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', title:'ID', width:100,fixed: 'left', unresize: true, sort: true}
+        ,{field:'alias', title:'别名',width:180}
+        ,{field:'token', title:'token'}
+        ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
+      ]]
+    ,page: true
+    ,id:'tgbot_list'
+});
+
+
+// add
+function add(obj){
+    console.log(obj);
+
+    var title = '默认';
+    var token = '';
+
+    if (obj.event == 'edit'){
+        title = obj.data.alias;
+        token = obj.data.token;
+    }
+
+
+    layer.open({
+        area: ['400px'],
+        title:'添加机器人',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">别名</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="title" value="'+title+'" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">TOKEN</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="token" value="'+token+'" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <input type="hidden" name="id" value="">\
+        </div>',
+        btn: ['添加','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var token = $('input[name="token"]').val();
+            var alias = $('input[name="title"]').val();
+            var id = $('input[name="id"]').val();
+            if (obj.event == 'edit'){
+                id = obj.data.id;
+            }
+            $.post('/tgbot/add', {id:id,token:token,alias:alias}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('tgbot_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){    
+    switch(obj.event){
+        case 'add':add(obj);break;
+    };
+});
+
+//监听行工具事件
+table.on('tool(list)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+        layer.confirm('确定删除?', function(index){
+            $.post('/tgbot/del', {id:data.id}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('tgbot_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+        });
+    } else if(obj.event === 'edit'){
+        add(obj);
+    }
+});
+///
+});
+</script>
+{% endblock %}
