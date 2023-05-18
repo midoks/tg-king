@@ -54,7 +54,6 @@ class tgbot_api:
         tid = request.form.get('id', '')
 
         if tid != '':
-            print(token, alias)
             tgking.M('tg_bot').where('id=?', (tid,)).setField('token', token)
             tgking.M('tg_bot').where('id=?', (tid,)).setField('alias', alias)
             return tgking.returnJson(True, '修改成功!')
