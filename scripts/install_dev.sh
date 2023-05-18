@@ -92,9 +92,6 @@ pip3 install --upgrade pip setuptools wheel -i $PIPSRC
 
 cd /opt/tg-king && pip3 install -r /opt/tg-king/requirements.txt -i $PIPSRC
 
-# pip3 install flask-caching==1.10.1
-# pip3 install mysqlclient
-
 if [ ! -f /opt/tg-king/bin/activate ];then
     cd /opt/tg-king && python3 -m venv .
     cd /opt/tg-king && source /opt/tg-king/bin/activate
