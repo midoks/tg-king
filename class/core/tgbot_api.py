@@ -68,7 +68,7 @@ class tgbot_api:
             if return_status.find('ok') > -1:
                 rlist = return_status.split('|')
                 tgking.M('tg_bot').add(
-                    'alias,token', (rlist[0], token,))
+                    'alias,token', (rlist[1], token,))
                 return tgking.returnJson(True, '添加成功!')
             return tgking.returnJson(False, "验证失败!\n" + str(data[0]))
 
