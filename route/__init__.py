@@ -10,8 +10,6 @@ import json
 import traceback
 import socket
 
-# reload(sys)
-#  sys.setdefaultencoding('utf-8')
 import paramiko
 from datetime import timedelta
 
@@ -151,7 +149,6 @@ def page_unauthorized(error):
 
 
 def return_safe_path(path, req, data, pageFile):
-    # print(path, req, data, pageFile, isLogined())
     if path != req and not isLogined():
         if str(data['status_code']) == '0':
             return render_template('path.html', data=data)
