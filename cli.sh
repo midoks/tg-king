@@ -50,14 +50,14 @@ tgking_start_debug(){
 }
 
 tgking_start_debug2(){
-	python3 task.py >> $DIR/logs/task.log 2>&1 &
+	python3 tgking-task.py >> $DIR/logs/task.log 2>&1 &
 	gunicorn -b :1314 -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1  apptg:app
 }
 
 
 tgking_stop()
 {
-	PLIST=`ps -ef|grep app:app |grep -v grep|awk '{print $2}'`
+	PLIST=`ps -ef|grep apptg:app |grep -v grep|awk '{print $2}'`
 	for i in $PLIST
 	do
 	    kill -9 $i > /dev/null 2>&1

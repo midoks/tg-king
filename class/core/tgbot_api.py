@@ -23,36 +23,42 @@ class tgbot_api:
     def listApi(self):
         limit = request.form.get('limit', '10')
         p = request.form.get('p', '1')
-        type_id = request.form.get('type_id', '0').strip()
 
         start = (int(p) - 1) * (int(limit))
 
-        siteM = tgking.M('sites').field('id,name,path,status,ps,addtime,edate')
-        if type_id != '' and int(type_id) >= 0:
-            siteM.where('type_id=?', (type_id,))
+        siteM = tgking.M('tg_bot').field('id,alias,token')
 
         _list = siteM.limit((str(start)) + ',' +
                             limit).order('id desc').select()
 
-        for i in range(len(_list)):
-            _list[i]['backup_count'] = mw.M('backup').where(
-                "pid=? AND type=?", (_list[i]['id'], 0)).count()
+        count = siteM.count()
 
         _ret = {}
+        _ret['code'] = 0
+        _ret['msg'] = 'ok'
         _ret['data'] = _list
+        _ret['count'] = count
 
-        count = siteM.count()
-        _page = {}
-        _page['count'] = count
-        _page['tojs'] = 'getWeb'
-        _page['p'] = p
-        _page['row'] = limit
-
-        _ret['page'] = tgking.getPage(_page)
         return tgking.getJson(_ret)
+
+    def delApi(self):
+        tid = request.form.get('id', '')
+        r = tgking.M('tg_bot').where("id=?", (tid,)).delete()
+        if r < 0:
+            return tgking.returnJson(False, '删除失败!')
+        return tgking.returnJson(True, '删除成功!')
 
     def addApi(self):
         token = request.form.get('token', '')
+        alias = request.form.get('alias', '')
+        tid = request.form.get('id', '')
+
+        if tid != '':
+            print(token, alias)
+            tgking.M('tg_bot').where('id=?', (tid,)).setField('token', token)
+            tgking.M('tg_bot').where('id=?', (tid,)).setField('alias', alias)
+            return tgking.returnJson(True, '修改成功!')
+
         if token == '':
             return tgking.returnJson(False, 'Token不能为空!')
 
@@ -67,6 +73,6 @@ class tgbot_api:
                 return tgking.returnJson(True, '添加成功!')
             return tgking.returnJson(False, "验证失败!\n" + str(data[0]))
 
-        tgking.M('tg_bot').add('alias,token', ('默认', token,))
+        tgking.M('tg_bot').add('alias,token', (alias, token,))
 
         return tgking.returnJson(True, '添加成功!')
