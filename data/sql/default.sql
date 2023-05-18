@@ -18,3 +18,10 @@ CREATE TABLE IF NOT EXISTS `tg_bot` (
   `alias` TEXT, 
   `token` TEXT
 );
+
+
+CREATE TABLE IF NOT EXISTS `tg_client` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `app_id` TEXT, 
+  `app_hash` TEXT
+);

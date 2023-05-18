@@ -15,54 +15,49 @@
 <body class="layui-layout-body">
   
 <div id="tg-king">
-    <div class="layui-layout layui-layout-admin">
-  
-        <!-- 侧边菜单 -->
-        <div class="layui-side layui-side-menu">
-            <div class="layui-side-scroll">
-                <div class="layui-logo"><span style="font-size:20px;font-weight:bold;">TG全能王</span></div>
-              
-                <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                    <li data-name="home" class="layui-nav-item">
-                        <a href="/" lay-tips="主页" lay-direction="2">
-                            <i class="layui-icon layui-icon-home"></i>
-                            <cite>首页</cite>
-                        </a>
-                    </li>
-                    <li data-name="bot" class="layui-nav-item">
-                        <a href="/bot" lay-tips="用户" lay-direction="2">
-                            <i class="layui-icon layui-icon-user"></i>
-                            <cite>机器人</cite>
-                        </a>
-                    </li>
-
-                    <li data-name="user" class="layui-nav-item">
-                        <a href="/user_client" lay-tips="用户" lay-direction="2">
-                            <i class="layui-icon layui-icon-user"></i>
-                            <cite>客户端</cite>
-                        </a>
-                    </li>
-                    <li data-name="get" class="layui-nav-item">
-                      <a href="javascript:;" lay-href="//www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
-                        <i class="layui-icon layui-icon-app"></i>
-                        <cite>模块</cite>
-                      </a>
-                    </li>
-                    <li data-name="get" class="layui-nav-item">
-                      <a href="javascript:;" lay-href="//www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
-                        <i class="layui-icon layui-icon-set"></i>
-                        <cite>设置</cite>
-                      </a>
-                    </li>
-                </ul>
+<div class="layui-layout layui-layout-admin">
+    <!-- 侧边菜单 -->
+    <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+            <div class="layui-logo">
+                <span style="font-size:20px;font-weight:bold;">TG全能王</span>
             </div>
-        </div>
-
-        <!-- 主体内容 -->
-        <div class="layui-body" style="top: 0px;">
-            {% block content %}{% endblock %}
+          
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+                <li data-name="home" class="layui-nav-item">
+                    <a href="/" lay-tips="主页" lay-direction="2">
+                        <i class="layui-icon layui-icon-home"></i><cite>首页</cite>
+                    </a>
+                </li>
+                <li data-name="bot" class="layui-nav-item">
+                    <a href="/bot" lay-tips="用户" lay-direction="2">
+                        <i class="layui-icon layui-icon-user"></i><cite>机器人</cite>
+                    </a>
+                </li>
+                <li data-name="client" class="layui-nav-item">
+                    <a href="/client" lay-tips="用户" lay-direction="2">
+                        <i class="layui-icon layui-icon-user"></i><cite>客户端</cite>
+                    </a>
+                </li>
+                <li data-name="module" class="layui-nav-item">
+                  <a href="/module" lay-tips="模块" lay-direction="2">
+                    <i class="layui-icon layui-icon-app"></i><cite>模块</cite>
+                  </a>
+                </li>
+                <li data-name="config" class="layui-nav-item">
+                  <a href="/config" lay-tips="面板设置" lay-direction="2">
+                    <i class="layui-icon layui-icon-set"></i><cite>面板设置</cite>
+                  </a>
+                </li>
+            </ul>
         </div>
     </div>
+
+    <!-- 主体内容 -->
+    <div class="layui-body" style="top: 0px;">
+        {% block content %}{% endblock %}
+    </div>
+</div>
 </div>
 
 

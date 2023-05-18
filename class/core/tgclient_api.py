@@ -26,7 +26,7 @@ class tgclient_api:
 
         start = (int(p) - 1) * (int(limit))
 
-        siteM = tgking.M('tg_bot').field('id,alias,token')
+        siteM = tgking.M('tg_client').field('id,app_id,app_hash')
 
         _list = siteM.limit((str(start)) + ',' +
                             limit).order('id desc').select()
@@ -43,35 +43,29 @@ class tgclient_api:
 
     def delApi(self):
         tid = request.form.get('id', '')
-        r = tgking.M('tg_bot').where("id=?", (tid,)).delete()
+        r = tgking.M('tg_client').where("id=?", (tid,)).delete()
         if r < 0:
             return tgking.returnJson(False, '删除失败!')
         return tgking.returnJson(True, '删除成功!')
 
     def addApi(self):
-        token = request.form.get('token', '')
-        alias = request.form.get('alias', '')
+        app_id = request.form.get('app_id', '')
+        app_hash = request.form.get('app_hash', '')
         tid = request.form.get('id', '')
 
+        if app_id == '':
+            return tgking.returnJson(False, 'app_id不能为空!')
+
+        if app_hash == '':
+            return tgking.returnJson(False, 'app_hash不能为空!')
+
         if tid != '':
-            tgking.M('tg_bot').where('id=?', (tid,)).setField('token', token)
-            tgking.M('tg_bot').where('id=?', (tid,)).setField('alias', alias)
+            tgking.M('tg_client').where(
+                'id=?', (tid,)).setField('app_id', app_id)
+            tgking.M('tg_client').where(
+                'id=?', (tid,)).setField('app_hash', app_hash)
             return tgking.returnJson(True, '修改成功!')
 
-        if token == '':
-            return tgking.returnJson(False, 'Token不能为空!')
-
-        if not tgking.isAppleSystem():
-            cmd = 'source bin/activate &&  python3 tools.py verify_tgbot ' + token
-            data = tgking.execShell(cmd)
-            return_status = data[0].strip()
-            if return_status.find('ok') > -1:
-                rlist = return_status.split('|')
-                tgking.M('tg_bot').add(
-                    'alias,token', (rlist[0], token,))
-                return tgking.returnJson(True, '添加成功!')
-            return tgking.returnJson(False, "验证失败!\n" + str(data[0]))
-
-        tgking.M('tg_bot').add('alias,token', (alias, token,))
+        tgking.M('tg_client').add('app_id,app_hash', (app_id, app_hash,))
 
         return tgking.returnJson(True, '添加成功!')

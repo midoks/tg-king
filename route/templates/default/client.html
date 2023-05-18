@@ -7,7 +7,7 @@
                 <div class="layui-card-header">
                     <span class="layui-breadcrumb">
                       <a href="/">首页</a>
-                      <a><cite>机器人管理</cite></a>
+                      <a><cite>客户端管理</cite></a>
                     </span>
                 </div>
             </div>
@@ -46,48 +46,47 @@ var admin = layui.admin
 
 table.render({
     elem: '#list'
-    ,url: '/tgbot/list'
+    ,url: '/tgclient/list'
     ,toolbar: '#list-btn'
     ,title: '用户数据表'
     ,cols: [[
         {type: 'checkbox', fixed: 'left'}
         ,{field:'id', title:'ID', width:100,fixed: 'left', unresize: true, sort: true}
-        ,{field:'alias', title:'别名',width:180}
-        ,{field:'token', title:'token'}
+        ,{field:'app_id', title:'APP_ID',width:180}
+        ,{field:'app_hash', title:'APP_HASH'}
         ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
       ]]
     ,page: true
-    ,id:'tgbot_list'
+    ,id:'tgclient_list'
 });
 
 
 // add
 function add(obj){
-    console.log(obj);
 
-    var title = '默认';
-    var token = '';
+    var app_id = '';
+    var app_hash = '';
 
     if (obj.event == 'edit'){
-        title = obj.data.alias;
-        token = obj.data.token;
+        app_id = obj.data.app_id;
+        app_hash = obj.data.app_hash;
     }
 
 
     layer.open({
         area: ['400px'],
-        title:'添加机器人',
+        title:'添加客户端',
         content: '<div class="layui-form layui-form-pane pd15">\
             <div class="layui-form-item">\
-              <label class="layui-form-label">别名</label>\
+              <label class="layui-form-label">APP_ID</label>\
               <div class="layui-input-block">\
-                <input type="text" name="title" value="'+title+'" autocomplete="off" class="layui-input">\
+                <input type="text" name="app_id" value="'+app_id+'" autocomplete="off" class="layui-input">\
               </div>\
             </div>\
             <div class="layui-form-item">\
-              <label class="layui-form-label">TOKEN</label>\
+              <label class="layui-form-label">APP_HASH</label>\
               <div class="layui-input-block">\
-                <input type="text" name="token" value="'+token+'" autocomplete="off" class="layui-input">\
+                <input type="text" name="app_hash" value="'+app_hash+'" autocomplete="off" class="layui-input">\
               </div>\
             </div>\
             <input type="hidden" name="id" value="">\
@@ -96,17 +95,17 @@ function add(obj){
         type: 1,
         shadeClose: false,
         yes: function(index, layero){
-            var token = $('input[name="token"]').val();
-            var alias = $('input[name="title"]').val();
+            var app_id = $('input[name="app_id"]').val();
+            var app_hash = $('input[name="app_hash"]').val();
             var id = $('input[name="id"]').val();
             if (obj.event == 'edit'){
                 id = obj.data.id;
             }
-            $.post('/tgbot/add', {id:id,token:token,alias:alias}, function(data) {
+            $.post('/tgclient/add', {id:id,app_id:app_id,app_hash:app_hash}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
                         layer.close(index);
-                        table.reload('tgbot_list', {});
+                        table.reload('tgclient_list', {});
                     }
                 },{icon:data.status?1:2});
             },'json');
@@ -127,11 +126,11 @@ table.on('tool(list)', function(obj){
     var data = obj.data;
     if(obj.event === 'del'){
         layer.confirm('确定删除?', function(index){
-            $.post('/tgbot/del', {id:data.id}, function(data) {
+            $.post('/tgclient/del', {id:data.id}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
                         layer.close(index);
-                        table.reload('tgbot_list', {});
+                        table.reload('tgclient_list', {});
                     }
                 },{icon:data.status?1:2});
             },'json');

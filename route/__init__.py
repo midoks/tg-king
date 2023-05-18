@@ -63,13 +63,11 @@ except:
 app.secret_key = uuid.UUID(int=uuid.getnode()).hex[-12:]
 app.config['SESSION_PERMANENT'] = True
 app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_KEY_PREFIX'] = 'MW_:'
-app.config['SESSION_COOKIE_NAME'] = "MW_VER_1"
+app.config['SESSION_KEY_PREFIX'] = 'TGClient:'
+app.config['SESSION_COOKIE_NAME'] = "TGClient_VER_1"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 
-
 app.config['DEBUG'] = True
-
 
 # socketio
 from flask_socketio import SocketIO, emit, send
@@ -79,12 +77,6 @@ socketio.init_app(app)
 # sockets
 from flask_sockets import Sockets
 sockets = Sockets(app)
-
-# from gevent.pywsgi import WSGIServer
-# from geventwebsocket.handler import WebSocketHandler
-# http_server = WSGIServer(('0.0.0.0', '7200'), app,
-#                          handler_class=WebSocketHandler)
-# http_server.serve_forever()
 
 # debug macosx dev
 if tgking.isDebugMode():
@@ -312,7 +304,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        page_file = ('index', 'user', 'bot', 'client', 'login', 'module')
+        page_file = ('index', 'bot', 'client', 'config', 'login', 'module')
 
         # 设置了安全路径
         safe_pathinfo = tgking.getSafePath()
