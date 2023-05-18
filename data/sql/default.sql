@@ -16,5 +16,5 @@ INSERT INTO `users` (`id`, `username`, `password`, `login_ip`, `login_time`, `ph
 CREATE TABLE IF NOT EXISTS `tg_bot` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `alias` TEXT, 
-  `token` TEXT,
+  `token` TEXT
 );
