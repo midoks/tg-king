@@ -103,6 +103,25 @@ function module_disable(obj){
     });
 }
 
+function module_setting(obj){
+    var data = obj.data;
+    $.get('/module/setting?module_name='+data['name'], function(rdata) {
+        // layer.close(loadT);
+        layer.open({
+            type: 1,
+            area: '640px',
+            title: '【'  +data['title']+ "】管理",
+            closeBtn: 1,
+            shift: 0,
+            content: rdata
+        });
+        $(".tg-w-menu p").click(function() {
+            $(this).addClass("bgw").siblings().removeClass("bgw");
+        });
+        //version to
+        // $(".plugin_version").attr('version',version).hide();
+    });
+}
 
 
 

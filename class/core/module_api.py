@@ -89,6 +89,12 @@ class module_api:
                 module_info[i]['status'] = data[0]['status']
         return module_info
 
+    def settingApi(self):
+        module_name = request.args.get('module_name', '')
+        # print(module_name)
+        html = self.__module_dir + '/' + module_name + '/index.html'
+        return tgking.readFile(html)
+
     def enableApi(self):
         module_name = request.form.get('module_name', '')
         data = tgking.M('module').field('id,status').where(
