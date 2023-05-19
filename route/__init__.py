@@ -210,7 +210,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         return tgking.returnCode(-1, 'error request!')
 
     # API请求
-    classFile = ('tgbot_api', 'tgclient_api')
+    classFile = ('module_api', 'tgbot_api', 'tgclient_api')
     className = reqClass + '_api'
     if not className in classFile:
         return tgking.returnCode(-1, 'api error request!')

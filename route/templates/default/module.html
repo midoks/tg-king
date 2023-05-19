@@ -41,14 +41,12 @@ var admin = layui.admin
 
 table.render({
     elem: '#list'
-    ,url: '/tgbot/list'
-    ,toolbar: '#list-btn'
+    ,url: '/module/list'
     ,title: '用户数据表'
     ,cols: [[
-        {type: 'checkbox', fixed: 'left'}
-        ,{field:'id', title:'ID', width:100,fixed: 'left', unresize: true, sort: true}
-        ,{field:'alias', title:'别名',width:180}
-        ,{field:'token', title:'token'}
+        ,{field:'id', title:'模块名称', width:100,fixed: 'left'}
+        ,{field:'alias', title:'说明'}
+        ,{field:'token', title:'状态',width:180}
         ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
       ]]
     ,page: true
