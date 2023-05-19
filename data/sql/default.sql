@@ -25,3 +25,10 @@ CREATE TABLE IF NOT EXISTS `tg_client` (
   `app_id` TEXT, 
   `app_hash` TEXT
 );
+
+
+CREATE TABLE IF NOT EXISTS `module` (
+  `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+  `name` TEXT, 
+  `status` TEXT
+);

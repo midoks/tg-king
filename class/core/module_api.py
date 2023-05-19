@@ -9,69 +9,104 @@
 # ---------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------
-# 机器人操作API
+# 模块操作
 # ---------------------------------------------------------------------------------
+
+import os
+import json
 
 import tgking
 
 from flask import request
 
 
+import threading
+
+
 class module_api:
 
-    ##### ----- start ----- ###
+    __module_dir = 'module'
+
+    def __init__(self):
+        self.__module_dir = tgking.getRunDir() + '/module'
+
     def listApi(self):
+
         limit = request.form.get('limit', '10')
-        p = request.form.get('p', '1')
+        page = request.form.get('page', '1')
 
-        start = (int(p) - 1) * (int(limit))
-
-        siteM = tgking.M('tg_bot').field('id,alias,token')
-
-        _list = siteM.limit((str(start)) + ',' +
-                            limit).order('id desc').select()
-
-        count = siteM.count()
+        alist = self.getAllListPage('', int(page), int(limit))
 
         _ret = {}
         _ret['code'] = 0
         _ret['msg'] = 'ok'
-        _ret['data'] = _list
-        _ret['count'] = count
-
+        _ret['data'] = alist[0]
+        _ret['count'] = alist[1]
         return tgking.getJson(_ret)
 
-    def delApi(self):
-        tid = request.form.get('id', '')
-        r = tgking.M('tg_bot').where("id=?", (tid,)).delete()
-        if r < 0:
-            return tgking.returnJson(False, '删除失败!')
-        return tgking.returnJson(True, '删除成功!')
+    def searchKey(self, info, kw):
+        try:
+            if info['title'].lower().find(kw) > -1:
+                return True
+            if info['ps'].lower().find(kw) > -1:
+                return True
+            if info['name'].lower().find(kw) > -1:
+                return True
+        except Exception as e:
+            return False
 
-    def addApi(self):
-        token = request.form.get('token', '')
-        alias = request.form.get('alias', '')
-        tid = request.form.get('id', '')
+    def getAllListPage(self, kw='', page=1, pageSize=10):
+        module_info = []
+        for dirinfo in os.listdir(self.__module_dir):
+            if dirinfo[0:1] == '.':
+                continue
+            path = self.__module_dir + '/' + dirinfo
+            if os.path.isdir(path):
+                json_file = path + '/info.json'
+                if os.path.exists(json_file):
+                    try:
+                        data = json.loads(tgking.readFile(json_file))
+                        if kw != '' and not self.searchKey(data, kw):
+                            continue
+                        module_info.append(data)
+                    except Exception as e:
+                        print(tgking.getTracebackInfo())
 
-        if tid != '':
-            tgking.M('tg_bot').where('id=?', (tid,)).setField('token', token)
-            tgking.M('tg_bot').where('id=?', (tid,)).setField('alias', alias)
-            return tgking.returnJson(True, '修改成功!')
+        start = (page - 1) * pageSize
+        end = start + pageSize
+        _module_info = module_info[start:end]
 
-        if token == '':
-            return tgking.returnJson(False, 'Token不能为空!')
+        _module_info = self.checkModuleStatus(_module_info)
+        return (_module_info, len(module_info))
 
-        if not tgking.isAppleSystem():
-            cmd = 'source bin/activate &&  python3 tools.py verify_tgbot ' + token
-            data = tgking.execShell(cmd)
-            return_status = data[0].strip()
-            if return_status.find('ok') > -1:
-                rlist = return_status.split('|')
-                tgking.M('tg_bot').add(
-                    'alias,token', (rlist[1], token,))
-                return tgking.returnJson(True, '添加成功!')
-            return tgking.returnJson(False, "验证失败!\n" + str(data[0]))
+    def checkModuleStatus(self, module_info):
+        for i in range(len(module_info)):
+            data = tgking.M('module').field('id,status').where(
+                'name=?', (module_info[i]['name'],)).select()
+            if len(data) == 0:
+                module_info[i]['status'] = 'stop'
+            else:
+                module_info[i]['status'] = data[0]['status']
+        return module_info
 
-        tgking.M('tg_bot').add('alias,token', (alias, token,))
+    def enableApi(self):
+        module_name = request.form.get('module_name', '')
+        data = tgking.M('module').field('id,status').where(
+            'name=?', (module_name,)).select()
+        if len(data) == 0:
+            tgking.M('module').add('name,status', (module_name, 'start',))
+            return tgking.returnJson(True, '开启成功!!')
+        else:
+            tgking.M('module').where(
+                'name=?', (name,)).setField('status', 'start')
+            return tgking.returnJson(True, '启动成功!!')
 
-        return tgking.returnJson(True, '添加成功!')
+    def disableApi(self):
+        module_name = request.form.get('module_name', '')
+        data = tgking.M('module').field('id,status').where(
+            'name=?', (module_name,)).select()
+        if len(data) == 0:
+            return tgking.returnJson(True, '停用成功!')
+        else:
+            tgking.M('module').where('name=?', (module_name,)).delete()
+            return tgking.returnJson(True, '停用成功!!')

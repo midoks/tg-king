@@ -1,0 +1,8 @@
+{
+	"ps": "机器人广告管理",
+	"name": "admgr",
+	"title": "广告管理",
+	"author": "midoks",
+	"type": "bot",
+	"setup":"1.0"
+}

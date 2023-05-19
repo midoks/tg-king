@@ -1,3 +1,13 @@
 .pd15{
 	padding:15px;
 }
+
+.ablue{
+	margin-left: 0px;
+	color: #009688;
+	height: 22px;
+    line-height: 22px;
+    padding: 0 5px;
+    font-size: 12px;
+    cursor: pointer;
+}

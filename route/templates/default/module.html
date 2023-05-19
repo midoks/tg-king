@@ -6,8 +6,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">
                     <span class="layui-breadcrumb">
-                      <a href="/">首页</a>
-                      <a><cite>模块管理</cite></a>
+                        <a href="/">首页</a><a><cite>模块管理</cite></a>
                     </span>
                 </div>
             </div>
@@ -17,17 +16,11 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">模块管理</div>
-                <div class="layui-card-body">
-                <table class="layui-hide" id="list" lay-filter="list"></table>
-                <script type="text/html" id="list-right-btn">
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                </script>
-              </div>
+                <div class="layui-card-body"><table class="layui-hide" id="list" lay-filter="list"></table></div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -44,29 +37,34 @@ table.render({
     ,url: '/module/list'
     ,title: '用户数据表'
     ,cols: [[
-        ,{field:'id', title:'模块名称', width:100,fixed: 'left'}
-        ,{field:'alias', title:'说明'}
-        ,{field:'token', title:'状态',width:180}
-        ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
+        {field:'title', title:'模块名称',width:100}
+        ,{field:'ps', title:'说明'}
+        ,{field:'type', title:'类型',width:60}
+        ,{field:'status', title:'状态',width:100,templet: "#statusTpl"}
+        ,{title:'操作', toolbar: '#list-right-btn',width:180,align: 'right',fixed: 'right'}
       ]]
     ,page: true
     ,id:'module_list'
 });
 
 
-//头工具栏事件
-table.on('toolbar(list)', function(obj){    
-    switch(obj.event){
-        case 'add':add(obj);break;
-    };
-});
 
-//监听行工具事件
-table.on('tool(list)', function(obj){
+function module_enable(obj){
     var data = obj.data;
-    if(obj.event === 'del'){
-        layer.confirm('确定删除?', function(index){
-            $.post('/tgbot/del', {id:data.id}, function(data) {
+    layer.open({
+        type: 1,
+        title: "【"+ data['title'] + "】模块安装",
+        area: '350px',
+        closeBtn: 1,
+        shadeClose: true,
+        btn: ['启用','关闭'],
+        content: "<div class='layui-card'>\
+            <div class='layui-card-body'>"+data['ps']+"</div>\
+        </div>",
+        success:function(){
+        },
+        yes:function(index,layero){
+            $.post('/module/enable', {module_name:data['name']}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
                         layer.close(index);
@@ -74,12 +72,74 @@ table.on('tool(list)', function(obj){
                     }
                 },{icon:data.status?1:2});
             },'json');
-        });
-    } else if(obj.event === 'edit'){
-        add(obj);
+        }
+    });
+}
+
+function module_disable(obj){
+    var data = obj.data;
+    layer.open({
+        type: 1,
+        title: "【"+ data['title'] + "】模块禁用",
+        area: '350px',
+        closeBtn: 1,
+        shadeClose: true,
+        btn: ['停用','关闭'],
+        content: "<div class='layui-card'>\
+            <div class='layui-card-body'>"+data['ps']+"</div>\
+        </div>",
+        success:function(){
+        },
+        yes:function(index,layero){
+            $.post('/module/disable', {module_name:data['name']}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('module_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+        }
+    });
+}
+
+
+
+
+//监听行工具事件
+table.on('tool(list)', function(obj){
+    var data = obj.data;
+    if(obj.event == 'enable'){
+        module_enable(obj);
+    } else if(obj.event == 'disable'){
+        module_disable(obj);
+    } else if(obj.event == 'setting'){
+        module_setting(obj);
     }
 });
 ///
 });
 </script>
+
+{% raw %}
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 'start'){ }}
+    <span lay-event="triggerStatus" class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>
+    {{#  } else if(d.status == 'stop') { }}
+    <span lay-event="triggerStatus" class="layui-btn layui-btn-warm layui-btn-xs">未开启</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="list-right-btn">
+    {{#  if(d.status == 'start'){ }}
+    <a class="ablue" lay-event="setting">设置</a> | 
+    <a class="ablue" lay-event="disable">禁用</a>
+    {{#  } else if(d.status == 'stop') { }}
+    <a class="ablue" lay-event="enable">启用</a>
+    {{#  } }}
+</script>
+{% endraw %}
+
+
 {% endblock %}
