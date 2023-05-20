@@ -30,27 +30,27 @@ def getServerDir():
 
 def getInitDFile():
     if app_debug:
-        return '/tmp/' + getModName()
-    return '/etc/init.d/' + getModName()
+        return '/tmp/tg_' + getModName()
+    return '/etc/init.d/tg_' + getModName()
 
 
 def getInitDTpl():
-    path = getModDir() + "/init.d/" + getModName() + ".tpl"
+    path = getModDir() + "/init.d/tg_" + getModName() + ".tpl"
     return path
 
 
 def initDreplace():
 
     file_tpl = getInitDTpl()
-    app_path = service_path + '/' + getModName()
+
+    sp_path = tgking.getServerDir()
+    app_path = sp_path + '/module/' + getModName()
 
     initD_path = getServerDir() + '/init.d'
-    if not os.path.exists(initD_path):
-        os.mkdir(initD_path)
-    file_bin = initD_path + '/' + getModName()
+    file_bin = getInitDFile()
 
     content = tgking.readFile(file_tpl)
-    content = content.replace('{$SERVER_PATH}', service_path + '/mdserver-web')
+    content = content.replace('{$SERVER_PATH}', sp_path)
     content = content.replace('{$APP_PATH}', app_path)
 
     tgking.writeFile(file_bin, content)
@@ -58,8 +58,8 @@ def initDreplace():
 
     # systemd
     systemDir = tgking.systemdCfgDir()
-    systemService = systemDir + '/' + getModName() + '.service'
-    systemServiceTpl = getPluginDir() + '/init.d/' + getModName() + '.service.tpl'
+    systemService = systemDir + '/tg_admgr.service'
+    systemServiceTpl = getModDir() + '/init.d/tg_admgr.service.tpl'
     if os.path.exists(systemDir) and not os.path.exists(systemService):
         service_path = tgking.getServerDir()
         se_content = tgking.readFile(systemServiceTpl)
@@ -73,13 +73,13 @@ def initDreplace():
 def agOp(method):
     file = initDreplace()
 
-    if not mw.isAppleSystem():
-        data = mw.execShell('systemctl ' + method + ' ' + getPluginName())
+    if not tgking.isAppleSystem():
+        data = tgking.execShell('systemctl ' + method + ' ' + getPluginName())
         if data[1] == '':
             return 'ok'
         return data[1]
 
-    data = mw.execShell(file + ' ' + method)
+    data = tgking.execShell(file + ' ' + method)
     # print(data)
     if data[1] == '':
         return 'ok'

@@ -82,11 +82,15 @@ def getRunDir():
 
 
 def getRootDir():
-    return os.path.dirname(os.path.dirname(getRunDir()))
+    return os.path.dirname(getRunDir())
 
 
 def getServerDir():
     return getRootDir() + '/tg-king'
+
+
+def getModDir():
+    return getServerDir() + '/module'
 
 
 def readFile(filename):
