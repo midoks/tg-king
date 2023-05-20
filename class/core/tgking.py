@@ -217,6 +217,21 @@ def getFileMd5(filename):
     return myhash.hexdigest()
 
 
+def systemdCfgDir():
+    # ubuntu
+    cfg_dir = '/lib/systemd/system'
+    if os.path.exists(cfg_dir):
+        return cfg_dir
+
+    # debian,centos
+    cfg_dir = '/usr/lib/systemd/system'
+    if os.path.exists(cfg_dir):
+        return cfg_dir
+
+    # local test
+    return "/tmp"
+
+
 def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
     log_file = getServerDir() + '/logs/debug.log'
     if path != None:

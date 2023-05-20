@@ -16,54 +16,56 @@ if tgking.isAppleSystem():
     app_debug = True
 
 
-def getPluginName():
+def getModName():
     return 'admgr'
 
 
-def getPluginDir():
-    return tgking.getPluginDir() + '/' + getPluginName()
+def getModDir():
+    return tgking.getModDir() + '/' + getModName()
 
 
 def getServerDir():
-    return tgking.getServerDir() + '/' + getPluginName()
+    return tgking.getServerDir() + '/' + getModName()
 
 
 def getInitDFile():
     if app_debug:
-        return '/tmp/' + getPluginName()
-    return '/etc/init.d/' + getPluginName()
+        return '/tmp/' + getModName()
+    return '/etc/init.d/' + getModName()
+
+
+def getInitDTpl():
+    path = getModDir() + "/init.d/" + getModName() + ".tpl"
+    return path
 
 
 def initDreplace():
 
     file_tpl = getInitDTpl()
-    service_path = mw.getServerDir()
-    app_path = service_path + '/' + getPluginName()
+    app_path = service_path + '/' + getModName()
 
     initD_path = getServerDir() + '/init.d'
     if not os.path.exists(initD_path):
         os.mkdir(initD_path)
-    file_bin = initD_path + '/' + getPluginName()
+    file_bin = initD_path + '/' + getModName()
 
-    # initd replace
-    # if not os.path.exists(file_bin):
-    content = mw.readFile(file_tpl)
+    content = tgking.readFile(file_tpl)
     content = content.replace('{$SERVER_PATH}', service_path + '/mdserver-web')
     content = content.replace('{$APP_PATH}', app_path)
 
-    mw.writeFile(file_bin, content)
-    mw.execShell('chmod +x ' + file_bin)
+    tgking.writeFile(file_bin, content)
+    tgking.execShell('chmod +x ' + file_bin)
 
     # systemd
-    systemDir = mw.systemdCfgDir()
-    systemService = systemDir + '/tgbot.service'
-    systemServiceTpl = getPluginDir() + '/init.d/tgbot.service.tpl'
+    systemDir = tgking.systemdCfgDir()
+    systemService = systemDir + '/' + getModName() + '.service'
+    systemServiceTpl = getPluginDir() + '/init.d/' + getModName() + '.service.tpl'
     if os.path.exists(systemDir) and not os.path.exists(systemService):
-        service_path = mw.getServerDir()
-        se_content = mw.readFile(systemServiceTpl)
+        service_path = tgking.getServerDir()
+        se_content = tgking.readFile(systemServiceTpl)
         se_content = se_content.replace('{$APP_PATH}', app_path)
-        mw.writeFile(systemService, se_content)
-        mw.execShell('systemctl daemon-reload')
+        tgking.writeFile(systemService, se_content)
+        tgking.execShell('systemctl daemon-reload')
 
     return file_bin
 
@@ -98,18 +100,6 @@ def restart():
 
 
 def reload():
-
-    tgbot_tpl = getPluginDir() + '/startup/tgbot.py'
-    tgbot_dst = getServerDir() + '/tgbot.py'
-
-    content = mw.readFile(tgbot_tpl)
-    mw.writeFile(tgbot_dst, content)
-
-    ext_src = getPluginDir() + '/startup/extend'
-    ext_dst = getServerDir()
-
-    mw.execShell('cp -rf ' + ext_src + ' ' + ext_dst)
-
     return agOp('restart')
 
 
