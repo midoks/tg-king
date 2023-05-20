@@ -116,3 +116,38 @@ class module_api:
         else:
             tgking.M('module').where('name=?', (module_name,)).delete()
             return tgking.returnJson(True, '停用成功!!')
+
+    def runApi(self):
+        name = request.form.get('name', '')
+        func = request.form.get('func', '')
+        args = request.form.get('args', '')
+        script = request.form.get('script', 'index')
+
+        data = self.run(name, func, args, script)
+        if data[1] == '':
+            r = tgking.returnJson(True, "OK", data[0].strip())
+        else:
+            r = tgking.returnJson(False, data[1].strip())
+        return r
+
+    # shell 调用
+    def run(self, name, func, args='', script='index'):
+        path = self.__module_dir + '/' + name + '/' + script + '.py'
+        if not os.path.exists(path):
+            path = self.__module_dir + '/' + name + '/' + name + '.py'
+
+        py = 'python3 ' + path
+        if args == '':
+            py_cmd = py + ' ' + func
+        else:
+            py_cmd = py + ' ' + func + ' ' + args
+
+        if not os.path.exists(path):
+            return ('', '')
+        data = tgking.execShell(py_cmd)
+
+        if tgking.isDebugMode():
+            print('run', py_cmd)
+            print(data)
+
+        return (data[0].strip(), data[1].strip())
