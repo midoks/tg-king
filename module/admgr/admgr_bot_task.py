@@ -1,5 +1,7 @@
 # coding:utf-8
 
+# python3 module/admgr/admgr_bot_task.py
+
 import sys
 import io
 import os
@@ -12,8 +14,12 @@ import threading
 
 sys.path.append(os.getcwd() + "/class/core")
 import tgking
-
 import telebot
+
+bot_list = tgking.getBotRangeList('admgr')
+
+print(bot_list)
+
 
 bot = telebot.TeleBot(cfg['bot']['app_token'])
 

@@ -81,12 +81,14 @@ class module_api:
 
     def checkModuleStatus(self, module_info):
         for i in range(len(module_info)):
-            data = tgking.M('module').field('id,status').where(
+            data = tgking.M('module').field('id,status,range_type,range_val').where(
                 'name=?', (module_info[i]['name'],)).select()
             if len(data) == 0:
                 module_info[i]['status'] = 'stop'
             else:
                 module_info[i]['status'] = data[0]['status']
+                module_info[i]['range_type'] = data[0]['range_type']
+                module_info[i]['range_val'] = data[0]['range_val']
         return module_info
 
     def settingApi(self):

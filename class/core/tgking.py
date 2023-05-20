@@ -348,3 +348,9 @@ def getLastLine(path, num, p=1):
         return str(e)
 
     return "\n".join(data)
+
+
+def getBotRangeList(module_name):
+    data = M('module').field('id,status,range_type,range_val').where(
+        'name=?', (module_name,)).select()
+    print(data[0])

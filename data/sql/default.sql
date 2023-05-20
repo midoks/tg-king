@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS `tg_client` (
 
 CREATE TABLE IF NOT EXISTS `module` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
-  `name` TEXT, 
+  `name` TEXT,
+  `range_type` INTEGER default '0',
+  `range_val` TEXT,
   `status` TEXT
 );
