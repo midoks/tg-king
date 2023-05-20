@@ -20,6 +20,7 @@ bot_list = tgking.getBotRangeList('admgr')
 
 print(bot_list)
 
+exit(0)
 
 bot = telebot.TeleBot(cfg['bot']['app_token'])
 

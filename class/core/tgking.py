@@ -353,4 +353,15 @@ def getLastLine(path, num, p=1):
 def getBotRangeList(module_name):
     data = M('module').field('id,status,range_type,range_val').where(
         'name=?', (module_name,)).select()
-    print(data[0])
+
+    print(data[0]['range_type'])
+    if data[0]['range_type'] == 0:
+        return M('tg_bot').field('id,alias,token').select()
+
+    if data[0]['range_type'] == 1:
+        return M('tg_bot').field('id,alias,token').where('id in (?)', (data[0]['range_val'],)).select()
+
+    if data[0]['range_type'] == 2:
+        return M('tg_bot').field('id,alias,token').where('id not in (?)', (data[0]['range_val'],)).select()
+
+    return []
