@@ -170,3 +170,54 @@ function modOpInitD(a, b) {
         });
     })
 }
+
+function modLogs(_name, func, line){
+	var _this = this;
+
+    var func_name = 'error_log';
+    if ( typeof(func) != 'undefined' ){
+        func_name = func;
+    }
+
+    var file_line = 100;
+    if ( typeof(line) != 'undefined' ){
+        file_line = line;
+    }
+
+
+    var loadT = layer.msg('日志路径获取中...',{icon:16,time:0,shade: [0.3, '#000']});
+    $.post('/module/run', {name:_name, func:func_name},function (data) {
+        layer.close(loadT);
+
+        try{
+        	var jdata = $.parseJSON(data.data);
+        	if (!jdata['status']){
+        		layer.msg(jdata.msg,{icon:0,time:2000,shade: [0.3, '#000']});
+                return;
+        	}
+		}catch(err){/*console.log(err);*/}
+
+
+        var loadT2 = layer.msg('文件内容获取中...',{icon:16,time:0,shade: [0.3, '#000']});
+        var fileName = data.data;
+        $.post('/module/get_last_body', 'path=' + fileName+'&line='+file_line, function(rdata) {
+            layer.close(loadT2);
+            if (!rdata.status){
+                layer.msg(rdata.msg,{icon:0,time:2000,shade: [0.3, '#000']});
+                return;
+            }
+            
+            if(rdata.data == '') {
+            	rdata.data = '当前没有日志!';
+            }
+     
+            var h =  parseInt($('.tg-w-menu').css('height')) - 40;
+            var ebody = '<textarea readonly style="margin: 0px;height: '+h+'px;width: 100%;background-color: #333;color:#fff; padding:0 5px" id="info_log">'+rdata.data+'</textarea>';
+            $(".soft-man-con").html(ebody);
+            var ob = document.getElementById('info_log');
+            ob.scrollTop = ob.scrollHeight; 
+        },'json');
+    },'json');
+}
+
+

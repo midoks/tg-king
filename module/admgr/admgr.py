@@ -138,6 +138,11 @@ def initdUinstall():
     tgking.execShell('systemctl disable ' + getPluginName())
     return 'ok'
 
+
+def runLog():
+    p = getServerDir() + '/task.log'
+    return p
+
 if __name__ == "__main__":
     func = sys.argv[1]
     if func == 'status':
@@ -156,6 +161,7 @@ if __name__ == "__main__":
         print(initdInstall())
     elif func == 'initd_uninstall':
         print(initdUinstall())
-
+    elif func == 'run_log':
+        print(runLog())
     else:
         print('error')

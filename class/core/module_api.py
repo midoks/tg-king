@@ -117,6 +117,19 @@ class module_api:
             tgking.M('module').where('name=?', (module_name,)).delete()
             return tgking.returnJson(True, '停用成功!!')
 
+    def getLastBodyApi(self):
+        path = request.form.get('path', '')
+        line = request.form.get('line', '100')
+
+        if not os.path.exists(path):
+            return tgking.returnJson(False, '文件不存在', (path,))
+
+        try:
+            data = tgking.getLastLine(path, int(line))
+            return tgking.returnJson(True, 'OK', data)
+        except Exception as ex:
+            return tgking.returnJson(False, '无法正确读取文件!' + str(ex))
+
     def runApi(self):
         name = request.form.get('name', '')
         func = request.form.get('func', '')

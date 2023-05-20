@@ -86,7 +86,6 @@ common.init()
 
 
 def isLogined():
-    # return True
     # print('isLogined', session)
     if 'login' in session and 'username' in session and session['login'] == True:
         userInfo = tgking.M('users').where(
@@ -95,7 +94,6 @@ def isLogined():
             return False
 
         now_time = int(time.time())
-
         if 'overdue' in session and now_time > session['overdue']:
             # 自动续期
             session['overdue'] = int(time.time()) + 7 * 24 * 60 * 60
@@ -106,7 +104,7 @@ def isLogined():
 
 def publicObject(toObject, func, action=None, get=None):
     name = tgking.toSmallHump(func) + 'Api'
-    # print(toObject,name)
+    print(toObject, name)
     try:
         if hasattr(toObject, name):
             efunc = 'toObject.' + name + '()'
