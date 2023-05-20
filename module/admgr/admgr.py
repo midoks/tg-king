@@ -140,8 +140,7 @@ def initdUinstall():
 
 
 def runLog():
-    p = getServerDir() + '/task.log'
-    return p
+    return tgking.getServerDir() + '/logs/module_admgr.log'
 
 if __name__ == "__main__":
     func = sys.argv[1]
