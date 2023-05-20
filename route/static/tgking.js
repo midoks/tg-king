@@ -85,7 +85,7 @@ function modOpService(a, b) {
         $.post("/module/run", c, function(g) {
             layer.close(e);
           
-            var f = g.data == 'ok' ? msgTpl('{1}服务已{2}',[a,d]) : msgTpl('{1}服务{3}失败!',[a,d]);
+            var f = g.data == 'ok' ? msgTpl('{1}服务已{2}',[a,d]) : msgTpl('{1}服务失败!',[a,d]);
             layer.msg(f, {icon: g.data == 'ok' ? 1 : 2});
             
             if( b != "reload" && g.data == 'ok' ) {
@@ -112,12 +112,9 @@ function modOpService(a, b) {
 
 
 
-function modInitD(_name,_version){
-	if (typeof _version == 'undefined'){
-    	_version = '';
-    }
+function modInitD(_name){
 	var loadT = layer.msg('正在获取...', { icon: 16, time: 0, shade: 0.3 });
-	$.post('/module/run', {name:_name, func:'initd_status',version : _version}, function(data) {
+	$.post('/module/run', {name:_name, func:'initd_status'}, function(data) {
 		layer.close(loadT);
         if( !data.status ){
             layer.msg(data.msg,{icon:0,time:3000,shade: [0.3, '#000']});
@@ -128,41 +125,41 @@ function modInitD(_name,_version){
             return;
         }
         if (data.data == 'ok'){
-            modSetInitD(_name, _version, true);
+            modSetInitD(_name, true);
         } else {
-            modSetInitD(_name, _version, false);
+            modSetInitD(_name, false);
         }
     },'json');
 }
 
-function modSetInitD(_name, _version, status){
+function modSetInitD(_name, status){
 	var serviceCon ='<p class="status">当前状态：<span>'+(status ? '已加载' : '未加载' )+
         '</span><span style="color: '+
         (status?'#20a53a;':'red;')+
         ' margin-left: 3px;" class="glyphicon ' + (status?'glyphicon glyphicon-play':'glyphicon-pause')+'"></span></p><div class="sfm-opt">\
-            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="modOpInitD(\''+_name+'\',\''+_version+'\',\''+(status?'initd_uninstall':'initd_install')+'\')">'+(status?'卸载':'加载')+'</button>\
+            <button class="layui-btn layui-btn-primary layui-btn-sm" onclick="modOpInitD(\''+_name+'\',\''+(status?'initd_uninstall':'initd_install')+'\')">'+(status?'卸载':'加载')+'</button>\
         </div>'; 
     $(".soft-man-con").html(serviceCon);
 }
 
-function modOpInitD(a, _version, b) {
-    var c = "name=" + a + "&func=" + b + "&version="+_version;
+function modOpInitD(a, b) {
+    var c = "name=" + a + "&func=" + b;
     var d = "";
     switch(b) {
         case "initd_install":d = '加载';break;
         case "initd_uninstall":d = '卸载';break;
     }
-    layer.confirm( msgTpl('您真的要{1}{2}{3}服务吗？', [d,a,_version]), {icon:3,closeBtn: 1}, function() {
-        var e = layer.msg(msgTpl('正在{1}{2}{3}服务,请稍候...',[d,a,_version]), {icon: 16,time: 0});
+    layer.confirm( msgTpl('您真的要{1}{2}服务吗？', [d,a]), {icon:3,closeBtn: 1}, function() {
+        var e = layer.msg(msgTpl('正在{1}{2}服务,请稍候...',[d,a]), {icon: 16,time: 0});
         $.post("/module/run", c, function(g) {
             layer.close(e);
-            var f = g.data == 'ok' ? msgTpl('{1}{3}服务已{2}',[a,d,_version]) : msgTpl('{1}{3}服务{2}失败!',[a,d,_version]);
+            var f = g.data == 'ok' ? msgTpl('{1}服务已{2}',[a,d]) : msgTpl('{1}服务{2}失败!',[a,d]);
             layer.msg(f, {icon: g.data == 'ok' ? 1 : 2});
             
             if ( b == 'initd_install' && g.data == 'ok' ) {
-                modSetInitD(a, _version, true);
+                modSetInitD(a, true);
             }else{
-                modSetInitD(a, _version, false);
+                modSetInitD(a, false);
             }
             if(g.data != 'ok') {
                 layer.msg(g.data, {icon: 2,time: 0,shade: 0.3,shadeClose: true});
