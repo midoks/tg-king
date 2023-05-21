@@ -18,6 +18,7 @@ import os
 import json
 import time
 import re
+import asyncio
 
 sys.path.append(os.getcwd() + "/class/core")
 import tgking
@@ -234,7 +235,10 @@ if __name__ == "__main__":
     elif method == 'verify_tgbot':
         verifyTgbot(sys.argv[2])
     elif method == 'verify_tgclient':
-        await verifyTgClient(sys.argv[2])
+        # verifyTgClient(sys.argv[2])
+        # asyncio.run(verifyTgClient(sys.argv[2]))
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(verifyTgClient(sys.argv[2]))
     elif method == 'tgbot_list':
         tgClientList(sys.argv[2])
     elif method == "cli":
