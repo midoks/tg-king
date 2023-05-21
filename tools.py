@@ -189,7 +189,6 @@ async def verifyTgClient(tid):
 
         # wait phone code
         while True:
-
             if os.path.exists(tmp_code_path):
                 code = tgking.readFile(tmp_code_path)
                 client.sign_in(tel, code)
