@@ -27,7 +27,7 @@ class tgclient_api:
 
         start = (int(p) - 1) * (int(limit))
 
-        siteM = tgking.M('tg_client').field('id,app_id,app_hash')
+        siteM = tgking.M('tg_client').field('id,app_id,app_hash,is_vaild')
 
         _list = siteM.limit((str(start)) + ',' +
                             limit).order('id desc').select()
