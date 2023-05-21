@@ -240,9 +240,9 @@ if __name__ == "__main__":
         verifyTgbot(sys.argv[2])
     elif method == 'verify_tgclient':
         # verifyTgClient(sys.argv[2])
-        asyncio.run(verifyTgClient(sys.argv[2]))
-        # loop = asyncio.get_event_loop()
-        # loop.run_until_complete(verifyTgClient(sys.argv[2]))
+        # asyncio.run(verifyTgClient(sys.argv[2]))
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(verifyTgClient(sys.argv[2]))
     elif method == 'tgbot_list':
         tgClientList(sys.argv[2])
     elif method == "cli":
