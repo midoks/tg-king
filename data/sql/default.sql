@@ -41,5 +41,6 @@ CREATE TABLE IF NOT EXISTS `module` (
   `name` TEXT,
   `range_type` INTEGER default '0',
   `range_val` TEXT,
+  `config` TEXT,
   `status` TEXT
 );
