@@ -127,7 +127,7 @@ def initdInstall():
     if tgking.isAppleSystem():
         return "Apple Computer does not support"
 
-    tgking.execShell('systemctl enable ' + getPluginName())
+    tgking.execShell('systemctl enable ' + getModName())
     return 'ok'
 
 
@@ -135,7 +135,7 @@ def initdUinstall():
     if tgking.isAppleSystem():
         return "Apple Computer does not support"
 
-    tgking.execShell('systemctl disable ' + getPluginName())
+    tgking.execShell('systemctl disable ' + getModName())
     return 'ok'
 
 
