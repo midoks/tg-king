@@ -385,3 +385,11 @@ def getBotRangeList(module_name):
         return M('tg_bot').field('id,alias,token').where('id not in (?)', (data[0]['range_val'],)).select()
 
     return []
+
+
+def getBotById(tid):
+    t = M('tg_bot').field('id,alias,token').where('id=?', (tid,)).select()
+    if len(t) > 0:
+        return t[0]
+    else:
+        return {}
