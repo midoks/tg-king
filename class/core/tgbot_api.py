@@ -23,13 +23,15 @@ class tgbot_api:
     def listApi(self):
         limit = request.form.get('limit', '10')
         p = request.form.get('p', '1')
-
         start = (int(p) - 1) * (int(limit))
 
         siteM = tgking.M('tg_bot').field('id,alias,token')
 
         _list = siteM.limit((str(start)) + ',' +
                             limit).order('id desc').select()
+
+        for i in range(len(_list)):
+            _list[i]['token'] = _list[i]['token'].split(':')[0] + ':xxxxxx'
 
         count = siteM.count()
 
