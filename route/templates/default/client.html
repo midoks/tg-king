@@ -138,7 +138,7 @@ function vaild_code(obj){
                         layer.close(index);
                         table.reload('tgclient_list', {});
                     }
-                },{icon:data.status?1:2});
+                },{icon:data.status==0?1:2});
             },'json');
             return;
         }
@@ -168,7 +168,7 @@ function vaild(obj){
                         layer.close(index);
                         vaild_code(obj);
                     }
-                },{icon:data.status?1:2});
+                },{icon:data.status==0?1:2});
             },'json');
             return;
         }

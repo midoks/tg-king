@@ -174,35 +174,36 @@ def verifyTgbot(token):
 
 
 async def verifyTgClient(tid):
-    # try:
-    from telethon import TelegramClient
-    client_data = tgking.getClientById(tid)
+    try:
+        from telethon import TelegramClient
+        client_data = tgking.getClientById(tid)
 
-    client = TelegramClient('tgking_' + tid, client_data[
-        'app_id'], client_data['app_hash'])
+        client = TelegramClient('tgking_' + tid, client_data[
+            'app_id'], client_data['app_hash'])
 
-    await client.connect()
-    tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
-    tmp_code_path = '/tmp/tg_vaild_code_' + tid
-    tel = tgking.readFile(tmp_tel_path)
-    await client.send_code_request(tel)
+        await client.connect()
+        tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
+        tmp_code_path = '/tmp/tg_vaild_code_' + tid
+        tel = tgking.readFile(tmp_tel_path)
+        await client.send_code_request(tel)
 
-    # wait phone code
-    while True:
-        if os.path.exists(tmp_code_path):
-            code = tgking.readFile(tmp_code_path)
-            client.sign_in(tel, code)
-            break
-        time.sleep(1)
+        # wait phone code
+        while True:
 
-    # print(client)
-    os.remove(tmp_tel_path)
-    os.remove(tmp_code_path)
-    tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
-    tgking.writeFile(tmp_ok_path, 'ok')
-    await client.disconnect()
-    # except Exception as e:
-    #     print(tgking.getTracebackInfo())
+            if os.path.exists(tmp_code_path):
+                code = tgking.readFile(tmp_code_path)
+                client.sign_in(tel, code)
+                break
+            time.sleep(1)
+
+        # print(client)
+        os.remove(tmp_tel_path)
+        os.remove(tmp_code_path)
+        tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
+        tgking.writeFile(tmp_ok_path, 'ok')
+        await client.disconnect()
+    except Exception as e:
+        print(tgking.getTracebackInfo())
 
 
 def tgbotList(module_name):
@@ -240,9 +241,9 @@ if __name__ == "__main__":
         verifyTgbot(sys.argv[2])
     elif method == 'verify_tgclient':
         # verifyTgClient(sys.argv[2])
-        # asyncio.run(verifyTgClient(sys.argv[2]))
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(verifyTgClient(sys.argv[2]))
+        asyncio.run(verifyTgClient(sys.argv[2]))
+        # loop = asyncio.get_event_loop()
+        # loop.run_until_complete(verifyTgClient(sys.argv[2]))
     elif method == 'tgbot_list':
         tgClientList(sys.argv[2])
     elif method == "cli":
