@@ -106,4 +106,4 @@ class tgclient_api:
                     'id=?', (tid,)).setField('data', tgking.readFile(session_tg))
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
-        return tgking.returnCode(0, '验证成功!')
+        return tgking.returnCode(-1, '验证失败!')
