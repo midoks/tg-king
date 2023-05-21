@@ -75,6 +75,10 @@ class tgclient_api:
         tid = request.form.get('id', '')
         tel = request.form.get('tel', '')
 
+        session_tg = 'tgking_' + tid
+        if os.path.exists(session_tg):
+            os.remove(session_tg)
+
         tmp_path = '/tmp/tg_vaild_tel_' + tid
         tgking.writeFile(tmp_path, tel)
 
