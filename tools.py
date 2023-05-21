@@ -183,7 +183,7 @@ async def verifyTgClient(tid):
     tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
     tmp_code_path = '/tmp/tg_vaild_code_' + tid
     tel = tgking.readFile(tmp_tel_path)
-    await client.sign_in(tel)
+    await client.send_code_request(tel)
 
     # wait phone code
     while True:
