@@ -75,7 +75,7 @@ class tgclient_api:
         tid = request.form.get('id', '')
         tel = request.form.get('tel', '')
 
-        session_tg = 'tgking_' + tid
+        session_tg = 'tgking_' + tid + '.session'
         if os.path.exists(session_tg):
             os.remove(session_tg)
 
