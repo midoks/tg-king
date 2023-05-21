@@ -96,6 +96,18 @@ def getModDir():
 def readFile(filename):
     # 读文件内容
     try:
+        fp = open(filename, 'r')
+        fBody = fp.read()
+        fp.close()
+        return fBody
+    except Exception as e:
+        print(getTracebackInfo())
+        return False
+
+
+def readBinFile(filename):
+    # 读文件内容
+    try:
         fp = open(filename, 'rb')
         fBody = fp.read()
         fp.close()
