@@ -74,7 +74,7 @@ def agOp(method):
     file = initDreplace()
 
     if not tgking.isAppleSystem():
-        data = tgking.execShell('systemctl ' + method + ' ' + getModName())
+        data = tgking.execShell('systemctl ' + method + ' tg_' + getModName())
         if data[1] == '':
             return 'ok'
         return data[1]
@@ -115,7 +115,7 @@ def initdStatus():
     if tgking.isAppleSystem():
         return "Apple Computer does not support"
 
-    shell_cmd = 'systemctl status ' + \
+    shell_cmd = 'systemctl status tg_' + \
         getModName() + ' | grep loaded | grep "enabled;"'
     data = tgking.execShell(shell_cmd)
     if data[0] == '':
@@ -127,7 +127,7 @@ def initdInstall():
     if tgking.isAppleSystem():
         return "Apple Computer does not support"
 
-    tgking.execShell('systemctl enable ' + getModName())
+    tgking.execShell('systemctl enable tg_' + getModName())
     return 'ok'
 
 
@@ -135,7 +135,7 @@ def initdUinstall():
     if tgking.isAppleSystem():
         return "Apple Computer does not support"
 
-    tgking.execShell('systemctl disable ' + getModName())
+    tgking.execShell('systemctl disable tg_' + getModName())
     return 'ok'
 
 
