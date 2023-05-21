@@ -133,6 +133,7 @@ function vaild_code(obj){
         yes: function(index, layero){
             var code = $('input[name="code"]').val();
             $.post('/tgclient/vaild_code', {id:obj.data.id,code:code}, function(data) {
+                console.log(data);
                 showMsg(data.msg,function(){
                     if (data.status==0){
                         layer.close(index);
