@@ -438,7 +438,7 @@ def getClientRangeList():
 
 
 def getClientById(tid):
-    t = M('tg_client').field('id,app_id,app_hash').where(
+    t = M('tg_client').field('id,app_id,app_hash,is_vaild,data').where(
         'id=?', (tid,)).select()
     if len(t) > 0:
         return t[0]
