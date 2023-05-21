@@ -78,11 +78,8 @@ class tgclient_api:
         tgking.writeFile(tmp_path, tel)
 
         cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid
-        data = tgking.execShell(cmd)
-        return_status = data[0].strip()
-        if return_status.find('ok') > -1:
-            return tgking.returnJson(0, '验证中!')
-        return tgking.returnCode(-1, '验证失败!')
+        os.system(cmd)
+        return tgking.returnJson(0, '验证中!')
 
     def vaildCodeApi(self):
         tid = request.form.get('id', '')
