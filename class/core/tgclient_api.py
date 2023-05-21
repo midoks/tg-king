@@ -12,6 +12,7 @@
 # 机器人操作API
 # ---------------------------------------------------------------------------------
 
+import os
 import tgking
 
 from flask import request
