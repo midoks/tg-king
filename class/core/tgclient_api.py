@@ -84,7 +84,7 @@ class tgclient_api:
 
         cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid + ' &'
         os.system(cmd)
-        return tgking.returnJson(0, '验证中,注意查看短码!')
+        return tgking.returnCode(0, '验证中,注意查看短码!')
 
     def vaildCodeApi(self):
         tid = request.form.get('id', '')
