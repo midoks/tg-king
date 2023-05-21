@@ -236,6 +236,21 @@ def systemdCfgDir():
     return "/tmp"
 
 
+def writeDbLog(stype, msg, args=(), uid=1):
+    try:
+        import time
+        import db
+        import json
+        sql = db.Sql()
+        mdate = time.strftime('%Y-%m-%d %X', time.localtime())
+        wmsg = getInfo(msg, args)
+        data = (stype, wmsg, uid, mdate)
+        result = sql.table('logs').add('type,log,uid,addtime', data)
+        return True
+    except Exception as e:
+        return False
+
+
 def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
     log_file = getServerDir() + '/logs/debug.log'
     if path != None:

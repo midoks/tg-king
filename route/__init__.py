@@ -176,7 +176,8 @@ def index(reqClass=None, reqAction=None, reqData=None):
         if reqClass == None:
             reqClass = 'index'
 
-        page_file = ('index', 'bot', 'client', 'config', 'login', 'module')
+        page_file = ('index', 'bot', 'client', 'logs',
+                     'config', 'login', 'module')
 
         # 设置了安全路径
         safe_pathinfo = tgking.getSafePath()
@@ -208,7 +209,7 @@ def index(reqClass=None, reqAction=None, reqData=None):
         return tgking.returnCode(-1, 'error request!')
 
     # API请求
-    classFile = ('module_api', 'tgbot_api', 'tgclient_api')
+    classFile = ('module_api', 'tgbot_api', 'tgclient_api', 'logs_api')
     className = reqClass + '_api'
     if not className in classFile:
         return tgking.returnCode(-1, 'api error request!')
