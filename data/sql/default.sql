@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS `tg_bot` (
 CREATE TABLE IF NOT EXISTS `tg_client` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `app_id` TEXT, 
-  `app_hash` TEXT
+  `app_hash` TEXT,
+  `is_vaild` TEXT default '',
+  `data` TEXT
 );
 
 

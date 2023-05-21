@@ -54,6 +54,7 @@ table.render({
         ,{field:'id', title:'ID', width:100,fixed: 'left', unresize: true, sort: true}
         ,{field:'app_id', title:'APP_ID',width:180}
         ,{field:'app_hash', title:'APP_HASH'}
+        ,{title:'是否验证',templet:"#vaildTpl",width:120}
         ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
       ]]
     ,page: true
@@ -114,10 +115,15 @@ function add(obj){
     });
 }
 
+function vaild(obj){
+    console.log(obj);
+}
+
 //头工具栏事件
 table.on('toolbar(list)', function(obj){    
     switch(obj.event){
         case 'add':add(obj);break;
+        case 'vaild':vaild(obj);break;
     };
 });
 
@@ -137,9 +143,20 @@ table.on('tool(list)', function(obj){
         });
     } else if(obj.event === 'edit'){
         add(obj);
+    } else if (obj.event == 'vaild'){
+        vaild(obj);
     }
 });
 ///
 });
 </script>
+{% raw %}
+<script type="text/html" id="vaildTpl">
+    {{#  if(d.is_vaild == 'ok'){ }}
+        <span lay-event="vaild" class="layui-btn layui-btn-normal layui-btn-xs">已验证</span>
+    {{#  } else { }}
+        <span lay-event="vaild" class="layui-btn layui-btn-warm layui-btn-xs">未验证</span>
+    {{#  } }}
+</script>
+{% endraw %}
 {% endblock %}
