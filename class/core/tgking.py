@@ -408,3 +408,27 @@ def getBotById(tid):
         return t[0]
     else:
         return {}
+
+
+def getClientRangeList():
+    data = M('module').field('id,status,range_type,range_val').where(
+        'name=?', (module_name,)).select()
+
+    if data[0]['range_type'] == 0:
+        return M('tg_client').field('id,app_id,app_hash').select()
+
+    if data[0]['range_type'] == 1:
+        return M('tg_client').field('id,app_id,app_hash').where('id in (?)', (data[0]['range_val'],)).select()
+
+    if data[0]['range_type'] == 2:
+        return M('tg_client').field('id,app_id,app_hash').where('id not in (?)', (data[0]['range_val'],)).select()
+    return []
+
+
+def getClientById(tid):
+    t = M('tg_client').field('id,app_id,app_hash').where(
+        'id=?', (tid,)).select()
+    if len(t) > 0:
+        return t[0]
+    else:
+        return {}

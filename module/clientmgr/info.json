@@ -1,0 +1,9 @@
+{
+	"ps": "TG客户端管理",
+	"name": "clientmgr",
+	"title": "客户端管理",
+	"author": "midoks",
+	"type": "client",
+	"setup":"1.0",
+	"depend_doc1":"https://docs.telethon.dev/en/stable/basic/installation.html"
+}

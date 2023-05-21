@@ -181,6 +181,15 @@ def tgbotList(module_name):
     print(ids)
 
 
+def tgClientList(module_name):
+    bot_list = tgking.getClientRangeList(module_name)
+    ids = ''
+    for x in range(len(bot_list)):
+        ids = ids + str(bot_list[x]['id']) + ','
+    ids = ids.strip(',')
+    print(ids)
+
+
 if __name__ == "__main__":
     method = sys.argv[1]
     if method == 'panel':
@@ -197,7 +206,7 @@ if __name__ == "__main__":
     elif method == 'verify_tgbot':
         verifyTgbot(sys.argv[2])
     elif method == 'tgbot_list':
-        tgbotList(sys.argv[2])
+        tgClientList(sys.argv[2])
     elif method == "cli":
         clinum = 0
         try:
