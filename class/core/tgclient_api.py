@@ -78,7 +78,7 @@ class tgclient_api:
         tmp_path = '/tmp/tg_vaild_tel_' + tid
         tgking.writeFile(tmp_path, tel)
 
-        cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid
+        cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid + ' &'
         os.system(cmd)
         return tgking.returnJson(0, '验证中!')
 
