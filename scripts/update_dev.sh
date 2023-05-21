@@ -70,8 +70,6 @@ echo "update tg-king code start"
 curl --insecure -sSLo /tmp/dev.zip https://github.com/midoks/tg-king/archive/refs/heads/dev.zip
 cd /tmp && unzip /tmp/dev.zip
 $CP_CMD -rf /tmp/tg-king-dev/* /opt/tg-king
-rm -rf /tmp/dev.zip
-rm -rf /tmp/tg-king-dev
 
 echo "update tg-king code end"
 
