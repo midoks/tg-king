@@ -102,6 +102,8 @@ class tgclient_api:
                     'id=?', (tid,)).setField('is_vaild', 1)
 
                 session_tg = 'tgking_' + tid + '.session'
+                print(session_tg)
+                print(tgking.readFile(session_tg))
                 tgking.M('tg_client').where(
                     'id=?', (tid,)).setField('data', tgking.readFile(session_tg))
                 os.remove(ok_path)

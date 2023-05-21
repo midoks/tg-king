@@ -147,6 +147,12 @@ function vaild_code(obj){
 }
 
 function vaild(obj){
+    if (obj.data['is_vaild'] == 1){
+        layer.msg('已经验证完成!!', icon:1);
+        return;
+    }
+
+
     layer.open({
         area: ['400px'],
         title:'验证账户【手机】',
