@@ -4,5 +4,14 @@
 	"title": "广告管理",
 	"author": "midoks",
 	"type": "bot",
+	"hook":[
+		{
+			"tag":"menu",
+			"menu": {
+				"title":"广告管理",
+				"path":"menu/index.html"
+			}
+		}
+	],
 	"setup":"1.0"
 }
