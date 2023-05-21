@@ -171,3 +171,4 @@ data/port.pl
 scripts/init.d/tgking
 logs/tgking.pid
 
+tmp/admgr_lock.json

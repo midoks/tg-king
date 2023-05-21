@@ -350,11 +350,31 @@ def getLastLine(path, num, p=1):
     return "\n".join(data)
 
 
+def getDate():
+    # 取格式时间
+    import time
+    return time.strftime('%Y-%m-%d %X', time.localtime())
+
+
+def getDateFromNow(tf_format="%Y-%m-%d %H:%M:%S", time_zone="Asia/Shanghai"):
+    # 取格式时间
+    import time
+    os.environ['TZ'] = time_zone
+    time.tzset()
+    return time.strftime(tf_format, time.localtime())
+
+
+def getDataFromInt(val):
+    time_format = '%Y-%m-%d %H:%M:%S'
+    time_str = time.localtime(val)
+    return time.strftime(time_format, time_str)
+
+
 def getBotRangeList(module_name):
     data = M('module').field('id,status,range_type,range_val').where(
         'name=?', (module_name,)).select()
 
-    print(data[0]['range_type'])
+    # print(data[0]['range_type'])
     if data[0]['range_type'] == 0:
         return M('tg_bot').field('id,alias,token').select()
 
