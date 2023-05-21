@@ -72,6 +72,9 @@ class tgclient_api:
 
     def vaildApi(self):
         tid = request.form.get('id', '')
-        data = tgking.getClientById(tid)
-        print(data)
-        return tgking.returnCode(0, '验证成功!')
+        cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid
+        data = tgking.execShell(cmd)
+        return_status = data[0].strip()
+        if return_status.find('ok') > -1:
+            return tgking.returnJson(0, '验证成功!')
+        return tgking.returnCode(-1, '验证失败!')

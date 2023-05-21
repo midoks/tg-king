@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `tg_client` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `app_id` TEXT, 
   `app_hash` TEXT,
-  `is_vaild` TEXT default '',
+  `is_vaild` INTEGER default '0',
   `data` TEXT
 );
 

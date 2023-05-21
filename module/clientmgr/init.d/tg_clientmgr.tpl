@@ -37,17 +37,17 @@ tg_start_cmd(){
         echo -e "starting admgr_bot_cmd... \c"
         cd $SP_PATH
 
-        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list admgr`
+        ids=`python3 {$SERVER_PATH}/tools.py tgclient_list clientmgr`
         ids=(${ids//,/ })
         
         for var in ${ids[@]}
         do
-            python3 {$APP_PATH}/admgr_bot_cmd.py $var >> {$SERVER_PATH}/logs/module_admgr.log &
-            echo "starting admgr_bot_cmd...${var}...done"
+            python3 {$APP_PATH}/clientmgr_bot_task.py $var >> {$SERVER_PATH}/logs/module_clientmgr.log &
+            echo "starting clientmgr_bot_task...${var}...done"
         done
         
     else
-        echo "starting admgr_bot_cmd...(pid $(echo $isStart)) already running"
+        echo "starting clientmgr_bot_task...(pid $(echo $isStart)) already running"
     fi
 }
 
@@ -56,9 +56,9 @@ tg_start_task(){
 
 	isStart=`ps -ef|grep 'admgr_bot_task.py' |grep -v grep | awk '{print $2}'`
     if [ "$isStart" == '' ];then
-        echo -e "starting admgr_bot_task... \c"
+        echo -e "starting clientmgr_bot_task... \c"
         cd $SP_PATH
-        python3 {$APP_PATH}/admgr_bot_task.py >> {$SERVER_PATH}/logs/module_admgr.log &
+        python3 {$APP_PATH}/clientmgr_bot_task.py >> {$SERVER_PATH}/logs/module_clientmgr.log &
         isStart=""
         while [[ "$isStart" == "" ]];
         do
@@ -72,19 +72,19 @@ tg_start_task(){
         done
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
-            echo -e "\033[31mError: admgr_bot_task service startup failed.\033[0m"
+            echo -e "\033[31mError: clientmgr_bot_task service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting admgr_bot_task...(pid $(echo $isStart)) already running"
+        echo "starting clientmgr_bot_task...(pid $(echo $isStart)) already running"
     fi
 }
 
 
 tg_stop(){
-	echo -e "stopping admgr_bot_task ... \c";
-    arr=`ps aux|grep 'admgr_bot_task.py'|grep -v grep|awk '{print $2}'`
+	echo -e "stopping clientmgr_bot_task ... \c";
+    arr=`ps aux|grep 'clientmgr_bot_task.py'|grep -v grep|awk '{print $2}'`
     for p in ${arr[@]}
     do
         kill -9 $p > /dev/null 2>&1

@@ -172,6 +172,21 @@ def verifyTgbot(token):
         print(str(e))
 
 
+def verifyTgClient(tid):
+    try:
+        from telethon import TelegramClient
+
+        client_data = tgking.getClientById(tid)
+
+        client = TelegramClient('mdioks', client_data[
+            'app_id'], client_data['app_hash'])
+        print(client)
+
+        client.start()
+    except Exception as e:
+        print(str(e))
+
+
 def tgbotList(module_name):
     bot_list = tgking.getBotRangeList(module_name)
     ids = ''
@@ -205,6 +220,8 @@ if __name__ == "__main__":
         getServerIp()
     elif method == 'verify_tgbot':
         verifyTgbot(sys.argv[2])
+    elif method == 'verify_tgclient':
+        verifyTgClient(sys.argv[2])
     elif method == 'tgbot_list':
         tgClientList(sys.argv[2])
     elif method == "cli":

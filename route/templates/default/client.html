@@ -117,6 +117,14 @@ function add(obj){
 
 function vaild(obj){
     console.log(obj);
+    $.post('/tgclient/vaild', {id:obj.data.id}, function(data) {
+        showMsg(data.msg,function(){
+            if (data.status){
+                layer.close(index);
+                table.reload('tgclient_list', {});
+            }
+        },{icon:data.status?1:2});
+    },'json');
 }
 
 //头工具栏事件
@@ -152,7 +160,7 @@ table.on('tool(list)', function(obj){
 </script>
 {% raw %}
 <script type="text/html" id="vaildTpl">
-    {{#  if(d.is_vaild == 'ok'){ }}
+    {{#  if(d.is_vaild == '1'){ }}
         <span lay-event="vaild" class="layui-btn layui-btn-normal layui-btn-xs">已验证</span>
     {{#  } else { }}
         <span lay-event="vaild" class="layui-btn layui-btn-warm layui-btn-xs">未验证</span>
