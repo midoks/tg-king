@@ -100,6 +100,10 @@ class tgclient_api:
             if os.path.exists(ok_path):
                 tgking.M('tg_client').where(
                     'id=?', (tid,)).setField('is_vaild', 1)
+
+                session_tg = 'tgking_' + tid + '.session'
+                tgking.M('tg_client').where(
+                    'id=?', (tid,)).setField('data', tgking.readFile(session_tg))
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
         return tgking.returnCode(0, '验证成功!')
