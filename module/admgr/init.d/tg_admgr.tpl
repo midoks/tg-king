@@ -26,7 +26,33 @@ if [ -f $SP_PATH/bin/activate ];then
     source $SP_PATH/bin/activate
 fi
 
-tg_start(){	
+tg_start(){
+    tg_start_cmd
+    tg_start_task
+}
+
+tg_start_cmd(){ 
+    isStart=`ps -ef|grep 'admgr_bot_cmd.py' |grep -v grep | awk '{print $2}'`
+    if [ "$isStart" == '' ];then
+        echo -e "starting admgr_bot_cmd... \c"
+        cd $SP_PATH
+
+        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list admgr`
+        ids=(${ids//,/ })
+        
+        for var in ${ids[@]}
+        do
+            python3 {$APP_PATH}/admgr_bot_cmd.py $var >> {$SERVER_PATH}/logs/module_admgr.log &
+            echo "starting admgr_bot_cmd...${var}...done"
+        done
+        
+    else
+        echo "starting admgr_bot_cmd...(pid $(echo $isStart)) already running"
+    fi
+}
+
+
+tg_start_task(){	
 
 	isStart=`ps -ef|grep 'admgr_bot_task.py' |grep -v grep | awk '{print $2}'`
     if [ "$isStart" == '' ];then
