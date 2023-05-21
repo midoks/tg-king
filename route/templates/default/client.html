@@ -104,7 +104,7 @@ function add(obj){
             }
             $.post('/tgclient/add', {id:id,app_id:app_id,app_hash:app_hash}, function(data) {
                 showMsg(data.msg,function(){
-                    if (data.status){
+                    if (data.status==0){
                         layer.close(index);
                         table.reload('tgclient_list', {});
                     }
@@ -134,7 +134,7 @@ function vaild_code(obj){
             var code = $('input[name="code"]').val();
             $.post('/tgclient/vaild_code', {id:obj.data.id,code:code}, function(data) {
                 showMsg(data.msg,function(){
-                    if (data.status){
+                    if (data.status==0){
                         layer.close(index);
                         table.reload('tgclient_list', {});
                     }
