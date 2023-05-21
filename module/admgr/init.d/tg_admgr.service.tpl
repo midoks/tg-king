@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart={$APP_PATH}/init.d/tg_admgr start
-ExecStop={$APP_PATH}/init.d/tg_admgr stop
-ExecReload={$APP_PATH}/init.d/tg_admgr reload
+ExecStart=/etc/init.d/tg_admgr start
+ExecStop=/etc/init.d/tg_admgr stop
+ExecReload=/etc/init.d/tg_admgr reload
 KillMode=process
 Restart=on-failure
 
