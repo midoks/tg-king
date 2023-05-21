@@ -30,7 +30,7 @@ def writeLog(log_str):
     return True
 
 
-chat_id = -1001578009023
+chat_id = 5568699210
 
 
 def pushContent(bot, tag='admgr', trigger_time=300):
