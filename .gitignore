@@ -174,3 +174,4 @@ logs/tgking.pid
 tmp/admgr_lock.json
 mdioks.session
 mdioks.session-journal
+tgking_1.session

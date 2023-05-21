@@ -72,9 +72,29 @@ class tgclient_api:
 
     def vaildApi(self):
         tid = request.form.get('id', '')
+        tel = request.form.get('tel', '')
+
+        tmp_path = '/tmp/tg_vaild_tel_' + tid
+        tgking.writeFile(tmp_path, tel)
+
         cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid
         data = tgking.execShell(cmd)
         return_status = data[0].strip()
         if return_status.find('ok') > -1:
-            return tgking.returnJson(0, '验证成功!')
+            return tgking.returnJson(0, '验证中!')
         return tgking.returnCode(-1, '验证失败!')
+
+    def vaildCodeApi(self):
+        tid = request.form.get('id', '')
+        code = request.form.get('code', '')
+
+        tmp_path = '/tmp/tg_vaild_code_' + tid
+        tgking.writeFile(tmp_path, code)
+
+        for x in range(10):
+            if x >= 9:
+                return tgking.returnCode(-1, '验证失败!')
+            ok_path = '/tmp/tg_vaild_ok_' + tid
+            if os.path.exists(ok_path):
+                return tgking.returnCode(0, '验证成功!')
+        return tgking.returnCode(0, '验证成功!')

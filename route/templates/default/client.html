@@ -115,16 +115,64 @@ function add(obj){
     });
 }
 
+function vaild_code(obj){
+    layer.open({
+        area: ['400px'],
+        title:'验证登陆【短信】',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">短信码</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="code" value="" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+        </div>',
+        btn: ['短信验证','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var code = $('input[name="code"]').val();
+            $.post('/tgclient/vaild_code', {id:obj.data.id,code:code}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('tgclient_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
 function vaild(obj){
-    console.log(obj);
-    $.post('/tgclient/vaild', {id:obj.data.id}, function(data) {
-        showMsg(data.msg,function(){
-            if (data.status){
-                layer.close(index);
-                table.reload('tgclient_list', {});
-            }
-        },{icon:data.status?1:2});
-    },'json');
+    layer.open({
+        area: ['400px'],
+        title:'验证账户【手机】',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">手机(加区号)</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="tel" value="+86" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+        </div>',
+        btn: ['验证','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var tel = $('input[name="tel"]').val();
+            $.post('/tgclient/vaild', {id:obj.data.id,tel:tel}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        vaild_code(obj);
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
 }
 
 //头工具栏事件
