@@ -133,13 +133,13 @@ function vaild_code(obj){
         yes: function(index, layero){
             var code = $('input[name="code"]').val();
             $.post('/tgclient/vaild_code', {id:obj.data.id,code:code}, function(data) {
-                console.log(data);
+                // console.log(data);
                 showMsg(data.msg,function(){
-                    if (data.status==0){
+                    if (data.code==0){
                         layer.close(index);
                         table.reload('tgclient_list', {});
                     }
-                },{icon:data.status==0?1:2});
+                },{icon:data.code==0?1:2});
             },'json');
             return;
         }
@@ -165,11 +165,11 @@ function vaild(obj){
             var tel = $('input[name="tel"]').val();
             $.post('/tgclient/vaild', {id:obj.data.id,tel:tel}, function(data) {
                 showMsg(data.msg,function(){
-                    if (data.status==0){
+                    if (data.code==0){
                         layer.close(index);
                         vaild_code(obj);
                     }
-                },{icon:data.status==0?1:2});
+                },{icon:data.code==0?1:2});
             },'json');
             return;
         }
