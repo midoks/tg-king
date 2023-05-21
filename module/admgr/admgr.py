@@ -116,7 +116,7 @@ def initdStatus():
         return "Apple Computer does not support"
 
     shell_cmd = 'systemctl status ' + \
-        getPluginName() + ' | grep loaded | grep "enabled;"'
+        getModName() + ' | grep loaded | grep "enabled;"'
     data = tgking.execShell(shell_cmd)
     if data[0] == '':
         return 'fail'
