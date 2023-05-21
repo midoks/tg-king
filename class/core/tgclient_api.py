@@ -69,3 +69,9 @@ class tgclient_api:
         tgking.M('tg_client').add('app_id,app_hash', (app_id, app_hash,))
 
         return tgking.returnJson(True, '添加成功!')
+
+    def vaildApi(self):
+        tid = request.form.get('id', '')
+        data = tgking.getClientById(tid)
+        print(data)
+        return tgking.returnCode(0, '验证成功!')
