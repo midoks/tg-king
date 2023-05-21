@@ -202,7 +202,7 @@ async def verifyTgClient(tid):
         tgking.writeFile(tmp_ok_path, 'ok')
         await client.disconnect()
     except Exception as e:
-        print(str(e))
+        print(tgking.getTracebackInfo())
 
 
 def tgbotList(module_name):
