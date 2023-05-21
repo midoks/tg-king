@@ -104,6 +104,7 @@ class tgclient_api:
                 session_tg = 'tgking_' + tid + '.session'
                 tgking.M('tg_client').where(
                     'id=?', (tid,)).setField('data', tgking.readFile(session_tg))
+                os.remove(ok_path)
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
         return tgking.returnCode(-1, '验证失败!')
