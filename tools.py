@@ -172,7 +172,7 @@ def verifyTgbot(token):
         print(str(e))
 
 
-def verifyTgClient(tid):
+async def verifyTgClient(tid):
     try:
         from telethon import TelegramClient
         client_data = tgking.getClientById(tid)
@@ -182,7 +182,7 @@ def verifyTgClient(tid):
         tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
         tmp_code_path = '/tmp/tg_vaild_code_' + tid
         tel = tgking.readFile(tmp_tel_path)
-        client.sign_in(tel)
+        await client.sign_in(tel)
 
         # wait phone code
         while True:
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     elif method == 'verify_tgbot':
         verifyTgbot(sys.argv[2])
     elif method == 'verify_tgclient':
-        verifyTgClient(sys.argv[2])
+        await verifyTgClient(sys.argv[2])
     elif method == 'tgbot_list':
         tgClientList(sys.argv[2])
     elif method == "cli":
