@@ -18,13 +18,5 @@ import telebot
 
 if __name__ == "__main__":
 
-    # 机器人推送任务
-    botPushTask = threading.Thread(target=botPush)
-    botPushTask.start()
-
-    # 机器人其他推送任务
-    botPushOtherTask = threading.Thread(target=botPushOther)
-    botPushOtherTask.start()
-
     writeLog('启动成功')
     runBot(bot)

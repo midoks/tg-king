@@ -74,7 +74,7 @@ def agOp(method):
     file = initDreplace()
 
     if not tgking.isAppleSystem():
-        data = tgking.execShell('systemctl ' + method + ' ' + getPluginName())
+        data = tgking.execShell('systemctl ' + method + ' ' + getModName())
         if data[1] == '':
             return 'ok'
         return data[1]
