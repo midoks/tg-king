@@ -98,6 +98,8 @@ class tgclient_api:
                 return tgking.returnCode(-1, '验证失败!')
             ok_path = '/tmp/tg_vaild_ok_' + tid
             if os.path.exists(ok_path):
+                tgking.M('tg_client').where(
+                    'id=?', (tid,)).setField('is_vaild', 1)
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
         return tgking.returnCode(0, '验证成功!')
