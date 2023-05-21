@@ -192,14 +192,14 @@ async def verifyTgClient(tid):
             if os.path.exists(tmp_code_path):
                 code = tgking.readFile(tmp_code_path)
                 client.sign_in(tel, code)
+
+                os.remove(tmp_tel_path)
+                os.remove(tmp_code_path)
+                tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
+                tgking.writeFile(tmp_ok_path, 'ok')
                 break
             time.sleep(1)
-
         # print(client)
-        os.remove(tmp_tel_path)
-        os.remove(tmp_code_path)
-        tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
-        tgking.writeFile(tmp_ok_path, 'ok')
         await client.disconnect()
     except Exception as e:
         print(tgking.getTracebackInfo())

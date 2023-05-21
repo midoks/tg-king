@@ -96,10 +96,10 @@ def getModDir():
 def readFile(filename):
     # 读文件内容
     try:
-        fp = open(filename, 'r')
+        fp = open(filename, 'rb')
         fBody = fp.read()
         fp.close()
-        return fBody
+        return str(fBody)
     except Exception as e:
         print(getTracebackInfo())
         return False
