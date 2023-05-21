@@ -99,4 +99,5 @@ class tgclient_api:
             ok_path = '/tmp/tg_vaild_ok_' + tid
             if os.path.exists(ok_path):
                 return tgking.returnCode(0, '验证成功!')
+            time.sleep(1)
         return tgking.returnCode(0, '验证成功!')
