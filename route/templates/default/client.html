@@ -25,10 +25,6 @@
                         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
                     </div>
                 </script>
-                <script type="text/html" id="list-right-btn">
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-                </script>
               </div>
             </div>
         </div>
@@ -55,7 +51,7 @@ table.render({
         ,{field:'app_id', title:'APP_ID',width:180}
         ,{field:'app_hash', title:'APP_HASH'}
         ,{title:'是否验证',templet:"#vaildTpl",width:120}
-        ,{fixed: 'right', title:'操作', toolbar: '#list-right-btn', width:150}
+        ,{fixed: 'right', title:'操作', templet:"#opTpl", width:150}
       ]]
     ,page: true
     ,id:'tgclient_list'
@@ -125,6 +121,10 @@ function vaild_code(obj){
               <div class="layui-input-block">\
                 <input type="text" name="code" value="" autocomplete="off" class="layui-input">\
               </div>\
+              <label class="layui-form-label">密码(2FA)</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="pwd" value="" autocomplete="off" class="layui-input">\
+              </div>\
             </div>\
         </div>',
         btn: ['短信验证','取消'],
@@ -132,7 +132,8 @@ function vaild_code(obj){
         shadeClose: false,
         yes: function(index, layero){
             var code = $('input[name="code"]').val();
-            $.post('/tgclient/vaild_code', {id:obj.data.id,code:code}, function(data) {
+            var pwd = $('input[name="pwd"]').val();
+            $.post('/tgclient/vaild_code', {id:obj.data.id,code:code,pwd:pwd}, function(data) {
                 // console.log(data);
                 showMsg(data.msg,function(){
                     if (data.code==0){
@@ -185,7 +186,6 @@ function vaild(obj){
 table.on('toolbar(list)', function(obj){    
     switch(obj.event){
         case 'add':add(obj);break;
-        case 'vaild':vaild(obj);break;
     };
 });
 
@@ -207,6 +207,8 @@ table.on('tool(list)', function(obj){
         add(obj);
     } else if (obj.event == 'vaild'){
         vaild(obj);
+    } else if (obj.event == 'reset_vaild'){
+        reset_vaild(obj);
     }
 });
 ///
@@ -218,6 +220,16 @@ table.on('tool(list)', function(obj){
         <span lay-event="vaild" class="layui-btn layui-btn-normal layui-btn-xs">已验证</span>
     {{#  } else { }}
         <span lay-event="vaild" class="layui-btn layui-btn-warm layui-btn-xs">未验证</span>
+    {{#  } }}
+</script>
+
+
+<script type="text/html" id="opTpl">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    {{#  if(d.is_vaild == '1'){ }}
+        <span lay-event="reset_vaild" class="layui-btn layui-btn-normal layui-btn-xs">重置验证</span>
     {{#  } }}
 </script>
 {% endraw %}

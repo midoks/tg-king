@@ -86,14 +86,26 @@ class tgclient_api:
 
         cmd = 'source bin/activate &&  python3 tools.py verify_tgclient ' + tid + ' &'
         os.system(cmd)
+
+        err_path = '/tmp/tg_vaild_err_' + tid
+
+        for x in range(5):
+            if os.path.exists(err_path):
+                err = tgking.readFile(err_path)
+                return tgking.returnCode(-1, err)
+            time.sleep(1)
         return tgking.returnCode(0, '验证中,注意查看短码!')
 
     def vaildCodeApi(self):
         tid = request.form.get('id', '')
         code = request.form.get('code', '')
+        pwd = request.form.get('pwd', '')
 
         tmp_path = '/tmp/tg_vaild_code_' + tid
         tgking.writeFile(tmp_path, code)
+
+        tmp_path = '/tmp/tg_vaild_pwd_' + tid
+        tgking.writeFile(tmp_path, pwd)
 
         for x in range(10):
             if x >= 9:

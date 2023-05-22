@@ -42,13 +42,14 @@ if client_data == {}:
         time.sleep(3)
 
 
-print(client_data)
+# print(client_data)
 client = TelegramClient('tgking_' + client_id, client_data[
                         'app_id'], client_data['app_hash'])
 
 
 async def client_run_task():
     print('aaa')
+    writeLog("aaa")
 
 async def client_run():
     while True:

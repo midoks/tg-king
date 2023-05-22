@@ -184,6 +184,7 @@ async def verifyTgClient(tid):
         await client.connect()
         tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
         tmp_code_path = '/tmp/tg_vaild_code_' + tid
+        tmp_pwd_path = '/tmp/tg_vaild_pwd_' + tid
         tel = tgking.readFile(tmp_tel_path)
         await client.send_code_request(tel)
 
@@ -191,7 +192,14 @@ async def verifyTgClient(tid):
         while True:
             if os.path.exists(tmp_code_path):
                 code = tgking.readFile(tmp_code_path)
-                client.sign_in(tel, code)
+
+                if os.path.exists(tmp_pwd_path):
+                    pwd = tgking.readFile(tmp_code_path)
+                    client.sign_in(tel, code, pwd)
+                else:
+                    client.sign_in(tel, code)
+
+                await client.send_message('me', 'TG全能王验证通过!!')
 
                 os.remove(tmp_tel_path)
                 os.remove(tmp_code_path)
@@ -202,6 +210,8 @@ async def verifyTgClient(tid):
         # print(client)
         await client.disconnect()
     except Exception as e:
+        err_path = '/tmp/tg_vaild_err_' + tid
+        tgking.writeFile(err_path, str(e))
         print(tgking.getTracebackInfo())
 
 
