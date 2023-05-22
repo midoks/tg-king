@@ -194,9 +194,10 @@ async def verifyTgClient(tid):
         # wait phone code
         while True:
             if os.path.exists(tmp_code_path):
-                code = tgking.readFile(tmp_code_path)
+                code = tgking.readFile(tmp_code_path).strip()
+                time.sleep(1)
                 if os.path.exists(tmp_pwd_path):
-                    pwd = tgking.readFile(tmp_pwd_path)
+                    pwd = tgking.readFile(tmp_pwd_path).strip()
                     print("password mode")
                     print(tel, code, pwd)
                     await client.sign_in(tel, code, password=pwd)
