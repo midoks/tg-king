@@ -41,7 +41,7 @@ tg_id_file = tg_id + '.session'
 # print(client_data['data'])
 
 if not os.path.exists(tg_id_file):
-    tgking.writeBinFile(tg_id_file, client_data['data'])
+    tgking.writeBinFile(tg_id_file, bytes(client_data['data']))
 
 if client_data == {}:
     while True:

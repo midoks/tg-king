@@ -120,7 +120,7 @@ def readBinFile(filename):
 def writeBinFile(filename, content):
     # 写文件内容
     try:
-        fp = open(filename, 'wb')
+        fp = open(filename, 'wb+')
         fp.write(content)
         fp.close()
         return True
