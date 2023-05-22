@@ -48,8 +48,9 @@ client = TelegramClient('tgking_' + client_id, client_data[
 
 
 async def client_run_task():
-    print('aaa')
     writeLog("aaa")
+    await client.send_message('me', 'TG全能王验证通过!!')
+    time.sleep(10)
 
 async def client_run():
     while True:
