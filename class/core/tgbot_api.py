@@ -19,7 +19,6 @@ from flask import request
 
 class tgbot_api:
 
-    ##### ----- start ----- ###
     def listApi(self):
         limit = request.form.get('limit', '10')
         p = request.form.get('p', '1')

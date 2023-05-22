@@ -73,6 +73,17 @@ class tgclient_api:
 
         return tgking.returnJson(True, '添加成功!')
 
+    def resetVaildApi(self):
+        tid = request.form.get('id', '')
+
+        tgking.M('tg_client').where(
+            'id=?', (tid,)).setField('is_vaild', 0)
+
+        tgking.M('tg_client').where(
+            'id=?', (tid,)).setField('data', '')
+
+        return tgking.returnJson(0, '重置成功!')
+
     def vaildApi(self):
         tid = request.form.get('id', '')
         tel = request.form.get('tel', '')

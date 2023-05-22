@@ -182,6 +182,17 @@ function vaild(obj){
     });
 }
 
+
+function reset_vaild(obj){
+    $.post('/tgclient/reset_vaild', {id:obj.data.id}, function(data) {
+        showMsg(data.msg,function(){
+            if (data.code==0){
+                layer.close(index);
+            }
+        },{icon:data.code==0?1:2});
+    },'json');
+}
+
 //头工具栏事件
 table.on('toolbar(list)', function(obj){    
     switch(obj.event){
