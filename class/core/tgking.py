@@ -117,6 +117,18 @@ def readBinFile(filename):
         return False
 
 
+def writeBinFile(filename, content):
+    # 写文件内容
+    try:
+        fp = open(filename, 'wb')
+        fp.write(content)
+        fp.close()
+        return True
+    except Exception as e:
+        print(getTracebackInfo())
+        return False
+
+
 def writeFile(filename, content, mode='w+'):
     # 写文件内容
     try:

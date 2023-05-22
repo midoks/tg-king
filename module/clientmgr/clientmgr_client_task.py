@@ -36,6 +36,13 @@ def writeLog(log_str):
 client_id = sys.argv[1]
 client_data = tgking.getClientById(client_id)
 
+tg_id = 'tgking_' + client_id
+tg_id_file = tg_id + '.session'
+# print(client_data['data'])
+
+if not os.path.exists(tg_id_file):
+    tgking.writeBinFile(tg_id_file, client_data['data'])
+
 if client_data == {}:
     while True:
         writeLog("clientmgr no start!")
@@ -43,8 +50,7 @@ if client_data == {}:
 
 
 # print(client_data)
-client = TelegramClient('tgking_' + client_id, client_data[
-                        'app_id'], client_data['app_hash'])
+client = TelegramClient(tg_id, client_data['app_id'], client_data['app_hash'])
 
 
 async def client_run_task():
