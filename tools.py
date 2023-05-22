@@ -198,7 +198,7 @@ async def verifyTgClient(tid):
 
                 if os.path.exists(tmp_pwd_path):
                     pwd = tgking.readFile(tmp_pwd_path)
-                    client.sign_in(tel, code, pwd)
+                    client.sign_in(tel, code, password=pwd)
                 else:
                     client.sign_in(tel, code)
 
