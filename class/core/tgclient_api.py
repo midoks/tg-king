@@ -141,6 +141,11 @@ class tgclient_api:
                 tgking.M('tg_client').where(
                     'id=?', (tid,)).setField('data', tgking.readBinFile(session_tg))
                 os.remove(ok_path)
+
+                tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
+                if os.path.exists(tmp_tel_path):
+                    os.remove(tmp_tel_path)
+
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
         err_msg = ''
