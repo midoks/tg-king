@@ -17,7 +17,7 @@ if tgking.isAppleSystem():
 
 
 def getModName():
-    return 'admgr'
+    return 'clientmgr'
 
 
 def getModDir():
@@ -58,8 +58,8 @@ def initDreplace():
 
     # systemd
     systemDir = tgking.systemdCfgDir()
-    systemService = systemDir + '/tg_admgr.service'
-    systemServiceTpl = getModDir() + '/init.d/tg_admgr.service.tpl'
+    systemService = systemDir + '/tg_clientmgr.service'
+    systemServiceTpl = getModDir() + '/init.d/tg_clientmgr.service.tpl'
     if os.path.exists(systemDir) and not os.path.exists(systemService):
         service_path = tgking.getServerDir()
         se_content = tgking.readFile(systemServiceTpl)
@@ -105,7 +105,7 @@ def reload():
 
 def status():
     data = tgking.execShell(
-        "ps -ef | grep admgr_bot |grep -v grep | awk '{print $2}'")
+        "ps -ef | grep clientmgr_client |grep -v grep | awk '{print $2}'")
     if data[0] == '':
         return 'stop'
     return 'start'
