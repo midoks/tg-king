@@ -58,8 +58,8 @@ def initDreplace():
 
     # systemd
     systemDir = tgking.systemdCfgDir()
-    systemService = systemDir + '/tg_admgr.service'
-    systemServiceTpl = getModDir() + '/init.d/tg_admgr.service.tpl'
+    systemService = systemDir + '/tg_' + getModName() + '.service'
+    systemServiceTpl = getModDir() + '/init.d/tg_' + getModName() + '.service.tpl'
     if os.path.exists(systemDir) and not os.path.exists(systemService):
         service_path = tgking.getServerDir()
         se_content = tgking.readFile(systemServiceTpl)
