@@ -203,6 +203,7 @@ async def verifyTgClient(tid):
 
                 os.remove(tmp_tel_path)
                 os.remove(tmp_code_path)
+                os.remove(tmp_pwd_path)
                 tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
                 tgking.writeFile(tmp_ok_path, 'ok')
                 break
