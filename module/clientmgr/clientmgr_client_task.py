@@ -43,7 +43,7 @@ if client_data == {}:
 
 
 print(client_data)
-client = TelegramClient('mdioks', client_data[
+client = TelegramClient('tgking_' + client_id, client_data[
                         'app_id'], client_data['app_hash'])
 
 
