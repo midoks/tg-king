@@ -173,3 +173,4 @@ logs/tgking.pid
 
 tmp/admgr_lock.json
 *.session
+module/dhmgr/
