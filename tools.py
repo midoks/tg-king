@@ -218,8 +218,6 @@ async def verifyTgClient(tid):
         tgking.writeFile(err_path, str(e))
         print(tgking.getTracebackInfo())
     finally:
-        if os.path.exists(tmp_tel_path):
-            os.remove(tmp_tel_path)
         if os.path.exists(tmp_code_path):
             os.remove(tmp_code_path)
         if os.path.exists(tmp_pwd_path):
