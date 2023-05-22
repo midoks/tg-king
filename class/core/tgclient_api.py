@@ -127,7 +127,7 @@ class tgclient_api:
         tmp_path = '/tmp/tg_vaild_pwd_' + tid
         tgking.writeFile(tmp_path, pwd)
 
-        err_path = '/tmp/tg_vaild_err_' + tid
+        tmp_err_path = '/tmp/tg_vaild_err_' + tid
 
         for x in range(10):
             ok_path = '/tmp/tg_vaild_ok_' + tid
@@ -149,6 +149,7 @@ class tgclient_api:
                 return tgking.returnCode(0, '验证成功!')
             time.sleep(1)
         err_msg = ''
-        if os.path.exists(err_path):
-            err_msg = tgking.readFile(err_path)
+        if os.path.exists(tmp_err_path):
+            err_msg = tgking.readFile(tmp_err_path)
+            os.remove(tmp_err_path)
         return tgking.returnCode(-1, "验证失败!\n" + err_msg)
