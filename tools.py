@@ -198,8 +198,10 @@ async def verifyTgClient(tid):
 
                 if os.path.exists(tmp_pwd_path):
                     pwd = tgking.readFile(tmp_pwd_path)
+                    print("password mode")
                     await client.sign_in(tel, code, password=pwd)
                 else:
+                    print("simple code mode")
                     await client.sign_in(tel, code)
 
                 await client.send_message('me', 'TG全能王验证通过!!')
