@@ -202,6 +202,7 @@ async def verifyTgClient(tid):
                 except Exception as e:
                     print(str(e))
                     if str(e).find('SessionPasswordNeededError') > -1:
+                        pwd = tgking.readFile(tmp_pwd_path).strip()
                         await client.sign_up(tel, pwd)
                     else:
                         raise e
