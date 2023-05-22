@@ -113,6 +113,14 @@ class tgclient_api:
         code = request.form.get('code', '')
         pwd = request.form.get('pwd', '')
 
+        ''' debug
+        echo "+86xxxx" >/tmp/tg_vaild_tel_3
+        echo "77692" > /tmp/tg_vaild_code_3
+        echo "xxxx" > /tmp/tg_vaild_pwd_3
+        source bin/activate &&  python3 tools.py verify_tgclient 3
+        python3 module/clientmgr/clientmgr_client_task.py 3
+        '''
+
         tmp_path = '/tmp/tg_vaild_code_' + tid
         tgking.writeFile(tmp_path, code)
 
