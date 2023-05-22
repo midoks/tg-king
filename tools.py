@@ -195,7 +195,6 @@ async def verifyTgClient(tid):
         while True:
             if os.path.exists(tmp_code_path):
                 code = tgking.readFile(tmp_code_path)
-
                 if os.path.exists(tmp_pwd_path):
                     pwd = tgking.readFile(tmp_pwd_path)
                     print("password mode")
