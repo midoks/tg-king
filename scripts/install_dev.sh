@@ -65,21 +65,7 @@ if [ ! -d /opt/tg-king ];then
 fi
 
 
-HTTP_PREFIX="https://"
-LOCAL_ADDR=common
-ping -c 1 ipinfo.io > /dev/null 2>&1
-if [ "$?" == "0" ];then
-    CN=$(curl -fsSL -m 10 http://ipinfo.io/json | grep "\"country\": \"CN\"")
-    if [ ! -z "$CN" ];then
-        LOCAL_ADDR=cn
-        HTTP_PREFIX="https://ghproxy.com/"
-    fi
-fi
-
 PIPSRC="https://pypi.python.org/simple"
-if [ "$LOCAL_ADDR" != "common" ];then
-    PIPSRC="https://pypi.tuna.tsinghua.edu.cn/simple"
-fi
 
 echo "pypi source:$PIPSRC"
 #面板需要的库
