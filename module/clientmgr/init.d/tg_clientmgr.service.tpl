@@ -1,12 +1,12 @@
 [Unit]
-Description=tg_admgr Service
+Description=tg_clientmgr Service
 After=network.target
 
 [Service]
 Type=forking
-ExecStart=/etc/init.d/tg_admgr start
-ExecStop=/etc/init.d/tg_admgr stop
-ExecReload=/etc/init.d/tg_admgr reload
+ExecStart=/etc/init.d/tg_clientmgr start
+ExecStop=/etc/init.d/tg_clientmgr stop
+ExecReload=/etc/init.d/tg_clientmgr reload
 KillMode=process
 Restart=on-failure
 
