@@ -97,6 +97,19 @@ class module_api:
         html = self.__module_dir + '/' + module_name + '/index.html'
         return tgking.readFile(html)
 
+    def rangeChangeApi(self):
+        range_type = request.form.get('range_type', '')
+        ids = request.form.get('ids', '')
+        name = request.form.get('name', '')
+
+        # print(range_type, ids, name)
+        tgking.M('module').where('name=?', (name,)).setField(
+            'range_type', range_type)
+        tgking.M('module').where('name=?', (name,)).setField(
+            'range_val', ids)
+
+        return tgking.returnJson(True, "设置成功!")
+
     def enableApi(self):
         module_name = request.form.get('module_name', '')
         data = tgking.M('module').field('id,status').where(

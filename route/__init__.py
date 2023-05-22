@@ -104,7 +104,6 @@ def isLogined():
 
 def publicObject(toObject, func, action=None, get=None):
     name = tgking.toSmallHump(func) + 'Api'
-    print(toObject, name)
     try:
         if hasattr(toObject, name):
             efunc = 'toObject.' + name + '()'
