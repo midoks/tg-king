@@ -174,6 +174,11 @@ def verifyTgbot(token):
 
 
 async def verifyTgClient(tid):
+
+    tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
+    tmp_code_path = '/tmp/tg_vaild_code_' + tid
+    tmp_pwd_path = '/tmp/tg_vaild_pwd_' + tid
+
     try:
         from telethon import TelegramClient
         client_data = tgking.getClientById(tid)
@@ -182,9 +187,7 @@ async def verifyTgClient(tid):
             'app_id'], client_data['app_hash'])
 
         await client.connect()
-        tmp_tel_path = '/tmp/tg_vaild_tel_' + tid
-        tmp_code_path = '/tmp/tg_vaild_code_' + tid
-        tmp_pwd_path = '/tmp/tg_vaild_pwd_' + tid
+
         tel = tgking.readFile(tmp_tel_path)
         await client.send_code_request(tel)
 
@@ -211,6 +214,9 @@ async def verifyTgClient(tid):
         # print(client)
         await client.disconnect()
     except Exception as e:
+        os.remove(tmp_tel_path)
+        os.remove(tmp_code_path)
+        os.remove(tmp_pwd_path)
         err_path = '/tmp/tg_vaild_err_' + tid
         tgking.writeFile(err_path, str(e))
         print(tgking.getTracebackInfo())
