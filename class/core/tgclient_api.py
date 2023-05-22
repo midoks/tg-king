@@ -103,6 +103,7 @@ class tgclient_api:
         for x in range(5):
             if os.path.exists(err_path):
                 err = tgking.readFile(err_path)
+                os.remove(err_path)
                 return tgking.returnCode(-1, err)
             time.sleep(1)
         return tgking.returnCode(0, '验证中,注意查看短码!')
