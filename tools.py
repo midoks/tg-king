@@ -204,9 +204,6 @@ async def verifyTgClient(tid):
 
                 await client.send_message('me', 'TG全能王验证通过!!')
 
-                os.remove(tmp_tel_path)
-                os.remove(tmp_code_path)
-                os.remove(tmp_pwd_path)
                 tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
                 tgking.writeFile(tmp_ok_path, 'ok')
                 break
@@ -214,12 +211,16 @@ async def verifyTgClient(tid):
         # print(client)
         await client.disconnect()
     except Exception as e:
-        os.remove(tmp_tel_path)
-        os.remove(tmp_code_path)
-        os.remove(tmp_pwd_path)
         err_path = '/tmp/tg_vaild_err_' + tid
         tgking.writeFile(err_path, str(e))
         print(tgking.getTracebackInfo())
+    finally:
+        if os.path.exists(tmp_tel_path):
+            os.remove(tmp_tel_path)
+        if os.path.exists(tmp_code_path):
+            os.remove(tmp_code_path)
+        if os.path.exists(tmp_pwd_path):
+            os.remove(tmp_pwd_path)
 
 
 def tgbotList(module_name):
