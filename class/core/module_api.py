@@ -156,6 +156,7 @@ class module_api:
             return ''
 
         file = tgking.getModDir() + '/' + name + '/' + f
+        print(file)
         if not os.path.exists(file):
             return ''
 
