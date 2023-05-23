@@ -138,8 +138,11 @@ class tgclient_api:
                 session_tg = 'tgking_' + tid + '.session'
                 # print(session_tg)
                 # print(tgking.readBinFile(session_tg))
-                tgking.M('tg_client').where(
-                    'id=?', (tid,)).setField('data', tgking.readBinFile(session_tg))
+                save_session = tgking.readBinFile(session_tg)
+                save_session = base64.b64encode(save_session)
+
+                tgking.M('tg_client').where('id=?', (tid,)
+                                            ).setField('data', save_session)
                 os.remove(ok_path)
 
                 tmp_tel_path = '/tmp/tg_vaild_tel_' + tid

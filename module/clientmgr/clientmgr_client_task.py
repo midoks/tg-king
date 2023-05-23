@@ -36,12 +36,21 @@ def writeLog(log_str):
 client_id = sys.argv[1]
 client_data = tgking.getClientById(client_id)
 
+
 tg_id = 'tgking_' + client_id
 tg_id_file = tg_id + '.session'
-# print(client_data['data'])
+
+# tg_id_file_ok = tg_id + '_source.session'
+# print(tg_id_file_ok)
+
+# c = tgking.readBinFile(tg_id_file_ok)
+# c = base64.b64encode(c)
+# tgking.M('tg_client').where(
+#     'id=?', (client_id,)).setField('data', c)
 
 if not os.path.exists(tg_id_file):
-    tgking.writeBinFile(tg_id_file, bytes(client_data['data']))
+    dedata = base64.b64decode(client_data['data'])
+    tgking.writeBinFile(tg_id_file, dedata)
 
 if client_data == {}:
     while True:

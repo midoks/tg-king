@@ -111,7 +111,7 @@ def readBinFile(filename):
         fp = open(filename, 'rb')
         fBody = fp.read()
         fp.close()
-        return str(fBody)
+        return fBody
     except Exception as e:
         print(getTracebackInfo())
         return False
