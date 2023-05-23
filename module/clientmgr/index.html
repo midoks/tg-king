@@ -11,5 +11,7 @@
 
 
 <script type="text/javascript">
-modService('clientmgr');
+$.getScript( "/module/file?name=clientmgr&f=js/clientmgr.js", function(){
+	modService('clientmgr');
+});
 </script>

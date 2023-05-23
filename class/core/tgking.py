@@ -93,6 +93,10 @@ def getModDir():
     return getServerDir() + '/module'
 
 
+def getPathSuffix(path):
+    return os.path.splitext(path)[-1]
+
+
 def readFile(filename):
     # 读文件内容
     try:

@@ -145,6 +145,31 @@ class module_api:
         except Exception as ex:
             return tgking.returnJson(False, '无法正确读取文件!' + str(ex))
 
+    def fileApi(self):
+        name = request.args.get('name', '')
+        if name.strip() == '':
+            return ''
+
+        f = request.args.get('f', '')
+
+        if f.strip() == '':
+            return ''
+
+        file = tgking.getModDir() + '/' + name + '/' + f
+        if not os.path.exists(file):
+            return ''
+
+        suffix = tgking.getPathSuffix(file)
+        if suffix == '.css':
+            content = tgking.readFile(file)
+            from flask import Response
+            from flask import make_response
+            v = Response(content, headers={
+                         'Content-Type': 'text/css; charset="utf-8"'})
+            return make_response(v)
+        content = open(file, 'rb').read()
+        return content
+
     def runApi(self):
         name = request.form.get('name', '')
         func = request.form.get('func', '')
