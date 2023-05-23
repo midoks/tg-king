@@ -205,7 +205,7 @@ async def verifyTgClient(tid):
                     if str(e).find('password') > -1:
                         pwd = tgking.readFile(tmp_pwd_path)
                         print("password:", tel, pwd)
-                        await client.sign_in(tel, password=pwd)
+                        await client.sign_in(tel, pwd)
                     else:
                         raise e
                 await client.send_message('me', 'TG全能王验证通过!!')
