@@ -32,6 +32,12 @@ function msgTpl(msg, args){
 	return msg;
 }
 
+function modPost(module_name, func_name, args, succ_func){
+    $.post("/module/run", {name:module_name,func:module_name,args:args}, function(data) {
+        succ_func(data);
+    },'json')
+}
+
 function modService(_name, version){
 	var data = {name:_name, func:'status'}
 	if ( typeof(version) != 'undefined' ){
