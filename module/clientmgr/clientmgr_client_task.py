@@ -61,10 +61,8 @@ if client_data == {}:
 # print(client_data)
 client = TelegramClient(tg_id, client_data['app_id'], client_data['app_hash'])
 
-
 async def client_run_task():
-    writeLog("aaa")
-    await client.send_message('me', 'TG全能王验证通过!!')
+    writeLog("开发中..")
     time.sleep(10)
 
 async def client_run():
