@@ -194,7 +194,7 @@ async def verifyTgClient(tid):
         # wait phone code
         while True:
             if os.path.exists(tmp_code_path):
-                code = tgking.readFile(tmp_code_path).strip()
+                code = tgking.readFile(tmp_code_path)
                 time.sleep(1)
 
                 try:
@@ -202,7 +202,7 @@ async def verifyTgClient(tid):
                 except Exception as e:
                     # print(str(e))
                     if str(e).find('password') > -1:
-                        pwd = tgking.readFile(tmp_pwd_path).strip()
+                        pwd = tgking.readFile(tmp_pwd_path)
                         await client.sign_in(tel, password=pwd)
                     else:
                         raise e
