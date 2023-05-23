@@ -142,7 +142,7 @@ function vaild_code(obj){
                         layer.close(index);
                         table.reload('tgclient_list', {});
                     }
-                },{icon:data.code==0?1:2},6000);
+                },{icon:data.code==0?1:2});
             },'json');
             return;
         }
@@ -177,7 +177,7 @@ function vaild(obj){
                         layer.close(index);
                         vaild_code(obj);
                     }
-                },{icon:data.code==0?1:2},6000);
+                },{icon:data.code==0?1:2});
             },'json');
             return;
         }
@@ -191,7 +191,7 @@ function reset_vaild(obj){
             if (data.code==0){
                 layer.close(index);
             }
-        },{icon:data.code==0?1:2},6000);
+        },{icon:data.code==0?1:2});
     },'json');
 }
 
