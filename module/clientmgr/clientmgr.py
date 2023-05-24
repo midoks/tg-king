@@ -181,6 +181,8 @@ async def pushContent(tid, content):
     client = TelegramClient(
         tg_id, client_data['app_id'], client_data['app_hash'])
 
+    await client.connect()
+
     info = await client.get_dialogs()
     for chat in info:
         if chat.is_group:
@@ -189,6 +191,7 @@ async def pushContent(tid, content):
             except Exception as e:
                 print(tid, chat.name, str(e))
 
+    await client.disconnect()
     return True
 
 async def pushText():
