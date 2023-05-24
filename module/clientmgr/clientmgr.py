@@ -174,7 +174,7 @@ def runLog():
 async def pushContent(tid, content):
     from telethon import TelegramClient
 
-    tg_id = 'tgking_' + tid
+    tg_id = 'tgking_' + str(tid)
     tg_id_file = tg_id + '.session'
 
     client_data = tgking.getClientById(int(tid))
