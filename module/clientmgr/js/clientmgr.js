@@ -28,6 +28,7 @@ function push_simple_msg(){
         yes: function(index, layero){
             var msg = $('textarea[name="msg"]').val();
             modPost('clientmgr', 'push_text', {msg:msg}, function(data){
+                var data = $.parseJSON(data.data);
             	console.log(data);
             	showMsg(data.msg,function(){
                     if (data.status){
