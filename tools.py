@@ -197,17 +197,15 @@ async def verifyTgClient(tid):
                 code = tgking.readFile(tmp_code_path)
                 time.sleep(1)
                 try:
-                    # print("code:", tel, code)
                     await client.sign_in(tel, code)
                 except Exception as e:
                     # print(str(e))
                     if str(e).find('password') > -1:
                         pwd = tgking.readFile(tmp_pwd_path)
-                        # print("password:", tel, pwd)
                         await client.sign_in(tel, phone_code_hash=code, password=pwd)
                     else:
                         raise e
-                await client.send_message('me', 'TG全能王验证通过!!')
+                await client.send_message('me', 'TG全能王验证通过!!' + tgking.getDateFromNow())
 
                 tmp_ok_path = '/tmp/tg_vaild_ok_' + tid
                 tgking.writeFile(tmp_ok_path, 'ok')
