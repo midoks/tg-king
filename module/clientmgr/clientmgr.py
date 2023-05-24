@@ -176,6 +176,8 @@ def pushText():
     if not data_args[0]:
         return data_args[1]
 
+    msg = args['msg']
+
     tg_id = 'tgking_' + client_id
     tg_id_file = tg_id + '.session'
 
@@ -189,7 +191,7 @@ def pushText():
         # print('name:{0} id:{1} is_user:{2} is_channel:{3} is_group:{4}'.format(
         # chat.name, chat.id, chat.is_user, chat.is_channel, chat.is_group))
         if chat.is_group:
-            await client.send_message(chat_id, '开始自动检测已经注销群成员...')
+            await client.send_message(chat_id, msg)
 
     return tgking.returnJson(True, 'ok')
 
