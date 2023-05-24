@@ -33,7 +33,7 @@ function msgTpl(msg, args){
 }
 
 function modPost(module_name, func_name, args, succ_func){
-    $.post("/module/run", {name:module_name,func:module_name,args:args}, function(data) {
+    $.post("/module/run", {name:module_name,func:func_name,args:args}, function(data) {
         succ_func(data);
     },'json')
 }
