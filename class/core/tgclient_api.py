@@ -83,7 +83,7 @@ class tgclient_api:
         tgking.M('tg_client').where(
             'id=?', (tid,)).setField('data', '')
 
-        return tgking.returnJson(0, '重置成功!')
+        return tgking.returnJson(True, '重置成功!')
 
     def vaildApi(self):
         tid = request.form.get('id', '')
