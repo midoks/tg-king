@@ -234,10 +234,10 @@ def tgbotList(module_name):
 
 
 def tgClientList(module_name):
-    bot_list = tgking.getClientRangeList(module_name)
+    client_list = tgking.getClientRangeList(module_name)
     ids = ''
-    for x in range(len(bot_list)):
-        ids = ids + str(bot_list[x]['id']) + ','
+    for x in range(len(client_list)):
+        ids = ids + str(client_list[x]['id']) + ','
     ids = ids.strip(',')
     print(ids)
 

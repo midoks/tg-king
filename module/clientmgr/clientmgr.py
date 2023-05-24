@@ -62,8 +62,8 @@ def getArgs():
 def checkArgs(data, ck=[]):
     for i in range(len(ck)):
         if not ck[i] in data:
-            return (False, mw.returnJson(False, '参数:(' + ck[i] + ')没有!'))
-    return (True, mw.returnJson(True, 'ok'))
+            return (False, tgking.returnJson(False, '参数:(' + ck[i] + ')没有!'))
+    return (True, tgking.returnJson(True, 'ok'))
 
 
 def initDreplace():
@@ -170,6 +170,27 @@ def runLog():
     return tgking.getServerDir() + '/logs/module_clientmgr.log'
 
 
+# 推送消息
+async def pushContent(tid, content):
+    from telethon import TelegramClient
+
+    tg_id = 'tgking_' + tid
+    tg_id_file = tg_id + '.session'
+
+    client_data = tgking.getClientById(int(tid))
+    client = TelegramClient(
+        tg_id, client_data['app_id'], client_data['app_hash'])
+
+    info = await client.get_dialogs()
+    for chat in info:
+        if chat.is_group:
+            try:
+                await client.send_message(chat.id, content)
+            except Exception as e:
+                pass
+
+    return True
+
 async def pushText():
 
     args = getArgs()
@@ -177,22 +198,11 @@ async def pushText():
     if not data_args[0]:
         return data_args[1]
 
-    msg = args['msg']
+    client_list = tgking.getClientRangeList(module_name)
 
-    tg_id = 'tgking_' + client_id
-    tg_id_file = tg_id + '.session'
-
-    # print(client_data)
-    client_data = tgking.getClientById(3)
-    client = TelegramClient(
-        tg_id, client_data['app_id'], client_data['app_hash'])
-
-    info = await client.get_dialogs()
-    for chat in info:
-        # print('name:{0} id:{1} is_user:{2} is_channel:{3} is_group:{4}'.format(
-        # chat.name, chat.id, chat.is_user, chat.is_channel, chat.is_group))
-        if chat.is_group:
-            await client.send_message(chat_id, msg)
+    for x in range(len(client_list)):
+        tid = client_list[x]['id']
+        pushContent(tid, args['msg'])
 
     return tgking.returnJson(True, 'ok')
 
@@ -218,6 +228,6 @@ if __name__ == "__main__":
     elif func == 'run_log':
         print(runLog())
     elif func == 'push_text':
-        print(await pushText())
+        print(asyncio.run(pushText()))
     else:
         print('error')
