@@ -26,7 +26,7 @@ function push_simple_msg(){
             // form.render('select');
         },
         yes: function(index, layero){
-            var ids = $('textarea[name="msg"]').val();
+            var msg = $('textarea[name="msg"]').val();
             modPost('clientmgr', 'push_text', {msg:msg}, function(data){
             	console.log(data);
             	showMsg(data.msg,function(){
