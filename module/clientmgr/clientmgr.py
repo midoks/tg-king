@@ -198,11 +198,13 @@ async def pushText():
     if not data_args[0]:
         return data_args[1]
 
+    msg = args['msg']
+
     client_list = tgking.getClientRangeList(getModName())
 
     for x in range(len(client_list)):
         tid = client_list[x]['id']
-        pushContent(tid, args['msg'])
+        pushContent(tid, msg)
 
     return tgking.returnJson(True, 'ok')
 
