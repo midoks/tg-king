@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `module` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `name` TEXT,
   `range_type` INTEGER default '0',
-  `range_val` TEXT,
+  `range_val` TEXT default '',
   `config` TEXT,
   `status` TEXT
 );
