@@ -198,7 +198,7 @@ async def pushText():
     if not data_args[0]:
         return data_args[1]
 
-    client_list = tgking.getClientRangeList(module_name)
+    client_list = tgking.getClientRangeList(getModName())
 
     for x in range(len(client_list)):
         tid = client_list[x]['id']
