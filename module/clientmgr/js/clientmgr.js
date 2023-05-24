@@ -29,7 +29,8 @@ function push_simple_msg(){
             var msg = $('textarea[name="msg"]').val();
 
             var args = {msg:msg};
-            var post_args = JSON.stringify(toArrayObject(args));
+            var post_args = JSON.stringify(args);
+            // console.log(post_args);
             modPost('clientmgr', 'push_text', post_args, function(data){
                 var data = $.parseJSON(data.data);
             	console.log(data);
