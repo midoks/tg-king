@@ -19,6 +19,7 @@ import json
 import time
 import re
 import asyncio
+import base64
 
 sys.path.append(os.getcwd() + "/class/core")
 import tgking
