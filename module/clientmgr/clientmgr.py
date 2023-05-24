@@ -169,7 +169,7 @@ def runLog():
     return tgking.getServerDir() + '/logs/module_clientmgr.log'
 
 
-def pushText():
+async def pushText():
 
     args = getArgs()
     data_args = checkArgs(args, ['msg'])
@@ -217,6 +217,6 @@ if __name__ == "__main__":
     elif func == 'run_log':
         print(runLog())
     elif func == 'push_text':
-        print(pushText())
+        print(await pushText())
     else:
         print('error')
