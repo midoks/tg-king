@@ -39,6 +39,32 @@ def getInitDTpl():
     return path
 
 
+def getArgs():
+    args = sys.argv[2:]
+    tmp = {}
+    args_len = len(args)
+    if args_len == 1:
+        t = args[0].strip('{').strip('}')
+        if t.strip() == '':
+            tmp = []
+        else:
+            t = t.split(':')
+            tmp[t[0]] = t[1]
+        tmp[t[0]] = t[1]
+    elif args_len > 1:
+        for i in range(len(args)):
+            t = args[i].split(':')
+            tmp[t[0]] = t[1]
+    return tmp
+
+
+def checkArgs(data, ck=[]):
+    for i in range(len(ck)):
+        if not ck[i] in data:
+            return (False, mw.returnJson(False, '参数:(' + ck[i] + ')没有!'))
+    return (True, mw.returnJson(True, 'ok'))
+
+
 def initDreplace():
 
     file_tpl = getInitDTpl()
@@ -142,6 +168,32 @@ def initdUinstall():
 def runLog():
     return tgking.getServerDir() + '/logs/module_clientmgr.log'
 
+
+def pushText():
+
+    args = getArgs()
+    data_args = checkArgs(args, ['msg'])
+    if not data_args[0]:
+        return data_args[1]
+
+    tg_id = 'tgking_' + client_id
+    tg_id_file = tg_id + '.session'
+
+    # print(client_data)
+    client_data = tgking.getClientById(3)
+    client = TelegramClient(
+        tg_id, client_data['app_id'], client_data['app_hash'])
+
+    info = await client.get_dialogs()
+    for chat in info:
+        # print('name:{0} id:{1} is_user:{2} is_channel:{3} is_group:{4}'.format(
+        # chat.name, chat.id, chat.is_user, chat.is_channel, chat.is_group))
+        if chat.is_group:
+            await client.send_message(chat_id, '开始自动检测已经注销群成员...')
+
+    return tgking.returnJson(True, 'ok')
+
+
 if __name__ == "__main__":
     func = sys.argv[1]
     if func == 'status':
@@ -162,5 +214,7 @@ if __name__ == "__main__":
         print(initdUinstall())
     elif func == 'run_log':
         print(runLog())
+    elif func == 'push_text':
+        print(pushText())
     else:
         print('error')

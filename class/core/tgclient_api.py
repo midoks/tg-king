@@ -137,8 +137,7 @@ class tgclient_api:
                     'id=?', (tid,)).setField('is_vaild', 1)
 
                 session_tg = 'tgking_' + tid + '.session'
-                # print(session_tg)
-                # print(tgking.readBinFile(session_tg))
+
                 save_session = tgking.readBinFile(session_tg)
                 save_session = base64.b64encode(save_session)
 
