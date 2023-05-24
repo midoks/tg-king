@@ -25,7 +25,7 @@ from flask import request
 
 
 class config:
-    __version = '0.0.2'
+    __version = '0.0.2.1'
 
     def __init__(self):
         pass

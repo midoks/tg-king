@@ -32,6 +32,18 @@ function msgTpl(msg, args){
 	return msg;
 }
 
+//字符串转数组对象
+function toArrayObject(str){
+    var data = {};
+    kv = str.split('&');
+    for(i in kv){
+        v = kv[i].split('=');
+        data[v[0]] = v[1];
+    }
+    return data;
+}
+
+
 function modPost(module_name, func_name, args, succ_func){
     $.post("/module/run", {name:module_name,func:func_name,args:args}, function(data) {
         succ_func(data);

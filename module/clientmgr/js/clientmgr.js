@@ -27,7 +27,10 @@ function push_simple_msg(){
         },
         yes: function(index, layero){
             var msg = $('textarea[name="msg"]').val();
-            modPost('clientmgr', 'push_text', {msg:msg}, function(data){
+
+            var args = {msg:msg};
+            var post_args = JSON.stringify(toArrayObject(args));
+            modPost('clientmgr', 'push_text', post_args, function(data){
                 var data = $.parseJSON(data.data);
             	console.log(data);
             	showMsg(data.msg,function(){
