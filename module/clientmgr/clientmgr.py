@@ -185,11 +185,14 @@ async def pushContent(tid, content):
 
     info = await client.get_dialogs()
     for chat in info:
+        # print(chat)
         if chat.is_group:
             try:
                 await client.send_message(chat.id, content)
             except Exception as e:
-                print(tid, chat.name, str(e))
+                err_msg = chat.name + ':' + str(tid) + ':' + str(e)
+                tgking.modLog(getModName(), err_msg)
+                # print(tid, chat.name, str(e))
 
     await client.disconnect()
     return True

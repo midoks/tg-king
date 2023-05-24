@@ -264,6 +264,10 @@ def systemdCfgDir():
     return "/tmp"
 
 
+def modLog(stype, msg):
+    return writeDbLog('模块日志[' + stype + ']', msg)
+
+
 def writeDbLog(stype, msg, args=(), uid=1):
     try:
         import time
