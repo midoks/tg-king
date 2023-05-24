@@ -187,7 +187,7 @@ async def pushContent(tid, content):
             try:
                 await client.send_message(chat.id, content)
             except Exception as e:
-                pass
+                print(tid, chat.name, str(e))
 
     return True
 
