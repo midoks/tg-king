@@ -29,8 +29,8 @@ class tgbot_api:
         _list = siteM.limit((str(start)) + ',' +
                             limit).order('id desc').select()
 
-        for i in range(len(_list)):
-            _list[i]['token'] = _list[i]['token'].split(':')[0] + ':xxxxxx'
+        # for i in range(len(_list)):
+        #     _list[i]['token'] = _list[i]['token'].split(':')[0] + ':xxxxxx'
 
         count = siteM.count()
 
