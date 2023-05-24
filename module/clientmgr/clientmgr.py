@@ -204,7 +204,7 @@ async def pushText():
 
     for x in range(len(client_list)):
         tid = client_list[x]['id']
-        pushContent(tid, msg)
+        await pushContent(tid, msg)
 
     return tgking.returnJson(True, 'ok')
 
