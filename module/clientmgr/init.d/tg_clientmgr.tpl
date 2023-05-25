@@ -30,7 +30,7 @@ tg_start(){
     tg_start_task
 }
 
-tg_start_cmd(){ 
+tg_start_task(){ 
     isStart=`ps -ef|grep 'clientmgr_client_task.py' |grep -v grep | awk '{print $2}'`
     if [ "$isStart" == '' ];then
         echo -e "starting clientmgr_client_task... \c"
