@@ -1,18 +1,35 @@
-# tg-king
 
-TG全能王,建立一套管理TG的后台框架。
+<p align="center">
+  <img alt="logo" src="https://github.com/midoks/tg-king/blob/dev/route/static/logo.png" height="140" />
+  <h3 align="center">TG全能王</h3>
+  <p align="center">一套管理TG的后台框架</p>
+  <p align="center">强烈推荐系统:debian</p>
+</p>
+
+### 简介
+
+为定制TG功能而生。
 
 
 - 吹水组 - https://t.me/mdserver_web
 
+
+### 版本更新 0.0.3
+
+* 后台框架基本成型。
+
+### 初始安装使用
+
 ```
-如果出现问题，最好私给我面板信息。不要让我猜。如果不提供，不要提出问题，自行解决。  — 座右铭
-Talk is cheap, show me the code.  -- linus
+curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/main/scripts/install_dev.sh | bash
 ```
 
-### 版本更新 0.0.1
+### 更新使用
 
-* 开发中..
+```
+curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/main/scripts/update_dev.sh | bash
+```
+
 
 ### DEV使用
 
@@ -21,7 +38,6 @@ curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scri
 
 curl --insecure -fsSL  https://raw.githubusercontent.com/midoks/tg-king/dev/scripts/update_dev.sh | bash
 ```
-
 
 
 ### 捐赠地址 USDT（TRC20）
