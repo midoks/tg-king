@@ -1,0 +1,241 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span class="layui-breadcrumb">
+                        <a href="/">首页</a><a><cite>模块管理</cite></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="list" lay-filter="list"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+layui.config({
+base: '/static/'
+}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,form = layui.form
+,table = layui.table;
+
+table.render({
+    elem: '#list'
+    ,url: '/module/list'
+    ,title: '用户数据表'
+    ,cols: [[
+        {field:'title', title:'模块名称',width:180}
+        ,{field:'ps', title:'说明'}
+        ,{field:'type', title:'类型',width:80}
+        ,{title:'范围规则',width:160,templet:"#rangeTpl"}
+        ,{field:'status', title:'状态',width:100,templet: "#statusTpl"}
+        ,{title:'操作', toolbar: '#list-right-btn',width:120,align: 'right',fixed: 'right'}
+      ]]
+    ,page: true
+    ,id:'module_list'
+});
+
+
+
+function module_enable(obj){
+    var data = obj.data;
+    layer.open({
+        type: 1,
+        title: "【"+ data['title'] + "】模块安装",
+        area: '350px',
+        closeBtn: 1,
+        shadeClose: true,
+        btn: ['启用','关闭'],
+        content: "<div class='layui-card'>\
+            <div class='layui-card-body'>"+data['ps']+"</div>\
+        </div>",
+        success:function(){
+        },
+        yes:function(index,layero){
+            $.post('/module/enable', {module_name:data['name']}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('module_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+        }
+    });
+}
+
+function module_disable(obj){
+    var data = obj.data;
+    layer.open({
+        type: 1,
+        title: "【"+ data['title'] + "】模块禁用",
+        area: '350px',
+        closeBtn: 1,
+        shadeClose: true,
+        btn: ['停用','关闭'],
+        content: "<div class='layui-card'>\
+            <div class='layui-card-body'>"+data['ps']+"</div>\
+        </div>",
+        success:function(){
+        },
+        yes:function(index,layero){
+            $.post('/module/disable', {module_name:data['name']}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('module_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+        }
+    });
+}
+
+function module_setting(obj){
+    var data = obj.data;
+    $.get('/module/setting?module_name='+data['name'], function(rdata) {
+        // layer.close(loadT);
+        layer.open({
+            type: 1,
+            area: '640px',
+            title: '【'  +data['title']+ "】管理",
+            closeBtn: 1,
+            shift: 0,
+            content: rdata
+        });
+        $(".tg-w-menu p").click(function() {
+            $(this).addClass("bgw").siblings().removeClass("bgw");
+        });
+    });
+}
+
+function module_range_change(obj){
+    if (!obj.data['status']){
+        layer.msg('未开启,不能设置!', {icon:1});
+        return;
+    }
+
+    var module_type = obj.data['range_type'];
+    function select_val(r_type){
+        // console.log('select_val:',module_type,r_type);
+        if (module_type == r_type){
+            return 'selected';
+        }
+        return '';
+    }
+
+    layer.open({
+        area: ['400px'],
+        title:'设置规则',
+        content: '<form class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+                <label class="layui-form-label">类型</label>\
+                <div class="layui-input-block">\
+                    <select name="range_type" lay-filter="range_type">\
+                        <option value="0" '+select_val('0')+'>所有</option>\
+                        <option value="1" '+select_val('1')+'>支持</option>\
+                        <option value="2" '+select_val('2')+'>排除</option>\
+                    </select>\
+                </div>\
+            </div>\
+            <div class="layui-form-item layui-form-text">\
+              <label class="layui-form-label">值</label>\
+              <div class="layui-input-block">\
+                <textarea name="ids" placeholder="id1,id2" class="layui-textarea">'+obj.data['range_val']+'</textarea>\
+              </div>\
+            </div>\
+        </form>',
+        btn: ['设置','取消'],
+        type: 1,
+        shadeClose: false,
+        success:function(){
+            form.render('select');
+        },
+        yes: function(index, layero){
+            var range_type = $('select[name="range_type"]').val();
+            var ids = $('textarea[name="ids"]').val();
+            $.post('/module/range_change', {name:obj.data['name'],range_type:range_type,ids:ids}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('module_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+
+//监听行工具事件
+table.on('tool(list)', function(obj){
+    var data = obj.data;
+    if(obj.event == 'enable'){
+        module_enable(obj);
+    } else if(obj.event == 'disable'){
+        module_disable(obj);
+    } else if(obj.event == 'setting'){
+        module_setting(obj);
+    } else if (obj.event == 'range_change'){
+        module_range_change(obj);
+    }
+});
+///
+});
+</script>
+
+{% raw %}
+
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status == 'start'){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>
+    {{#  } else if(d.status == 'stop') { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">未开启</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="rangeTpl">
+    {{#  if(d.status == 'start'){ }}
+        
+        {{#  if(d.range_type == '0'){ }}
+            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
+        {{#  } else if(d.range_type == '1') { }}
+            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val}})</span>
+        {{#  } else if(d.range_type == '2') { }}
+            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val}})</span>
+        {{#  } }}
+    
+    {{#  } else if(d.status == 'stop') { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">无效</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="list-right-btn">
+    {{#  if(d.status == 'start'){ }}
+    <a class="ablue" lay-event="setting">设置</a> | 
+    <a class="ablue" lay-event="disable">禁用</a>
+    {{#  } else if(d.status == 'stop') { }}
+    <a class="ablue" lay-event="enable">启用</a>
+    {{#  } }}
+</script>
+{% endraw %}
+
+
+{% endblock %}

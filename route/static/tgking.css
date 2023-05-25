@@ -1,0 +1,77 @@
+.pd15{
+	padding:15px;
+}
+
+.ablue{
+	margin-left: 0px;
+	color: #009688;
+	height: 22px;
+    line-height: 22px;
+    padding: 0 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.tg-w-menu {
+    float: left;
+    background-color: #f0f0f1;
+    height: 100%;
+    width: 110px;
+}
+
+
+.tg-form {
+    height: 100%;
+}
+
+.tg-w-main {
+    height: 400px;
+}
+
+.tg-w-menu {
+    float: left;
+    background-color: #f0f0f1;
+    height: 100%;
+    width: 110px
+}
+
+.tg-w-menu p {
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    position: relative;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size:12px;
+    color: #333;
+}
+
+.tg-w-menu p a {
+    display: block;
+
+}
+
+.tg-w-menu p .spanmove {
+    display: none
+}
+
+.tg-w-con {
+    margin-left: 110px;
+    position: relative
+}
+
+.bgw {
+    background-color: white;
+}
+
+.soft-man-con p.status {
+    line-height: 40px;
+    margin-bottom: 10px;
+    font-size: 14px
+}
+
+
+.soft-man-con .sfm-opt .btn {
+    margin-right: 15px;
+}

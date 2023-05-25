@@ -1,0 +1,45 @@
+{% extends "layout.html" %} 
+{% block content %}
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span class="layui-breadcrumb">
+                      <a href="/">首页</a>
+                      <a><cite>面板设置</cite></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">面板设置</div>
+                <div class="layui-card-body">
+                <table class="layui-hide" id="list" lay-filter="list"></table>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+layui.config({
+base: '/static/'
+}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+
+
+
+
+///
+});
+</script>
+{% endblock %}

@@ -10,11 +10,9 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -158,3 +156,21 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+lib/python*/
+
+bin
+pyvenv.cfg
+include
+*.db
+data/iplist.txt
+data/default.pl
+data/admin_path.pl
+data/ipv6.pl
+data/port.pl
+
+scripts/init.d/tgking
+logs/tgking.pid
+
+tmp/admgr_lock.json
+*.session
+module/dhmgr/

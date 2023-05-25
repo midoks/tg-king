@@ -1,0 +1,249 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span class="layui-breadcrumb">
+                      <a href="/">首页</a>
+                      <a><cite>客户端管理</cite></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">列表管理</div>
+                <div class="layui-card-body">
+                <table class="layui-hide" id="list" lay-filter="list"></table>
+                <script type="text/html" id="list-btn">
+                    <div class="layui-btn-container">
+                        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                    </div>
+                </script>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+layui.config({
+base: '/static/'
+}).use(['table','jquery'], function(){
+///
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+
+table.render({
+    elem: '#list'
+    ,url: '/tgclient/list'
+    ,toolbar: '#list-btn'
+    ,title: '用户数据表'
+    ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', title:'ID', width:100,fixed: 'left', unresize: true, sort: true}
+        ,{field:'app_id', title:'APP_ID',width:180}
+        ,{field:'app_hash', title:'APP_HASH'}
+        ,{title:'是否验证',templet:"#vaildTpl",width:120}
+        ,{fixed: 'right', title:'操作', templet:"#opTpl", width:250}
+      ]]
+    ,page: true
+    ,id:'tgclient_list'
+});
+
+
+// add
+function add(obj){
+
+    var app_id = '';
+    var app_hash = '';
+
+    if (obj.event == 'edit'){
+        app_id = obj.data.app_id;
+        app_hash = obj.data.app_hash;
+    }
+
+
+    layer.open({
+        area: ['400px'],
+        title:'添加客户端',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">APP_ID</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="app_id" value="'+app_id+'" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">APP_HASH</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="app_hash" value="'+app_hash+'" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <input type="hidden" name="id" value="">\
+        </div>',
+        btn: ['添加','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var app_id = $('input[name="app_id"]').val();
+            var app_hash = $('input[name="app_hash"]').val();
+            var id = $('input[name="id"]').val();
+            if (obj.event == 'edit'){
+                id = obj.data.id;
+            }
+            $.post('/tgclient/add', {id:id,app_id:app_id,app_hash:app_hash}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('tgclient_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+function vaild_code(obj){
+    layer.open({
+        area: ['400px'],
+        title:'验证登陆【短信】',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">短信码</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="code" value="" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+            <div class="layui-form-item">\
+            <label class="layui-form-label">密码(2FA)</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="pwd" value="" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+        </div>',
+        btn: ['短信验证','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var code = $('input[name="code"]').val();
+            var pwd = $('input[name="pwd"]').val();
+            $.post('/tgclient/vaild_code', {id:obj.data.id,code:code,pwd:pwd}, function(data) {
+                // console.log(data);
+                showMsg(data.msg,function(){
+                    if (data.code==0){
+                        layer.close(index);
+                        table.reload('tgclient_list', {});
+                    }
+                },{icon:data.code==0?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+function vaild(obj){
+    if (obj.data['is_vaild'] == 1){
+        layer.msg('已经验证完成!!', {icon:1});
+        return;
+    }
+
+    layer.open({
+        area: ['400px'],
+        title:'验证账户【手机】',
+        content: '<div class="layui-form layui-form-pane pd15">\
+            <div class="layui-form-item">\
+              <label class="layui-form-label">手机(加区号)</label>\
+              <div class="layui-input-block">\
+                <input type="text" name="tel" value="+86" autocomplete="off" class="layui-input">\
+              </div>\
+            </div>\
+        </div>',
+        btn: ['验证','取消'],
+        type: 1,
+        shadeClose: false,
+        yes: function(index, layero){
+            var tel = $('input[name="tel"]').val();
+            $.post('/tgclient/vaild', {id:obj.data.id,tel:tel}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.code==0){
+                        layer.close(index);
+                        vaild_code(obj);
+                    }
+                },{icon:data.code==0?1:2});
+            },'json');
+            return;
+        }
+    });
+}
+
+
+function reset_vaild(obj){
+    $.post('/tgclient/reset_vaild', {id:obj.data.id}, function(data) {
+        showMsg(data.msg,function(){
+            if (data.code==0){
+                layer.close(index);
+            }
+        },{icon:data.code==0?1:2});
+    },'json');
+}
+
+//头工具栏事件
+table.on('toolbar(list)', function(obj){    
+    switch(obj.event){
+        case 'add':add(obj);break;
+    };
+});
+
+//监听行工具事件
+table.on('tool(list)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+        layer.confirm('确定删除?', function(index){
+            $.post('/tgclient/del', {id:data.id}, function(data) {
+                showMsg(data.msg,function(){
+                    if (data.status){
+                        layer.close(index);
+                        table.reload('tgclient_list', {});
+                    }
+                },{icon:data.status?1:2});
+            },'json');
+        });
+    } else if(obj.event === 'edit'){
+        add(obj);
+    } else if (obj.event == 'vaild'){
+        vaild(obj);
+    } else if (obj.event == 'reset_vaild'){
+        reset_vaild(obj);
+    }
+});
+///
+});
+</script>
+{% raw %}
+<script type="text/html" id="vaildTpl">
+    {{#  if(d.is_vaild == '1'){ }}
+        <span lay-event="vaild" class="layui-btn layui-btn-normal layui-btn-xs">已验证</span>
+    {{#  } else { }}
+        <span lay-event="vaild" class="layui-btn layui-btn-warm layui-btn-xs">未验证</span>
+    {{#  } }}
+</script>
+
+
+<script type="text/html" id="opTpl">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+    {{#  if(d.is_vaild == '1'){ }}
+        <span lay-event="reset_vaild" class="layui-btn layui-btn-normal layui-btn-xs">重置验证</span>
+    {{#  } }}
+</script>
+{% endraw %}
+{% endblock %}

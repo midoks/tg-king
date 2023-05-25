@@ -1,0 +1,18 @@
+{
+	"ps": "机器人广告管理",
+	"name": "admgr",
+	"title": "广告管理",
+	"author": "midoks",
+	"type": "bot",
+	"hook":[
+		{
+			"tag":"menu",
+			"menu": [{
+				"title":"广告管理",
+				"name":"admgr",
+				"path":"menu/index.html"
+			}]
+		}
+	],
+	"setup":"1.0"
+}

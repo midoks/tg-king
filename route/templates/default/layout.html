@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TG全能王</title>
+<meta name="renderer" content="webkit">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="/static/layui/css/layui.css?v={{config.version}}" media="all">
+<link rel="stylesheet" href="/static/style/admin.css?v={{config.version}}" media="all">
+<link rel="stylesheet" href="/static/tgking.css?v={{config.version}}" media="all">
+<script src="/static/layui/layui.js?v={{config.version}}"></script>
+<script src="/static/jquery-1.10.2.min.js?v={{config.version}}"></script>
+<script src="/static/tgking.js?v={{config.version}}"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-14TQDWFGQ5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-14TQDWFGQ5');
+</script>
+</head>
+<body class="layui-layout-body">
+  
+<div id="tg-king">
+<div class="layui-layout layui-layout-admin">
+    <!-- 侧边菜单 -->
+    <div class="layui-side layui-side-menu">
+        <div class="layui-side-scroll">
+            <div class="layui-logo">
+                <span style="font-size:20px;font-weight:bold;">TG全能王</span>
+            </div>
+          
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="tgking-menu" lay-filter="layadmin-system-side-menu">
+                <li data-name="home" class="layui-nav-item">
+                    <a href="/" lay-tips="主页" lay-direction="2">
+                        <i class="layui-icon layui-icon-home"></i><cite>首页</cite>
+                    </a>
+                </li>
+                <li data-name="bot" class="layui-nav-item">
+                    <a href="/bot" lay-tips="用户" lay-direction="2">
+                        <i class="layui-icon layui-icon-user"></i><cite>机器人</cite>
+                    </a>
+                </li>
+                <li data-name="client" class="layui-nav-item">
+                    <a href="/client" lay-tips="用户" lay-direction="2">
+                        <i class="layui-icon layui-icon-senior"></i><cite>客户端</cite>
+                    </a>
+                </li>
+
+                <li data-name="logs" class="layui-nav-item">
+                    <a href="/logs" lay-tips="日志" lay-direction="2">
+                        <i class="layui-icon layui-icon-form"></i><cite>日志</cite>
+                    </a>
+                </li>
+
+                <li data-name="module" class="layui-nav-item">
+                    <a href="/module" lay-tips="模块" lay-direction="2">
+                        <i class="layui-icon layui-icon-app"></i><cite>模块</cite>
+                    </a>
+                </li>
+
+
+                {% for info in data['module_list'] %}
+                    {% if info['hook'] %}
+                        {% for obj in info['hook'] %}
+                            {% if obj['tag'] == 'menu' %}
+                                {% for minfo in obj['menu'] %}
+                <li data-name="{{info['name']}}_{{minfo['name']}}" class="layui-nav-item">
+                    <a href="/module/menu?m={{info['name']}}&t={{minfo['name']}}" lay-tips="{{minfo['title']}}" lay-direction="2">
+                        <i class="layui-icon layui-icon-app"></i><cite>{{minfo['title']}}</cite>
+                    </a>
+                </li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                <li data-name="config" class="layui-nav-item">
+                    <a href="/config" lay-tips="面板设置" lay-direction="2">
+                        <i class="layui-icon layui-icon-set"></i><cite>面板设置</cite>
+                    </a>
+                </li>
+                <li data-name="exit" class="layui-nav-item">
+                    <a href="#" id="signout" lay-tips="退出" lay-direction="2">
+                        <i class="layui-icon layui-icon-set"></i><cite>退出</cite>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="layui-body" style="top: 0px;">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+</div>
+
+
+<script>
+layui.config({
+    base: '/static/'
+}).extend({
+    index: 'lib/index'
+}).use('index',function(){
+// start
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+$("#signout").click(function() {
+    layer.confirm('您真的要退出面板吗?', {icon:3,closeBtn: 1}, function() {
+        window.location.href = "/login?signout=True"
+    });
+    return false
+});
+
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);
+
+function getUrlPath(){
+    var thisUrl = window.location.href;
+    var pathArr = thisUrl.split('/');
+    return pathArr[pathArr.length - 1];
+}
+
+var thisPath = getUrlPath();
+// console.log('thisPath',thisPath);
+if (thisPath.indexOf('?')>-1){
+    var m = $.getUrlParam('m');
+    var t = $.getUrlParam('t');
+
+    var thisModPath = m+'_'+t;
+    $('#tgking-menu li[data-name='+thisModPath+']').addClass('layui-this');
+} else{
+    if(thisPath != ''){
+        $('#tgking-menu li[data-name='+thisPath+']').addClass('layui-this');
+    } else{
+        $('#tgking-menu li[data-name=home]').addClass('layui-this');
+    }
+}
+
+
+// end
+});
+</script>
+</body>
+</html>
