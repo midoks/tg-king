@@ -10,6 +10,9 @@
 
 为定制TG功能而生。
 
+* BOT/Client管理
+* 日志管理
+* 模块方式管理
 
 - 吹水组 - https://t.me/mdserver_web
 
