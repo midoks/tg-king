@@ -34,7 +34,7 @@
                 <span style="font-size:20px;font-weight:bold;">TG全能王</span>
             </div>
           
-            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
+            <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="tgking-menu" lay-filter="layadmin-system-side-menu">
                 <li data-name="home" class="layui-nav-item">
                     <a href="/" lay-tips="主页" lay-direction="2">
                         <i class="layui-icon layui-icon-home"></i><cite>首页</cite>
@@ -69,7 +69,7 @@
                         {% for obj in info['hook'] %}
                             {% if obj['tag'] == 'menu' %}
                                 {% for minfo in obj['menu'] %}
-                <li data-name="module" class="layui-nav-item">
+                <li data-name="{{info['name']}}_{{minfo['name']}}" class="layui-nav-item">
                     <a href="/module/menu?m={{info['name']}}&t={{minfo['name']}}" lay-tips="{{minfo['title']}}" lay-direction="2">
                         <i class="layui-icon layui-icon-app"></i><cite>{{minfo['title']}}</cite>
                     </a>
@@ -107,15 +107,47 @@ layui.config({
 }).extend({
     index: 'lib/index'
 }).use('index',function(){
-    var admin = layui.admin
-    ,$ = layui.$
-    ,table = layui.table;
-    $("#signout").click(function() {
-        layer.confirm('您真的要退出面板吗?', {icon:3,closeBtn: 1}, function() {
-            window.location.href = "/login?signout=True"
-        });
-        return false
+// start
+var admin = layui.admin
+,$ = layui.$
+,table = layui.table;
+$("#signout").click(function() {
+    layer.confirm('您真的要退出面板吗?', {icon:3,closeBtn: 1}, function() {
+        window.location.href = "/login?signout=True"
     });
+    return false
+});
+
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);
+
+function getUrlPath(){
+    var thisUrl = window.location.href;
+    var pathArr = thisUrl.split('/');
+    return pathArr[pathArr.length - 1];
+}
+
+var thisPath = getUrlPath();
+// console.log('thisPath',thisPath);
+if (thisPath.indexOf('?')>-1){
+    var m = $.getUrlParam('m');
+    var t = $.getUrlParam('t');
+
+    var thisModPath = m+'_'+t;
+    $('#tgking-menu li[data-name='+thisModPath+']').addClass('layui-this');
+} else{
+    if(thisPath != undefined){
+        $('#tgking-menu li[data-name='+thisPath+']').addClass('layui-this');
+    }
+}
+
+
+// end
 });
 </script>
 </body>
