@@ -141,8 +141,10 @@ if (thisPath.indexOf('?')>-1){
     var thisModPath = m+'_'+t;
     $('#tgking-menu li[data-name='+thisModPath+']').addClass('layui-this');
 } else{
-    if(thisPath != undefined){
+    if(thisPath != ''){
         $('#tgking-menu li[data-name='+thisPath+']').addClass('layui-this');
+    } else{
+        $('#tgking-menu li[data-name=home]').addClass('layui-this');
     }
 }
 
