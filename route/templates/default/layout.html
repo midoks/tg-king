@@ -56,11 +56,29 @@
                         <i class="layui-icon layui-icon-form"></i><cite>日志</cite>
                     </a>
                 </li>
+
                 <li data-name="module" class="layui-nav-item">
                     <a href="/module" lay-tips="模块" lay-direction="2">
                         <i class="layui-icon layui-icon-app"></i><cite>模块</cite>
                     </a>
                 </li>
+
+
+                {% for info in data['module_list'] %}
+                    {% if info['hook'] %}
+                        {% for obj in info['hook'] %}
+                            {% if obj['tag'] == 'menu' %}
+                                {% for minfo in obj['menu'] %}
+                <li data-name="module" class="layui-nav-item">
+                    <a href="/module/menu?m={{info['name']}}&t={{minfo['name']}}" lay-tips="{{minfo['title']}}" lay-direction="2">
+                        <i class="layui-icon layui-icon-app"></i><cite>{{minfo['title']}}</cite>
+                    </a>
+                </li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
                 <li data-name="config" class="layui-nav-item">
                     <a href="/config" lay-tips="面板设置" lay-direction="2">
                         <i class="layui-icon layui-icon-set"></i><cite>面板设置</cite>

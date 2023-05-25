@@ -18,6 +18,7 @@ import json
 import tgking
 
 from flask import request
+from flask import render_template
 
 
 import threading
@@ -79,6 +80,24 @@ class module_api:
         _module_info = self.checkModuleStatus(_module_info)
         return (_module_info, len(module_info))
 
+    def getAllInstalled(self):
+        module_list = tgking.M('module').field('id,name,status,range_type,range_val').where(
+            'status=?', ('start',)).select()
+
+        module_info = []
+        for i in range(len(module_list)):
+            path = self.__module_dir + '/' + module_list[i]['name']
+            if os.path.isdir(path):
+                json_file = path + '/info.json'
+                if os.path.exists(json_file):
+                    try:
+                        data = json.loads(tgking.readFile(json_file))
+                        module_info.append(data)
+                    except Exception as e:
+                        print(tgking.getTracebackInfo())
+
+        return module_info
+
     def checkModuleStatus(self, module_info):
         for i in range(len(module_info)):
             data = tgking.M('module').field('id,status,range_type,range_val').where(
@@ -96,6 +115,32 @@ class module_api:
         # print(module_name)
         html = self.__module_dir + '/' + module_name + '/index.html'
         return tgking.readFile(html)
+
+    def menuApi(self):
+        module_name = request.args.get('m', '')
+        tag = request.args.get('t', '')
+
+        path = None
+        module_list = self.getAllInstalled()
+
+        import config
+        data = config.config().get()
+
+        for module in module_list:
+            hook_list = module['hook']
+            for hook in hook_list:
+                if hook['tag'] == 'menu':
+                    for menu in hook['menu']:
+                        if menu['name'] == tag and module['name'] == module_name:
+                            path = menu['path']
+
+        abspath = tgking.getModDir() + '/' + module_name + '/' + path
+        if not os.path.exists(abspath):
+            return ''
+
+        content = tgking.readFile(abspath)
+        data['content'] = content
+        return render_template('module_menu.html', data=data)
 
     def rangeChangeApi(self):
         range_type = request.form.get('range_type', '')

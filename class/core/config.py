@@ -25,7 +25,7 @@ from flask import request
 
 
 class config:
-    __version = '0.0.2.1'
+    __version = '0.0.3'
 
     def __init__(self):
         pass
@@ -33,7 +33,13 @@ class config:
     def getVersion(self):
         return self.__version
 
+    def getModInfo(self):
+        import module_api
+        module_info = module_api.module_api().getAllInstalled()
+        return module_info
+
     def get(self):
         data = {}
         data['status_code'] = 0
+        data['module_list'] = self.getModInfo()
         return data

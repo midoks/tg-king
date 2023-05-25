@@ -5,5 +5,15 @@
 	"author": "midoks",
 	"type": "client",
 	"setup":"1.0",
+	"hook":[
+		{
+			"tag":"menu",
+			"menu": [{
+				"title":"客户端推送管理",
+				"name":"index",
+				"path":"menu/index.html"
+			}]
+		}
+	],
 	"depend_doc1":"https://docs.telethon.dev/en/stable/basic/installation.html"
 }

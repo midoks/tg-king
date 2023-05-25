@@ -7,10 +7,11 @@
 	"hook":[
 		{
 			"tag":"menu",
-			"menu": {
+			"menu": [{
 				"title":"广告管理",
+				"name":"admgr",
 				"path":"menu/index.html"
-			}
+			}]
 		}
 	],
 	"setup":"1.0"
