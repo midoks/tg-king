@@ -418,7 +418,7 @@ def getDataFromInt(val):
 
 
 def getBotRangeList(module_name):
-    data = M('module').field('id,status,range_type,range_val').where(
+    data = M('module').field('id,status,range_type,range_val_bot').where(
         'name=?', (module_name,)).select()
 
     # print(data[0]['range_type'])
@@ -426,10 +426,10 @@ def getBotRangeList(module_name):
         return M('tg_bot').field('id,alias,token').select()
 
     if data[0]['range_type'] == 1:
-        return M('tg_bot').field('id,alias,token').where('id in (?)', (data[0]['range_val'],)).select()
+        return M('tg_bot').field('id,alias,token').where('id in (?)', (data[0]['range_val_bot'],)).select()
 
     if data[0]['range_type'] == 2:
-        return M('tg_bot').field('id,alias,token').where('id not in (?)', (data[0]['range_val'],)).select()
+        return M('tg_bot').field('id,alias,token').where('id not in (?)', (data[0]['range_val_bot'],)).select()
 
     return []
 
@@ -443,17 +443,17 @@ def getBotById(tid):
 
 
 def getClientRangeList(module_name):
-    data = M('module').field('id,status,range_type,range_val').where(
+    data = M('module').field('id,status,range_type,range_val_client').where(
         'name=?', (module_name,)).select()
 
     if data[0]['range_type'] == 0:
         return M('tg_client').field('id,app_id,app_hash').select()
 
     if data[0]['range_type'] == 1:
-        return M('tg_client').field('id,app_id,app_hash').where('id in (?)', (data[0]['range_val'],)).select()
+        return M('tg_client').field('id,app_id,app_hash').where('id in (?)', (data[0]['range_val_client'],)).select()
 
     if data[0]['range_type'] == 2:
-        return M('tg_client').field('id,app_id,app_hash').where('id not in (?)', (data[0]['range_val'],)).select()
+        return M('tg_client').field('id,app_id,app_hash').where('id not in (?)', (data[0]['range_val_client'],)).select()
     return []
 
 
