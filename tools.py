@@ -263,6 +263,8 @@ if __name__ == "__main__":
         # loop = asyncio.get_event_loop()
         # loop.run_until_complete(verifyTgClient(sys.argv[2]))
     elif method == 'tgbot_list':
+        tgbotList(sys.argv[2])
+    elif method == 'tgclient_list':
         tgClientList(sys.argv[2])
     elif method == "cli":
         clinum = 0

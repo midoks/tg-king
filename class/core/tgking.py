@@ -283,6 +283,16 @@ def writeDbLog(stype, msg, args=(), uid=1):
         return False
 
 
+def writeModLog(module_name='tmp', log_str):
+    if __name__ == "__main__":
+        print(log_str)
+
+    now = getDateFromNow()
+    log_file = getServerDir() + '/logs/module_' + module_name + '.log'
+    writeLog(now + ':' + log_str, log_file, limit_size=5 * 1024)
+    return True
+
+
 def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
     log_file = getServerDir() + '/logs/debug.log'
     if path != None:
