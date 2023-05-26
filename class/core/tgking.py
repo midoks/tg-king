@@ -283,7 +283,7 @@ def writeDbLog(stype, msg, args=(), uid=1):
         return False
 
 
-def writeModLog(module_name='tmp', log_str):
+def writeModLog(log_str, module_name='tmp'):
     if __name__ == "__main__":
         print(log_str)
 
