@@ -43,7 +43,7 @@ table.render({
         {field:'title', title:'模块名称',width:180}
         ,{field:'ps', title:'说明'}
         ,{field:'type', title:'类型',width:80}
-        ,{title:'范围规则',width:160,templet:"#rangeTpl"}
+        ,{title:'范围规则',width:200,templet:"#rangeTpl"}
         ,{field:'status', title:'状态',width:100,templet: "#statusTpl"}
         ,{title:'操作', toolbar: '#list-right-btn',width:120,align: 'right',fixed: 'right'}
       ]]
@@ -125,7 +125,7 @@ function module_setting(obj){
     });
 }
 
-function module_range_change(obj){
+function module_range_change(obj,field){
     if (!obj.data['status']){
         layer.msg('未开启,不能设置!', {icon:1});
         return;
@@ -133,16 +133,23 @@ function module_range_change(obj){
 
     var module_type = obj.data['range_type'];
     function select_val(r_type){
-        // console.log('select_val:',module_type,r_type);
         if (module_type == r_type){
             return 'selected';
         }
         return '';
     }
 
+    var range_val = '';
+    if (field == 'bot'){
+        range_val = obj.data['range_val_bot']
+    } else if (field == 'client'){
+        range_val = obj.data['range_val_client']
+    }
+    
+
     layer.open({
         area: ['400px'],
-        title:'设置规则',
+        title:'设置规则['+field+']',
         content: '<form class="layui-form layui-form-pane pd15">\
             <div class="layui-form-item">\
                 <label class="layui-form-label">类型</label>\
@@ -157,7 +164,7 @@ function module_range_change(obj){
             <div class="layui-form-item layui-form-text">\
               <label class="layui-form-label">值</label>\
               <div class="layui-input-block">\
-                <textarea name="ids" placeholder="id1,id2" class="layui-textarea">'+obj.data['range_val']+'</textarea>\
+                <textarea name="ids" placeholder="id1,id2" class="layui-textarea">'+range_val+'</textarea>\
               </div>\
             </div>\
         </form>',
@@ -170,7 +177,8 @@ function module_range_change(obj){
         yes: function(index, layero){
             var range_type = $('select[name="range_type"]').val();
             var ids = $('textarea[name="ids"]').val();
-            $.post('/module/range_change', {name:obj.data['name'],range_type:range_type,ids:ids}, function(data) {
+            var field = $('textarea[name="'+field+'"]').val();
+            $.post('/module/range_change', {name:obj.data['name'],range_type:range_type,ids:ids,field:field}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
                         layer.close(index);
@@ -193,8 +201,10 @@ table.on('tool(list)', function(obj){
         module_disable(obj);
     } else if(obj.event == 'setting'){
         module_setting(obj);
-    } else if (obj.event == 'range_change'){
-        module_range_change(obj);
+    } else if (obj.event == 'range_change_client'){
+        module_range_change(obj,'client');
+    } else if (obj.event == 'range_change_bot'){
+        module_range_change(obj,'bot');
     }
 });
 ///
@@ -212,16 +222,48 @@ table.on('tool(list)', function(obj){
 </script>
 
 <script type="text/html" id="rangeTpl">
+
     {{#  if(d.status == 'start'){ }}
+        {{#  if(d.type == 'all'){ }}
         
-        {{#  if(d.range_type == '0'){ }}
-            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
-        {{#  } else if(d.range_type == '1') { }}
-            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val}})</span>
-        {{#  } else if(d.range_type == '2') { }}
-            <span lay-event="range_change" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val}})</span>
+            {{#  if(d.range_type == '0'){ }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]所有</span>
+            {{#  } else if(d.range_type == '1') { }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]支持ID({{d.range_val_bot}})</span>
+            {{#  } else if(d.range_type == '2') { }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]排除ID({{d.range_val_bot}})</span>
+            {{#  } }}
+
+            {{#  if(d.range_type == '0'){ }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]所有</span>
+            {{#  } else if(d.range_type == '1') { }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]支持ID({{d.range_val_client}})</span>
+            {{#  } else if(d.range_type == '2') { }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]排除ID({{d.range_val_client}})</span>
+            {{#  } }}
+
+        {{#  } else if(d.type == 'client') { }}
+
+            {{#  if(d.range_type == '0'){ }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
+            {{#  } else if(d.range_type == '1') { }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val_client}})</span>
+            {{#  } else if(d.range_type == '2') { }}
+                <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val_client}})</span>
+            {{#  } }}
+
+        {{#  } else if(d.type == 'bot') { }}
+        
+            {{#  if(d.range_type == '0'){ }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
+            {{#  } else if(d.range_type == '1') { }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val_bot}})</span>
+            {{#  } else if(d.range_type == '2') { }}
+                <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val_bot}})</span>
+            {{#  } }}
+
         {{#  } }}
-    
+
     {{#  } else if(d.status == 'stop') { }}
     <span class="layui-btn layui-btn-warm layui-btn-xs">无效</span>
     {{#  } }}

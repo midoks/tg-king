@@ -81,9 +81,8 @@ class module_api:
         return (_module_info, len(module_info))
 
     def getAllInstalled(self):
-        module_list = tgking.M('module').field('id,name,status,range_type,range_val').where(
+        module_list = tgking.M('module').field('id,name,status,range_type,range_val_bot,range_val_client').where(
             'status=?', ('start',)).select()
-
         module_info = []
         for i in range(len(module_list)):
             path = self.__module_dir + '/' + module_list[i]['name']
@@ -100,14 +99,16 @@ class module_api:
 
     def checkModuleStatus(self, module_info):
         for i in range(len(module_info)):
-            data = tgking.M('module').field('id,status,range_type,range_val').where(
+            data = tgking.M('module').field('id,status,range_type,range_val_bot,range_val_client').where(
                 'name=?', (module_info[i]['name'],)).select()
             if len(data) == 0:
                 module_info[i]['status'] = 'stop'
             else:
                 module_info[i]['status'] = data[0]['status']
                 module_info[i]['range_type'] = data[0]['range_type']
-                module_info[i]['range_val'] = data[0]['range_val']
+                module_info[i]['range_val_bot'] = data[0]['range_val_bot']
+                module_info[i]['range_val_client'] = data[
+                    0]['range_val_client']
         return module_info
 
     def settingApi(self):
@@ -146,12 +147,13 @@ class module_api:
         range_type = request.form.get('range_type', '')
         ids = request.form.get('ids', '')
         name = request.form.get('name', '')
+        field = request.form.get('field', 'bot')
 
         # print(range_type, ids, name)
         tgking.M('module').where('name=?', (name,)).setField(
             'range_type', range_type)
         tgking.M('module').where('name=?', (name,)).setField(
-            'range_val', ids)
+            'range_val' + field, ids)
 
         return tgking.returnJson(True, "设置成功!")
 
