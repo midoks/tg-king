@@ -147,12 +147,13 @@ class module_api:
         range_type = request.form.get('range_type', '')
         ids = request.form.get('ids', '')
         name = request.form.get('name', '')
+        field = request.form.get('field', 'bot')
 
         # print(range_type, ids, name)
         tgking.M('module').where('name=?', (name,)).setField(
             'range_type', range_type)
         tgking.M('module').where('name=?', (name,)).setField(
-            'range_val', ids)
+            'range_val' + field, ids)
 
         return tgking.returnJson(True, "设置成功!")
 
