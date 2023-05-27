@@ -264,7 +264,7 @@ def systemdCfgDir():
     return "/tmp"
 
 
-def modLog(stype, msg):
+def modLog(msg, stype='临时'):
     return writeDbLog('模块日志[' + stype + ']', msg)
 
 
@@ -303,7 +303,10 @@ def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
         if size > limit_size:
             log_file_rename = log_file + "_" + \
                 time.strftime("%Y-%m-%d_%H%M%S") + '.log'
-            os.rename(log_file, log_file_rename)
+            os.copyfile(log_file, log_file_rename)
+
+            # 清空内容
+            open(log_file, 'w').close()
             logs = sorted(glob.glob(log_file + "_*"))
             count = len(logs)
             save_limit = count - save_limit
