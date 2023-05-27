@@ -230,7 +230,7 @@ function modLogs(_name, func, line){
             }
      
             var h =  parseInt($('.tg-w-menu').css('height')) - 40;
-            var ebody = '<textarea readonly style="margin: 0px;height: '+h+'px;width: 100%;background-color: #333;color:#fff; padding:0 5px" id="info_log">'+rdata.data+'</textarea>';
+            var ebody = '<textarea readonly style="margin: 0px;height: '+h+'px;width: 100%;background-color: #333;color:#fff; padding:0 5px;font-size: 13px;" id="info_log">'+rdata.data+'</textarea>';
             $(".soft-man-con").html(ebody);
             var ob = document.getElementById('info_log');
             ob.scrollTop = ob.scrollHeight; 
