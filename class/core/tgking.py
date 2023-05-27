@@ -24,6 +24,7 @@ import subprocess
 import glob
 import base64
 import re
+import shutil
 
 from random import Random
 
@@ -303,7 +304,7 @@ def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
         if size > limit_size:
             log_file_rename = log_file + "_" + \
                 time.strftime("%Y-%m-%d_%H%M%S") + '.log'
-            os.copyfile(log_file, log_file_rename)
+            shutil.copy(log_file, log_file_rename)
 
             # 清空内容
             open(log_file, 'w').close()
