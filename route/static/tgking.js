@@ -50,7 +50,7 @@ function modPost(module_name, func_name, args, succ_func){
     },'json')
 }
 
-function modService(_name, version){
+function modService(_name){
 	var data = {name:_name, func:'status'}
 	if ( typeof(version) != 'undefined' ){
 		data['version'] = version;
@@ -67,14 +67,14 @@ function modService(_name, version){
             return;
         }
         if (data.data == 'start'){
-            modSetService(_name, true, version);
+            modSetService(_name, true);
         } else {
-            modSetService(_name, false, version);
+            modSetService(_name, false);
         }
     },'json');
 }
 
-function modSetService(_name ,status, version){
+function modSetService(_name ,status){
 	var serviceCon ='<p class="status">当前状态：<span>'+(status ? '开启' : '关闭' )+
         '</span><span style="color: '+
         (status?'#20a53a;':'red;')+
@@ -108,9 +108,9 @@ function modOpService(a, b) {
             
             if( b != "reload" && g.data == 'ok' ) {
                 if ( b == 'start' ) {
-                    modSetService(a, true, v);
+                    modSetService(a, true);
                 } else if ( b == 'stop' ){
-                    modSetService(a, false, v);
+                    modSetService(a, false);
                 }
             }
 
