@@ -431,6 +431,18 @@ def getDataFromInt(val):
     return time.strftime(time_format, time_str)
 
 
+def getDateFromBefore(btime=60):
+    import time
+    import datetime
+
+    d = datetime.datetime.now().timestamp()
+    val = d - btime
+
+    time_format = '%Y-%m-%d %H:%M:%S'
+    time_str = time.localtime(val)
+    return time.strftime(time_format, time_str)
+
+
 def getBotRangeList(module_name):
     data = M('module').field('id,status,range_type,range_val_bot').where(
         'name=?', (module_name,)).select()
