@@ -290,7 +290,7 @@ def writeModLog(log_str, module_name='tmp'):
 
     now = getDateFromNow()
     log_file = getServerDir() + '/logs/module_' + module_name + '.log'
-    writeLog(now + ':' + log_str, log_file, limit_size=5 * 1024)
+    writeLog(now + ':' + log_str, log_file, limit_size=50 * 1024)
     return True
 
 
