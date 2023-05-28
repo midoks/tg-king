@@ -81,7 +81,7 @@ class module_api:
         return (_module_info, len(module_info))
 
     def getAllInstalled(self):
-        module_list = tgking.M('module').field('id,name,status,range_type,range_val_bot,range_val_client').where(
+        module_list = tgking.M('module').field('id,name,status,range_type_bot,range_type_client,range_val_bot,range_val_client').where(
             'status=?', ('start',)).select()
         module_info = []
         for i in range(len(module_list)):
@@ -99,14 +99,16 @@ class module_api:
 
     def checkModuleStatus(self, module_info):
         for i in range(len(module_info)):
-            data = tgking.M('module').field('id,status,range_type,range_val_bot,range_val_client').where(
+            data = tgking.M('module').field('id,status,range_type_bot,range_val_bot,range_type_client,range_val_client').where(
                 'name=?', (module_info[i]['name'],)).select()
             if len(data) == 0:
                 module_info[i]['status'] = 'stop'
             else:
                 module_info[i]['status'] = data[0]['status']
-                module_info[i]['range_type'] = data[0]['range_type']
+                module_info[i]['range_type_bot'] = data[0]['range_type_bot']
                 module_info[i]['range_val_bot'] = data[0]['range_val_bot']
+                module_info[i]['range_type_client'] = data[
+                    0]['range_type_client']
                 module_info[i]['range_val_client'] = data[
                     0]['range_val_client']
         return module_info
@@ -149,11 +151,16 @@ class module_api:
         name = request.form.get('name', '')
         field = request.form.get('field', 'bot')
 
-        # print(range_type, ids, name)
-        tgking.M('module').where('name=?', (name,)).setField(
-            'range_type', range_type)
-        tgking.M('module').where('name=?', (name,)).setField(
-            'range_val' + field, ids)
+        if field == 'bot':
+            tgking.M('module').where('name=?', (name,)).setField(
+                'range_type_bot', range_type)
+            tgking.M('module').where('name=?', (name,)).setField(
+                'range_val_bot', ids)
+        else:
+            tgking.M('module').where('name=?', (name,)).setField(
+                'range_type_client', range_type)
+            tgking.M('module').where('name=?', (name,)).setField(
+                'range_val_client', ids)
 
         return tgking.returnJson(True, "设置成功!")
 
