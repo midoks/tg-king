@@ -443,6 +443,12 @@ def getDateFromBefore(btime=60):
     return time.strftime(time_format, time_str)
 
 
+def date2timestamp(strdate):
+    time_array = time.strptime(strdate, '%Y-%m-%d %H:%M:%S')
+    timestamp = int(time.mktime(time_array))
+    return timestamp
+
+
 def getBotRangeList(module_name):
     data = M('module').field('id,status,range_type,range_val_bot').where(
         'name=?', (module_name,)).select()
