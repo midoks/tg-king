@@ -177,7 +177,6 @@ function module_range_change(obj,field){
         yes: function(index, layero){
             var range_type = $('select[name="range_type"]').val();
             var ids = $('textarea[name="ids"]').val();
-            var field = $('textarea[name="'+field+'"]').val();
             $.post('/module/range_change', {name:obj.data['name'],range_type:range_type,ids:ids,field:field}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
