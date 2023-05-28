@@ -55,18 +55,10 @@ def startTask():
         startTask()
 
 
-def setDaemon(t):
-    if sys.version_info.major == 3 and sys.version_info.minor >= 10:
-        t.daemon = True
-    else:
-        t.setDaemon(True)
-    return t
-
 if __name__ == "__main__":
 
     # 系统监控
     sysTask = threading.Thread(target=systemTask)
-    sysTask = setDaemon(sysTask)
     sysTask.start()
 
     startTask()
