@@ -43,6 +43,11 @@ def hanle_get_chat_id(message):
     bot.reply_to(message, message.chat.id)
 
 
+@bot.message_handler(func=lambda message: True)
+def all_message(message):
+    writeLog('msg:' + str(message))
+
+
 def runBot(bot):
     try:
         bot.polling()
