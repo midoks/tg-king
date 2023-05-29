@@ -53,7 +53,7 @@ def initDreplace():
     content = content.replace('{$SERVER_PATH}', sp_path)
     content = content.replace('{$APP_PATH}', app_path)
 
-    tif not os.path.isfile(file_bin) or os.access(file_bin, os.W_OK):
+    if not os.path.isfile(file_bin) or os.access(file_bin, os.W_OK):
         tgking.writeFile(file_bin, content)
         tgking.execShell('chmod +x ' + file_bin)
 
