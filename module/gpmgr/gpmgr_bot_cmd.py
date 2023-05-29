@@ -56,6 +56,12 @@ def all_message(message):
     writeLog('msg:' + str(message))
 
 
+@bot.message_handler(content_types=["new_chat_members"])
+def onNewUser(message):
+    writeLog('new_chat_members:' + str(message))
+    # bot.send_message(message, "running onNewUser")
+
+
 def runBot(bot):
     try:
         bot.polling()
