@@ -53,19 +53,20 @@ def initDreplace():
     content = content.replace('{$SERVER_PATH}', sp_path)
     content = content.replace('{$APP_PATH}', app_path)
 
-    tgking.writeFile(file_bin, content)
-    tgking.execShell('chmod +x ' + file_bin)
+    tif not os.path.isfile(file_bin) or os.access(file_bin, os.W_OK):
+        tgking.writeFile(file_bin, content)
+        tgking.execShell('chmod +x ' + file_bin)
 
     # systemd
     systemDir = tgking.systemdCfgDir()
     systemService = systemDir + '/tg_' + getModName() + '.service'
     systemServiceTpl = getModDir() + '/init.d/tg_' + getModName() + '.service.tpl'
-    if os.path.exists(systemDir) and not os.path.exists(systemService):
+    if not os.path.isfile(systemService) or os.access(systemService, os.W_OK):
         service_path = tgking.getServerDir()
         se_content = tgking.readFile(systemServiceTpl)
         se_content = se_content.replace('{$APP_PATH}', app_path)
         tgking.writeFile(systemService, se_content)
-        tgking.execShell('systemctl daemon-reload')
+    tgking.execShell('systemctl daemon-reload')
 
     return file_bin
 
