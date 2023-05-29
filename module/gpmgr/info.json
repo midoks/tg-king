@@ -1,5 +1,5 @@
 {
-	"ps": "机器人群里管理",
+	"ps": "机器人群管理",
 	"name": "gpmgr",
 	"title": "群管理",
 	"author": "midoks",
@@ -8,8 +8,8 @@
 		{
 			"tag":"menu",
 			"menu": [{
-				"title":"广告管理",
-				"name":"gpmgr",
+				"title":"机器人群管理",
+				"name":"index",
 				"path":"menu/index.html"
 			}]
 		}
