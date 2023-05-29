@@ -62,13 +62,16 @@ def handle_new_chat_members(message):
     新加入的用户
     '''
 
+    # 删除入群消息
     try:
-        # 删除入群消息
         bot.delete_message(
             chat_id=message.chat.id, message_id=message.message_id)
+    except Exception as e:
+        writeLog(str(e))
 
-        # 限制入群权限
-        bot.restrict_members(chat_id, members_id)
+    # 限制入群权限
+    try:
+        bot.restrict_chat_member(message.chat.id, message.from_user.id)
     except Exception as e:
         writeLog(str(e))
 
