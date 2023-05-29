@@ -87,7 +87,17 @@ tg_start_task(){
 
 
 tg_stop(){
-	echo -e "stopping gpmgr_bot_task ... \c";
+	
+    echo -e "stopping gpmgr_bot_cmd ... \c";
+    arr=`ps aux|grep 'gpmgr_bot_cmd.py'|grep -v grep|awk '{print $2}'`
+    for p in ${arr[@]}
+    do
+        kill -9 $p > /dev/null 2>&1
+    done
+    echo -e "\033[32mdone\033[0m"
+
+
+    echo -e "stopping gpmgr_bot_task ... \c";
     arr=`ps aux|grep 'gpmgr_bot_task.py'|grep -v grep|awk '{print $2}'`
     for p in ${arr[@]}
     do
