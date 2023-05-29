@@ -75,8 +75,8 @@ def runBotPushTask():
     bot_list = tgking.getBotRangeList('gpmgr')
     for x in range(len(bot_list)):
         # print(bot_list[x]['token'])
-        bot = telebot.TeleBot(bot_list[x]['token'])
-        pushContent(bot)
+        # bot = telebot.TeleBot(bot_list[x]['token'])
+        # pushContent(bot)
         time.sleep(1)
 
 
