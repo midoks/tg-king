@@ -57,8 +57,20 @@ def all_message(message):
 
 
 @bot.message_handler(content_types=["new_chat_members"])
-def onNewUser(message):
+def handle_new_chat_members(message):
+    '''
+    新加入的用户
+    '''
+
+    # 删除入群消息
+    try:
+        bot.delete_message(
+            chat_id=message.chat.id, message_id=message.message_id)
+    except Exception as e:
+        writeLog(str(e))
+
     writeLog('new_chat_members:' + str(message))
+
     # bot.send_message(message, "running onNewUser")
 
 
