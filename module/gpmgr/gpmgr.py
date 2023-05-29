@@ -106,7 +106,7 @@ def reload():
 
 def status():
     data = tgking.execShell(
-        "ps -ef | grep admgr_bot |grep -v grep | awk '{print $2}'")
+        "ps -ef | grep gpmgr_bot |grep -v grep | awk '{print $2}'")
     if data[0] == '':
         return 'stop'
     return 'start'
