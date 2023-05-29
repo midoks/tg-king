@@ -40,7 +40,7 @@ tg_start_cmd(){
         echo -e "starting gpmgr_bot_cmd... \c"
         cd $SP_PATH
 
-        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list admgr`
+        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list gpmgr`
         ids=(${ids//,/ })
         
         for var in ${ids[@]}
