@@ -36,9 +36,10 @@ def writeLog(log_str):
     return True
 
 
-@bot.message_handler(commands=['chat_id'])
+@bot.message_handler(commands=['id'])
 def hanle_get_chat_id(message):
-    print(message)
+    if message.chat.type != 'private':
+        return True
     bot.reply_to(message, message.chat.id)
 
 
