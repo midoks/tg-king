@@ -21,21 +21,16 @@ from telebot.util import quick_markup
 
 
 def writeLog(log_str):
-    if __name__ == "__main__":
-        print(log_str)
-
-    now = tgking.getDateFromNow()
-    log_file = tgking.getServerDir() + '/logs/module_gpmgr.log'
-    tgking.writeLog(now + ':' + log_str, log_file, limit_size=5 * 1024)
+    tgking.writeModLog('[gpmgr][task]:' + log_str, 'gpmgr')
     return True
 
 
 chat_id = 5568699210
 
 
-def pushContent(bot, tag='admgr', trigger_time=300):
+def pushContent(bot, tag='gpmgr', trigger_time=300):
     # 信号只在一个周期内执行一次|start
-    lock_file = tgking.getServerDir() + '/tmp/admgr_lock.json'
+    lock_file = tgking.getServerDir() + '/tmp/gpmgr_lock.json'
     if not os.path.exists(lock_file):
         tgking.writeFile(lock_file, '{}')
 
