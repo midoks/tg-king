@@ -66,6 +66,8 @@ def handle_new_chat_members(message):
     try:
         bot.delete_message(
             chat_id=message.chat.id, message_id=message.message_id)
+
+        bot.restrict_members(chat_id, members_id)
     except Exception as e:
         writeLog(str(e))
 
