@@ -24,6 +24,7 @@ import subprocess
 import glob
 import base64
 import re
+import shutil
 
 from random import Random
 
@@ -264,7 +265,7 @@ def systemdCfgDir():
     return "/tmp"
 
 
-def modLog(stype, msg):
+def modLog(msg, stype='临时'):
     return writeDbLog('模块日志[' + stype + ']', msg)
 
 
@@ -283,6 +284,16 @@ def writeDbLog(stype, msg, args=(), uid=1):
         return False
 
 
+def writeModLog(log_str, module_name='tmp'):
+    if __name__ == "__main__":
+        print(log_str)
+
+    now = getDateFromNow()
+    log_file = getServerDir() + '/logs/module_' + module_name + '.log'
+    writeLog(now + ':' + log_str, log_file, limit_size=50 * 1024)
+    return True
+
+
 def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
     log_file = getServerDir() + '/logs/debug.log'
     if path != None:
@@ -293,7 +304,10 @@ def writeLog(msg, path=None, limit_size=50 * 1024 * 1024, save_limit=3):
         if size > limit_size:
             log_file_rename = log_file + "_" + \
                 time.strftime("%Y-%m-%d_%H%M%S") + '.log'
-            os.rename(log_file, log_file_rename)
+            shutil.copy(log_file, log_file_rename)
+
+            # 清空内容
+            open(log_file, 'w').close()
             logs = sorted(glob.glob(log_file + "_*"))
             count = len(logs)
             save_limit = count - save_limit
@@ -417,18 +431,36 @@ def getDataFromInt(val):
     return time.strftime(time_format, time_str)
 
 
+def getDateFromBefore(btime=60):
+    import time
+    import datetime
+
+    d = datetime.datetime.now().timestamp()
+    val = d - btime
+
+    time_format = '%Y-%m-%d %H:%M:%S'
+    time_str = time.localtime(val)
+    return time.strftime(time_format, time_str)
+
+
+def date2timestamp(strdate):
+    time_array = time.strptime(strdate, '%Y-%m-%d %H:%M:%S')
+    timestamp = int(time.mktime(time_array))
+    return timestamp
+
+
 def getBotRangeList(module_name):
-    data = M('module').field('id,status,range_type,range_val_bot').where(
+    data = M('module').field('id,status,range_type_bot,range_val_bot').where(
         'name=?', (module_name,)).select()
 
-    # print(data[0]['range_type'])
-    if data[0]['range_type'] == 0:
+    # print(data[0]['range_type_bot'])
+    if data[0]['range_type_bot'] == 0:
         return M('tg_bot').field('id,alias,token').select()
 
-    if data[0]['range_type'] == 1:
+    if data[0]['range_type_bot'] == 1:
         return M('tg_bot').field('id,alias,token').where('id in (?)', (data[0]['range_val_bot'],)).select()
 
-    if data[0]['range_type'] == 2:
+    if data[0]['range_type_bot'] == 2:
         return M('tg_bot').field('id,alias,token').where('id not in (?)', (data[0]['range_val_bot'],)).select()
 
     return []
@@ -443,16 +475,16 @@ def getBotById(tid):
 
 
 def getClientRangeList(module_name):
-    data = M('module').field('id,status,range_type,range_val_client').where(
+    data = M('module').field('id,status,range_type_client,range_val_client').where(
         'name=?', (module_name,)).select()
 
-    if data[0]['range_type'] == 0:
+    if data[0]['range_type_client'] == 0:
         return M('tg_client').field('id,app_id,app_hash').select()
 
-    if data[0]['range_type'] == 1:
+    if data[0]['range_type_client'] == 1:
         return M('tg_client').field('id,app_id,app_hash').where('id in (?)', (data[0]['range_val_client'],)).select()
 
-    if data[0]['range_type'] == 2:
+    if data[0]['range_type_client'] == 2:
         return M('tg_client').field('id,app_id,app_hash').where('id not in (?)', (data[0]['range_val_client'],)).select()
     return []
 

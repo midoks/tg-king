@@ -1,0 +1,18 @@
+{
+	"ps": "机器人群管理",
+	"name": "gpmgr",
+	"title": "群管理",
+	"author": "midoks",
+	"type": "bot",
+	"hook":[
+		{
+			"tag":"menu",
+			"menu": [{
+				"title":"机器人群管理",
+				"name":"index",
+				"path":"menu/index.html"
+			}]
+		}
+	],
+	"setup":"1.0"
+}

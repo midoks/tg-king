@@ -22,7 +22,8 @@ export LANG=en_US.UTF-8
 SP_PATH={$SERVER_PATH}
 PATH=$PATH:$SP_PATH/bin
 
-LOG_FILE={$SERVER_PATH}/logs/module_admgr.log
+
+LOG_FILE={$SERVER_PATH}/logs/module_gpmgr.log
 
 if [ -f $SP_PATH/bin/activate ];then
     source $SP_PATH/bin/activate
@@ -34,39 +35,40 @@ tg_start(){
 }
 
 tg_start_cmd(){ 
-    isStart=`ps -ef|grep 'admgr_bot_cmd.py' |grep -v grep | awk '{print $2}'`
+    isStart=`ps -ef|grep 'gpmgr_bot_cmd.py' |grep -v grep | awk '{print $2}'`
     if [ "$isStart" == '' ];then
-        echo -e "starting admgr_bot_cmd... \c"
+        echo -e "starting gpmgr_bot_cmd... \c"
         cd $SP_PATH
 
-        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list admgr`
+        ids=`python3 {$SERVER_PATH}/tools.py tgbot_list gpmgr`
         ids=(${ids//,/ })
         
         for var in ${ids[@]}
         do
-            python3 {$APP_PATH}/admgr_bot_cmd.py $var >> $LOG_FILE &
-            echo "starting admgr_bot_cmd...${var}...done"
+            python3 {$APP_PATH}/gpmgr_bot_cmd.py $var >> $LOG_FILE &
+            echo -e "starting gpmgr_bot_cmd...id:${var} \c"
+            echo -e "\033[32mdone\033[0m"
         done
         
     else
-        echo "starting admgr_bot_cmd...(pid $(echo $isStart)) already running"
+        echo "starting gpmgr_bot_cmd...(pid $(echo $isStart)) already running"
     fi
 }
 
 
 tg_start_task(){	
 
-	isStart=`ps -ef|grep 'admgr_bot_task.py' |grep -v grep | awk '{print $2}'`
+	isStart=`ps -ef|grep 'gpmgr_bot_task.py' |grep -v grep | awk '{print $2}'`
     if [ "$isStart" == '' ];then
-        echo -e "starting admgr_bot_task... \c"
+        echo -e "starting gpmgr_bot_task... \c"
         cd $SP_PATH
-        python3 {$APP_PATH}/admgr_bot_task.py >> $LOG_FILE &
+        python3 {$APP_PATH}/gpmgr_bot_task.py >> $LOG_FILE &
         isStart=""
         while [[ "$isStart" == "" ]];
         do
             echo -e ".\c"
             sleep 0.5
-            isStart=`ps -ef|grep 'admgr_bot_task.py' |grep -v grep | awk '{print $2}'`
+            isStart=`ps -ef|grep 'gpmgr_bot_task.py' |grep -v grep | awk '{print $2}'`
             let n+=1
             if [ $n -gt 20 ];then
                 break;
@@ -74,19 +76,29 @@ tg_start_task(){
         done
         if [ "$isStart" == '' ];then
             echo -e "\033[31mfailed\033[0m"
-            echo -e "\033[31mError: admgr_bot_task service startup failed.\033[0m"
+            echo -e "\033[31mError: gpmgr_bot_task service startup failed.\033[0m"
             return;
         fi
         echo -e "\033[32mdone\033[0m"
     else
-        echo "starting admgr_bot_task...(pid $(echo $isStart)) already running"
+        echo "starting gpmgr_bot_task...(pid $(echo $isStart)) already running"
     fi
 }
 
 
 tg_stop(){
-	echo -e "stopping admgr_bot_task ... \c";
-    arr=`ps aux|grep 'admgr_bot_task.py'|grep -v grep|awk '{print $2}'`
+	
+    echo -e "stopping gpmgr_bot_cmd ... \c";
+    arr=`ps aux|grep 'gpmgr_bot_cmd.py'|grep -v grep|awk '{print $2}'`
+    for p in ${arr[@]}
+    do
+        kill -9 $p > /dev/null 2>&1
+    done
+    echo -e "\033[32mdone\033[0m"
+
+
+    echo -e "stopping gpmgr_bot_task ... \c";
+    arr=`ps aux|grep 'gpmgr_bot_task.py'|grep -v grep|awk '{print $2}'`
     for p in ${arr[@]}
     do
         kill -9 $p > /dev/null 2>&1

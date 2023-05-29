@@ -43,7 +43,7 @@ table.render({
         {field:'title', title:'模块名称',width:180}
         ,{field:'ps', title:'说明'}
         ,{field:'type', title:'类型',width:80}
-        ,{title:'范围规则',width:200,templet:"#rangeTpl"}
+        ,{title:'范围规则',width:230,templet:"#rangeTpl"}
         ,{field:'status', title:'状态',width:100,templet: "#statusTpl"}
         ,{title:'操作', toolbar: '#list-right-btn',width:120,align: 'right',fixed: 'right'}
       ]]
@@ -177,7 +177,6 @@ function module_range_change(obj,field){
         yes: function(index, layero){
             var range_type = $('select[name="range_type"]').val();
             var ids = $('textarea[name="ids"]').val();
-            var field = $('textarea[name="'+field+'"]').val();
             $.post('/module/range_change', {name:obj.data['name'],range_type:range_type,ids:ids,field:field}, function(data) {
                 showMsg(data.msg,function(){
                     if (data.status){
@@ -226,39 +225,39 @@ table.on('tool(list)', function(obj){
     {{#  if(d.status == 'start'){ }}
         {{#  if(d.type == 'all'){ }}
         
-            {{#  if(d.range_type == '0'){ }}
+            {{#  if(d.range_type_bot == '0'){ }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]所有</span>
-            {{#  } else if(d.range_type == '1') { }}
+            {{#  } else if(d.range_type_bot == '1') { }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]支持ID({{d.range_val_bot}})</span>
-            {{#  } else if(d.range_type == '2') { }}
+            {{#  } else if(d.range_type_bot == '2') { }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">[bot]排除ID({{d.range_val_bot}})</span>
             {{#  } }}
 
-            {{#  if(d.range_type == '0'){ }}
+            {{#  if(d.range_type_client == '0'){ }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]所有</span>
-            {{#  } else if(d.range_type == '1') { }}
+            {{#  } else if(d.range_type_client == '1') { }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]支持ID({{d.range_val_client}})</span>
-            {{#  } else if(d.range_type == '2') { }}
+            {{#  } else if(d.range_type_client == '2') { }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">[client]排除ID({{d.range_val_client}})</span>
             {{#  } }}
 
         {{#  } else if(d.type == 'client') { }}
 
-            {{#  if(d.range_type == '0'){ }}
+            {{#  if(d.range_type_client == '0'){ }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
-            {{#  } else if(d.range_type == '1') { }}
+            {{#  } else if(d.range_type_client == '1') { }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val_client}})</span>
-            {{#  } else if(d.range_type == '2') { }}
+            {{#  } else if(d.range_type_client == '2') { }}
                 <span lay-event="range_change_client" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val_client}})</span>
             {{#  } }}
 
         {{#  } else if(d.type == 'bot') { }}
         
-            {{#  if(d.range_type == '0'){ }}
+            {{#  if(d.range_type_bot == '0'){ }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">所有</span>
-            {{#  } else if(d.range_type == '1') { }}
+            {{#  } else if(d.range_type_bot == '1') { }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">支持ID({{d.range_val_bot}})</span>
-            {{#  } else if(d.range_type == '2') { }}
+            {{#  } else if(d.range_type_bot == '2') { }}
                 <span lay-event="range_change_bot" class="layui-btn layui-btn-normal layui-btn-xs">排除ID({{d.range_val_bot}})</span>
             {{#  } }}
 
