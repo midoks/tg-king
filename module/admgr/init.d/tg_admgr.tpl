@@ -22,6 +22,8 @@ export LANG=en_US.UTF-8
 SP_PATH={$SERVER_PATH}
 PATH=$PATH:$SP_PATH/bin
 
+LOG_FILE={$SERVER_PATH}/logs/module_admgr.log
+
 if [ -f $SP_PATH/bin/activate ];then
     source $SP_PATH/bin/activate
 fi
@@ -42,7 +44,7 @@ tg_start_cmd(){
         
         for var in ${ids[@]}
         do
-            python3 {$APP_PATH}/admgr_bot_cmd.py $var >> {$SERVER_PATH}/logs/module_admgr.log &
+            python3 {$APP_PATH}/admgr_bot_cmd.py $var >> $LOG_FILE &
             echo "starting admgr_bot_cmd...${var}...done"
         done
         
@@ -58,7 +60,7 @@ tg_start_task(){
     if [ "$isStart" == '' ];then
         echo -e "starting admgr_bot_task... \c"
         cd $SP_PATH
-        python3 {$APP_PATH}/admgr_bot_task.py >> {$SERVER_PATH}/logs/module_admgr.log &
+        python3 {$APP_PATH}/admgr_bot_task.py >> $LOG_FILE &
         isStart=""
         while [[ "$isStart" == "" ]];
         do
