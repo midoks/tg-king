@@ -22,6 +22,9 @@ export LANG=en_US.UTF-8
 SP_PATH={$SERVER_PATH}
 PATH=$PATH:$SP_PATH/bin
 
+
+LOG_FILE={$SERVER_PATH}/logs/module_gpmgr.log
+
 if [ -f $SP_PATH/bin/activate ];then
     source $SP_PATH/bin/activate
 fi
@@ -42,8 +45,9 @@ tg_start_cmd(){
         
         for var in ${ids[@]}
         do
-            python3 {$APP_PATH}/gpmgr_bot_cmd.py $var >> {$SERVER_PATH}/logs/module_admgr.log &
-            echo "starting gpmgr_bot_cmd...${var}...done"
+            python3 {$APP_PATH}/gpmgr_bot_cmd.py $var >> $LOG_FILE &
+            echo -e "starting gpmgr_bot_cmd...id:${var} \c"
+            echo -e "\033[32mdone\033[0m"
         done
         
     else
@@ -58,7 +62,7 @@ tg_start_task(){
     if [ "$isStart" == '' ];then
         echo -e "starting gpmgr_bot_task... \c"
         cd $SP_PATH
-        python3 {$APP_PATH}/gpmgr_bot_task.py >> {$SERVER_PATH}/logs/module_admgr.log &
+        python3 {$APP_PATH}/gpmgr_bot_task.py >> $LOG_FILE &
         isStart=""
         while [[ "$isStart" == "" ]];
         do
