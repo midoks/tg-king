@@ -68,7 +68,7 @@ def pushContent(bot, tag='gpmgr', trigger_time=300):
         bot.delete_message(
             chat_id=chat_id, message_id=msg.message_id)
     except Exception as e:
-        writeLog("admgr:\n" + str(e))
+        writeLog("delete_message:\n" + str(e))
 
 
 def runBotPushTask():
