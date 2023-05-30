@@ -96,8 +96,8 @@ def handle_new_chat_members(message):
     markup = types.InlineKeyboardMarkup(keyboard)
 
     try:
-        question = "%s 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:1+1=❓" % (
-            model.unameMosaic(message.from_user.first_name),)
+        question = "[%s](tg://user?id=%s) 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:1+1=❓" % (
+            model.unameMosaic(message.from_user.first_name), message.from_user.id)
         bot.send_message(message.chat.id, question,
                          parse_mode='Markdown', reply_markup=markup)
     except Exception as e:
