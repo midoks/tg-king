@@ -97,7 +97,7 @@ def handle_new_chat_members(message):
 
     try:
         question = "%s 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:1+1=❓" % (
-            model.unameMosaic(message.from_user.first_name))
+            model.unameMosaic(message.from_user.first_name),)
         bot.send_message(message.chat.id, question,
                          parse_mode='Markdown', reply_markup=markup)
     except Exception as e:
