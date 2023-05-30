@@ -45,10 +45,8 @@ def hanle_get_chat_id(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query_handler(call):
-    #
     print(call)
-    msg = call.text
-    writeLog('msg:' + str(msg))
+    writeLog('msg:' + str(call))
 
 
 @bot.message_handler(func=lambda message: True)
