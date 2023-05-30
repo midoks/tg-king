@@ -14,6 +14,10 @@ import threading
 sys.path.append(os.getcwd() + "/class/core")
 import tgking
 
+sys.path.append(os.getcwd() + "/module/gpmgr/class")
+import model
+
+
 import telebot
 from telebot import types
 from telebot.util import quick_markup
