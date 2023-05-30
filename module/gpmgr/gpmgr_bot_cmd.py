@@ -61,6 +61,16 @@ def all_message(message):
     writeLog('msg:' + str(message))
 
 
+@bot.message_handler(content_types=["left_chat_member"])
+def handle_left_chat_member(message):
+    # 删除入群消息
+    try:
+        bot.delete_message(
+            chat_id=message.chat.id, message_id=message.message_id)
+    except Exception as e:
+        writeLog(str(e))
+
+
 @bot.message_handler(content_types=["new_chat_members"])
 def handle_new_chat_members(message):
     '''
@@ -109,10 +119,6 @@ def handle_new_chat_members(message):
                          parse_mode='Markdown', reply_markup=markup)
     except Exception as e:
         writeLog(str(e))
-
-    # writeLog('new_chat_members:' + str(message))
-    writeLog('new_chat_members run')
-    # bot.send_message(message, "running onNewUser")
 
 
 def runBot(bot):
