@@ -60,6 +60,12 @@ def callback_query_handler(call):
     except Exception as e:
         writeLog(str(e))
 
+    try:
+        bot.delete_message(
+            chat_id=call.message.chat.id, message_id=call.message.message_id)
+    except Exception as e:
+        writeLog(str(e))
+
 
 @bot.message_handler(func=lambda message: True)
 def all_message(message):
