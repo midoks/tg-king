@@ -55,6 +55,11 @@ def callback_query_handler(call):
     print(call)
     writeLog('msg:' + str(call))
 
+    try:
+        bot.promote_chat_member(call.chat.id, call.from_user.id)
+    except Exception as e:
+        writeLog(str(e))
+
 
 @bot.message_handler(func=lambda message: True)
 def all_message(message):
@@ -91,7 +96,6 @@ def handle_new_chat_members(message):
         writeLog(str(e))
 
     # 发送验证消息
-
     keyboard = [
         [
             types.InlineKeyboardButton(
