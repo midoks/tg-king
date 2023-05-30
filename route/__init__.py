@@ -65,8 +65,6 @@ app.config['SESSION_KEY_PREFIX'] = 'TGClient:'
 app.config['SESSION_COOKIE_NAME'] = "TGClient_VER_1"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
 
-app.config['DEBUG'] = True
-
 # socketio
 from flask_socketio import SocketIO, emit, send
 socketio = SocketIO()
