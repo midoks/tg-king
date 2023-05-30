@@ -85,13 +85,21 @@ def handle_new_chat_members(message):
                 text="3", callback_data='3'),
             types.InlineKeyboardButton(
                 text="4", callback_data='4')
+        ],
+        [
+            types.InlineKeyboardButton(
+                text="允许(管理员)", callback_data='5'),
+            types.InlineKeyboardButton(
+                text="禁止(管理员)", callback_data='6')
         ]
     ]
     markup = types.InlineKeyboardMarkup(keyboard)
 
     try:
-        question = "1+1=?"
-        bot.send_message(message.chat.id, question, reply_markup=markup)
+        question = "%s 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:1+1=❓" % (
+            model.unameMosaic(message.from_user.first_name))
+        bot.send_message(message.chat.id, question,
+                         parse_mode='Markdown', reply_markup=markup)
     except Exception as e:
         writeLog(str(e))
 
