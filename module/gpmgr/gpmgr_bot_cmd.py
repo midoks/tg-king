@@ -56,7 +56,7 @@ def callback_query_handler(call):
     writeLog('msg:' + str(call))
 
     try:
-        bot.promote_chat_member(call.chat.id, call.from_user.id)
+        bot.promote_chat_member(call.message.chat.id, call.from_user.id)
     except Exception as e:
         writeLog(str(e))
 
