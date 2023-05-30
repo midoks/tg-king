@@ -1,5 +1,8 @@
 # coding:utf-8
-# python3 module/admgr/admgr_bot_cmd.py
+
+'''
+cd /opt/tg-king && source bin/activate && python3 module/gpmgr/gpmgr_bot_cmd.py
+'''
 
 import sys
 import io
