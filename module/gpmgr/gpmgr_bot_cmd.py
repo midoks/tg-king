@@ -75,8 +75,30 @@ def handle_new_chat_members(message):
     except Exception as e:
         writeLog(str(e))
 
-    writeLog('new_chat_members:' + str(message))
+    # 发送验证消息
 
+    keyboard = [
+        [
+            types.InlineKeyboardButton(
+                text="1", callback_data='1'),
+            types.InlineKeyboardButton(
+                text="2", callback_data='2'),
+            types.InlineKeyboardButton(
+                text="3", callback_data='3'),
+            types.InlineKeyboardButton(
+                text="4", callback_data='4')
+        ]
+    ]
+    markup = types.InlineKeyboardMarkup(keyboard)
+
+    try:
+        question = "1+1=?"
+        bot.send_message(message.chat.id, question, reply_markup=markup)
+    except Exception as e:
+        writeLog(str(e))
+
+    # writeLog('new_chat_members:' + str(message))
+    writeLog('new_chat_members run')
     # bot.send_message(message, "running onNewUser")
 
 
