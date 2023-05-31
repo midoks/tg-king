@@ -70,8 +70,12 @@ def hanle_ban(message):
     '''
     禁言用户
     '''
-    writeLog('ban:' + str(message))
-    # bot.reply_to(message, message.chat.id)
+    # 在群组才能正常使用
+    if message.chat.type != 'supergroup':
+        return True
+
+    # writeLog('ban:' + str(message))
+    # bot.ban_chat_member(message, message.chat.id)
 
 
 @bot.callback_query_handler(func=lambda call: True)
