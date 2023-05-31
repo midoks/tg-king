@@ -54,6 +54,9 @@ def hanle_get_chat_id(message):
 def callback_query_handler(call):
     print(call)
 
+    if call.data != 'ok':
+        return False
+
     try:
         bot.promote_chat_member(call.message.chat.id, call.from_user.id)
 
@@ -63,7 +66,7 @@ def callback_query_handler(call):
         writeLog(str(e))
 
     try:
-        bot.answer_callback_query(id=call.id, text='你可以发言了!')
+        bot.answer_callback_query(call.id, text='你可以发言了!')
     except Exception as e:
         writeLog(str(e))
 
@@ -88,7 +91,6 @@ def handle_new_chat_members(message):
     '''
     新加入的用户
     '''
-
     try:
         # 删除入群消息
         bot.delete_message(
