@@ -100,7 +100,7 @@ def handle_new_chat_members(message):
     except Exception as e:
         writeLog(str(e))
 
-    msg_question, msg_rand_list, msg_right_result = randQuestion()
+    msg_question, msg_rand_list, msg_right_result = model.randQuestion()
     question_choose = []
 
     for rand_result in msg_rand_list:
