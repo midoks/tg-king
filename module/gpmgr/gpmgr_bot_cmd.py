@@ -117,7 +117,7 @@ def handle_new_chat_members(message):
         question_choose.append(t)
 
     # 发送验证消息
-
+    keyboard = []
     # [
     #     types.InlineKeyboardButton(
     #         text="1", callback_data='1'),
@@ -128,7 +128,6 @@ def handle_new_chat_members(message):
     #     types.InlineKeyboardButton(
     #         text="4", callback_data='4')
     # ]
-    keyboard = []
     keyboard.append(question_choose)
     keyboard.append(
         [
