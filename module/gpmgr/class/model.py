@@ -3,9 +3,10 @@
 import re
 import os
 import sys
+import random
 
-sys.path.append(os.getcwd() + "/class/core")
-import tgking
+# sys.path.append(os.getcwd() + "/class/core")
+# import tgking
 
 
 def unameMosaic(uname):
@@ -15,3 +16,26 @@ def unameMosaic(uname):
     if len(uname) > 4:
         return '%s██%s' % (uname[0:2], uname[-2:])
     return '%s██%s' % (uname[0:1], uname[-1:])
+
+
+def randQuestion():
+    '''
+    随机生成问题
+    '''
+    q1 = random.randint(0, 100)
+    q2 = random.randint(0, 100)
+    asum = q1 + q2
+
+    question = str(q1) + '+' + str(q2) + ' = ❓'
+
+    slist = []
+    for x in range(5):
+        t = random.randint(0, 199)
+        slist.append(t)
+    slist.append(asum)
+    random.shuffle(slist)
+    return question, slist, asum
+
+
+if __name__ == '__main__':
+    print(randQuestion())

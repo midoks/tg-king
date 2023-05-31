@@ -53,16 +53,17 @@ def hanle_get_chat_id(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query_handler(call):
     print(call)
-    writeLog('msg:' + str(call))
 
     try:
         bot.promote_chat_member(call.message.chat.id, call.from_user.id)
+
+        bot.delete_message(
+            chat_id=call.message.chat.id, message_id=call.message.message_id)
     except Exception as e:
         writeLog(str(e))
 
     try:
-        bot.delete_message(
-            chat_id=call.message.chat.id, message_id=call.message.message_id)
+        bot.answer_callback_query(id=call.id, '你可以发言了!')
     except Exception as e:
         writeLog(str(e))
 
@@ -88,18 +89,18 @@ def handle_new_chat_members(message):
     新加入的用户
     '''
 
-    # 删除入群消息
     try:
+        # 删除入群消息
         bot.delete_message(
             chat_id=message.chat.id, message_id=message.message_id)
+
+        # 限制入群权限
+        bot.restrict_chat_member(message.chat.id, message.from_user.id)
+
     except Exception as e:
         writeLog(str(e))
 
-    # 限制入群权限
-    try:
-        bot.restrict_chat_member(message.chat.id, message.from_user.id)
-    except Exception as e:
-        writeLog(str(e))
+    question_choose = []
 
     # 发送验证消息
     keyboard = [
