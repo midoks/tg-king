@@ -68,7 +68,12 @@ def hanle_get_chat_id(message):
 @bot.message_handler(commands=['me'])
 def hanle_me(message):
     writeLog('me:' + str(message))
-    # bot.ban_chat_member(message, message.chat.id)
+
+    try:
+        data = bot.get_chat_member(message.chat.id, message.from_user.id)
+        writeLog('me:' + str(data))
+    except Exception as e:
+        writeLog('me:' + str(e))
 
 
 @bot.message_handler(commands=['ban'])
