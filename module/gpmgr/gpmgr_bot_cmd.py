@@ -55,6 +55,7 @@ def callback_query_handler(call):
     print(call)
 
     if call.data != 'ok':
+        bot.answer_callback_query(call.id, text='错误选择!')
         return False
 
     try:
