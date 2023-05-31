@@ -65,6 +65,12 @@ def hanle_get_chat_id(message):
     bot.reply_to(message, message.chat.id)
 
 
+@bot.message_handler(commands=['me'])
+def hanle_me(message):
+    writeLog('me:' + str(message))
+    # bot.ban_chat_member(message, message.chat.id)
+
+
 @bot.message_handler(commands=['ban'])
 def hanle_ban(message):
     '''
