@@ -65,8 +65,6 @@ def hanle_get_chat_id(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query_handler(call):
-    print(call)
-
     if call.data != 'ok':
         bot.answer_callback_query(call.id, text='错误选择!')
         return False
@@ -83,6 +81,8 @@ def callback_query_handler(call):
         bot.answer_callback_query(call.id, text='你可以发言了!')
     except Exception as e:
         writeLog(str(e))
+
+    writeLog(str(call))
 
 
 @bot.message_handler(func=lambda message: True)
