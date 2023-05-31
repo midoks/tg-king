@@ -65,6 +65,15 @@ def hanle_get_chat_id(message):
     bot.reply_to(message, message.chat.id)
 
 
+@bot.message_handler(commands=['ban'])
+def hanle_ban(message):
+    '''
+    禁言用户
+    '''
+    writeLog('ban:' + str(message))
+    # bot.reply_to(message, message.chat.id)
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query_handler(call):
     if call.data != 'ok':
