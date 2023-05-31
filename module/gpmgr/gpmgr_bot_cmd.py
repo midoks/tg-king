@@ -69,9 +69,11 @@ def hanle_get_chat_id(message):
 def hanle_me(message):
     writeLog('me:' + str(message))
 
+    # bot.reply_to(message, message.chat.id)
+
     try:
         data = bot.get_chat_member(message.chat.id, message.from_user.id)
-        writeLog('me:' + str(data))
+        writeLog('me:' + str(message.reply_to_message.json.from.id))
     except Exception as e:
         writeLog('me:' + str(e))
 
