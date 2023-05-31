@@ -26,21 +26,34 @@ from telebot import types
 from telebot.util import quick_markup
 
 
+def writeLog(log_str):
+    tgking.writeModLog('[gpmgr][' + str(bot_id) +
+                       '][cmd]:' + log_str, 'gpmgr')
+    return True
+
+
 bot_id = sys.argv[1]
 bot_data = tgking.getBotById(bot_id)
 
 if bot_data == {}:
     while True:
-        print("no start!")
+        writeLog("no start!")
         time.sleep(3)
 
 bot = telebot.TeleBot(bot_data['token'])
 
 
-def writeLog(log_str):
-    tgking.writeModLog('[gpmgr][' + str(bot_id) +
-                       '][cmd]:' + log_str, 'gpmgr')
-    return True
+def initBotCmd(bot):
+    '''
+    初始化命令提出
+    '''
+    bot.delete_my_commands(scope=None, language_code=None)
+    bot.set_my_commands(
+        commands=[
+            telebot.types.BotCommand("start", "查看帮助信息"),
+            telebot.types.BotCommand("faq", "查看bbs帖子主题【不要忘记:冒号】"),
+        ],
+    )
 
 
 @bot.message_handler(commands=['id'])
@@ -152,6 +165,7 @@ def handle_new_chat_members(message):
 
 def runBot(bot):
     try:
+        initBotCmd(bot)
         bot.polling()
     except Exception as e:
         writeLog('-----bot error start -------')
