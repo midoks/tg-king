@@ -1,7 +1,7 @@
 # coding:utf-8
 
 '''
-cd /opt/tg-king && source bin/activate && python3 module/gpmgr/gpmgr_bot_cmd.py
+cd /opt/tg-king && source bin/activate && python3 module/gpmgr/gpmgr_bot_cmd.py 1
 '''
 
 import sys
@@ -63,7 +63,7 @@ def callback_query_handler(call):
         writeLog(str(e))
 
     try:
-        bot.answer_callback_query(id=call.id, '你可以发言了!')
+        bot.answer_callback_query(id=call.id, text='你可以发言了!')
     except Exception as e:
         writeLog(str(e))
 
