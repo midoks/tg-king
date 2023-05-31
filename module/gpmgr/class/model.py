@@ -38,4 +38,6 @@ def randQuestion():
 
 
 if __name__ == '__main__':
-    print(randQuestion())
+    msg_question, msg_rand_list, msg_right_result = randQuestion()
+    for x in msg_rand_list:
+        print(x)

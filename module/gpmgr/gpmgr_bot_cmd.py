@@ -100,32 +100,48 @@ def handle_new_chat_members(message):
     except Exception as e:
         writeLog(str(e))
 
+    msg_question, msg_rand_list, msg_right_result = randQuestion()
     question_choose = []
 
+    for rand_result in msg_rand_list:
+        t = None
+        if rand_result == msg_right_result:
+            t = types.InlineKeyboardButton(
+                text=str(rand_result), callback_data='ok')
+        else:
+            t = types.InlineKeyboardButton(
+                text=str(rand_result), callback_data=str(rand_result))
+        question_choose.append(t)
+
     # 发送验证消息
-    keyboard = [
-        [
-            types.InlineKeyboardButton(
-                text="1", callback_data='1'),
-            types.InlineKeyboardButton(
-                text="2", callback_data='2'),
-            types.InlineKeyboardButton(
-                text="3", callback_data='3'),
-            types.InlineKeyboardButton(
-                text="4", callback_data='4')
-        ],
+
+    # [
+    #     types.InlineKeyboardButton(
+    #         text="1", callback_data='1'),
+    #     types.InlineKeyboardButton(
+    #         text="2", callback_data='2'),
+    #     types.InlineKeyboardButton(
+    #         text="3", callback_data='3'),
+    #     types.InlineKeyboardButton(
+    #         text="4", callback_data='4')
+    # ]
+    keyboard = []
+    keyboard.append(question_choose)
+    keyboard.append(
         [
             types.InlineKeyboardButton(
                 text="允许(管理员)", callback_data='5'),
             types.InlineKeyboardButton(
                 text="禁止(管理员)", callback_data='6')
         ]
-    ]
+    )
+
     markup = types.InlineKeyboardMarkup(keyboard)
 
+    # 1+1=❓
     try:
-        question = "[%s](tg://user?id=%s) 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:1+1=❓" % (
-            model.unameMosaic(message.from_user.first_name), message.from_user.id)
+        question = "[%s](tg://user?id=%s) 本群开启入群验证,请尽快完成验证才可问题后才可进群发言!\n请回答问题:%s" % (
+            model.unameMosaic(message.from_user.first_name), message.from_user.id, msg_question)
         bot.send_message(message.chat.id, question,
                          parse_mode='Markdown', reply_markup=markup)
     except Exception as e:
