@@ -86,7 +86,7 @@ def hanle_ban(message):
             data = bot.get_chat_member(message.chat.id, message.from_user.id)
             if data['status'] in ('administrator', 'creator'):
                 bot.ban_chat_member(
-                    message.chat.id, message.reply_to_message.json.from.id)
+                    message.chat.id, message.reply_to_message['json']['from']['id'])
         else:
             bot.answer_callback_query(message.id, text='你无权操作!')
     except Exception as e:
